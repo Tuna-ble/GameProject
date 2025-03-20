@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1742493917 source:c:\users\admin\gamepr\main.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	"def.h"
+	"graphics.h"
+
+1742493387 c:\users\admin\gamepr\def.h
+
+1742493263 c:\users\admin\gamepr\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"def.h"
+
