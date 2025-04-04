@@ -12,6 +12,8 @@ struct Game{
     SDL_Texture* background;
     SDL_Texture* spaceShip;
     SDL_Texture* cursor;
+    Uint32 frameStart;
+    int frameTime;
 
     void init();
     void run();

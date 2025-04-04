@@ -8,7 +8,6 @@ void Player::handleInput()
     SDL_Event event;
     int mx, my;
     SDL_GetMouseState(&mx, &my);
-
     while(SDL_PollEvent(&event))
     {
     switch (event.type)
@@ -24,7 +23,7 @@ void Player::handleInput()
             std::cerr << "Up at (" << mx << ", " << my << ")\n";
             break;
     }
-}
+    }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
     vx=0;
@@ -41,4 +40,19 @@ void Player::posUpd()
 {
     x+=vx;
     y+=vy;
+}
+
+void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, int ID)
+{
+    SDL_Rect dest = { x, y, SHIP_SIZE, SHIP_SIZE };
+    SDL_Rect srcRect = { (ID % 2) * 48, (ID / 2) * 48, 48, 48 };
+
+    int mx, my;
+    SDL_GetMouseState(&mx, &my);
+
+    const double angle = atan2(my - y - SHIP_SIZE / 2, mx - x - SHIP_SIZE / 2) * 180 / M_PI + 90;
+
+    //SDL_RenderDrawLine(graphics.renderer, player.x +24, player.y+24, mx, my);
+
+    SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 }

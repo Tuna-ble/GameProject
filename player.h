@@ -11,7 +11,7 @@ struct Player{
     bool gameRunning = true;
 
     void init();
-    void renderPlayer(int ID);
+    void render(SDL_Renderer* renderer, SDL_Texture* texture, int ID);
     void renderCursor();
     void handleInput();
     void posUpd();
