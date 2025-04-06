@@ -32,16 +32,18 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="Game.cpp" />
-		<Unit filename="Game.h" />
-		<Unit filename="Player.cpp" />
-		<Unit filename="Player.h" />
+		<Unit filename="background.cpp" />
+		<Unit filename="background.h" />
 		<Unit filename="def.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="game.cpp" />
+		<Unit filename="game.h" />
 		<Unit filename="graphics.cpp" />
 		<Unit filename="graphics.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="player.cpp" />
+		<Unit filename="player.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

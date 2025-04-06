@@ -2,6 +2,7 @@
 #include<SDL.h>
 #include<SDL_image.h>
 #include "player.h"
+#include "background.h"
 
 void Player::handleInput()
 {
@@ -42,15 +43,17 @@ void Player::posUpd()
     y+=vy;
 }
 
-void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, int ID)
+void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID)
 {
-    SDL_Rect dest = { x, y, SHIP_SIZE, SHIP_SIZE };
+    int drawX = (int)(x - camera.x);
+    int drawY = (int)(y - camera.y);
+    SDL_Rect dest = { drawX, drawY, SHIP_SIZE, SHIP_SIZE };
     SDL_Rect srcRect = { (ID % 2) * 48, (ID / 2) * 48, 48, 48 };
 
     int mx, my;
     SDL_GetMouseState(&mx, &my);
 
-    const double angle = atan2(my - y - SHIP_SIZE / 2, mx - x - SHIP_SIZE / 2) * 180 / M_PI + 90;
+    const double angle = atan2(my - drawY - SHIP_SIZE / 2, mx - drawX - SHIP_SIZE / 2) * 180 / M_PI + 90;
 
     //SDL_RenderDrawLine(graphics.renderer, player.x +24, player.y+24, mx, my);
 

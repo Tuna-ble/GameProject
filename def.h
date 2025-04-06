@@ -6,6 +6,7 @@ const int SCREEN_HEIGHT = 700;
 const int SHIP_SIZE = 75;
 const int FPS = 60;
 const int FRAME_DELAY = 1000 / FPS;
-#define WINDOW_TITLE "Hello World!"
+const int backgroundSize = 512;
+#define WINDOW_TITLE "Spaceship Shooter"
 
 #endif

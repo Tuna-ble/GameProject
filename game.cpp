@@ -3,6 +3,7 @@
 #include<SDL_image.h>
 #include "game.h"
 #include "player.h"
+#include "background.h"
 
 #define ID 0
 
@@ -21,15 +22,18 @@ void Game::init()
 void Game::update()
 {
     player.handleInput();
+    camera.updateCamera(player);
     player.posUpd();
 }
 
 void Game::render()
 {
     SDL_RenderClear(graphics.renderer);
-    graphics.prepareScene(background);
 
-    player.render(graphics.renderer, spaceShip, ID);
+    tiledRenderer.renderer(graphics.renderer, background, camera);
+
+    camera.getViewRect();
+    player.render(graphics.renderer, spaceShip, camera, ID);
 
     graphics.presentScene();
 }
@@ -38,14 +42,17 @@ void Game::run()
 {
     while (player.gameRunning)
     {
-        frameStart = SDL_GetTicks();
+        Uint32 frameStart = SDL_GetTicks();
 
         update();
         render();
 
-        frameTime = SDL_GetTicks() - frameStart;
+        int frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
             SDL_Delay(FRAME_DELAY - frameTime);
+        Uint32 fullFrameTime = SDL_GetTicks() - frameStart;
+        float avgFPS = 1000.0f / fullFrameTime;
+        std::cerr << "FPS: " << avgFPS << "\n";
     }
     quit();
 }

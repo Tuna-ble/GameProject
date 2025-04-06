@@ -5,15 +5,16 @@
 #include "def.h"
 #include "graphics.h"
 #include "player.h"
+#include "background.h"
 
 struct Game{
     Graphics graphics;
     Player player;
+    Camera camera;
+    TiledRenderer tiledRenderer;
     SDL_Texture* background;
     SDL_Texture* spaceShip;
     SDL_Texture* cursor;
-    Uint32 frameStart;
-    int frameTime;
 
     void init();
     void run();
