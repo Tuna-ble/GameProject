@@ -5,8 +5,6 @@
 #include "player.h"
 #include "background.h"
 
-#define ID 0
-
 void Game::init()
 {
     graphics.init();
@@ -14,54 +12,62 @@ void Game::init()
 
     spaceShip = graphics.loadTexture("spaceships.png");
 
+    bullet = graphics.loadTexture("projectiles.png");
+
+    player.init(bullet);
+
     /*cursor = graphics.loadTexture("cursor.png");
     SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
     SDL_RenderCopy(graphics.renderer, cursor, NULL, &cursorRect);*/
 }
 
-void Game::update()
+void Game::update(float deltaTime)
 {
-    player.handleInput();
-    camera.updateCamera(player);
-    player.posUpd();
+    player.handleInput(bullet, camera);
+    player.update(deltaTime);
+    player.bullets.update(deltaTime);
+    camera.update(player);
 }
 
 void Game::render()
 {
     SDL_RenderClear(graphics.renderer);
+    tile.render(graphics.renderer, background, camera);
 
-    tiledRenderer.renderer(graphics.renderer, background, camera);
-
-    camera.getViewRect();
+    //camera.getViewRect();
     player.render(graphics.renderer, spaceShip, camera, ID);
+    player.bullets.render(graphics.renderer, camera);
 
     graphics.presentScene();
 }
 
 void Game::run()
 {
+    Uint32 lastTime = SDL_GetTicks();
     while (player.gameRunning)
     {
-        Uint32 frameStart = SDL_GetTicks();
+        Uint32 currentTime = SDL_GetTicks();
+        float deltaTime = (currentTime - lastTime) / 1000.0f;
+        lastTime = currentTime;
 
-        update();
+        update(deltaTime);
         render();
 
-        int frameTime = SDL_GetTicks() - frameStart;
+        int frameTime = SDL_GetTicks() - currentTime;
         if (frameTime < FRAME_DELAY)
             SDL_Delay(FRAME_DELAY - frameTime);
-        Uint32 fullFrameTime = SDL_GetTicks() - frameStart;
+        Uint32 fullFrameTime = SDL_GetTicks() - currentTime;
         float avgFPS = 1000.0f / fullFrameTime;
-        std::cerr << "FPS: " << avgFPS << "\n";
+        //std::cerr << "FPS: " << avgFPS << "\n";
     }
     quit();
 }
 
 void Game::quit()
 {
-    SDL_DestroyTexture( spaceShip );
+    SDL_DestroyTexture(spaceShip);
     spaceShip = NULL;
-    SDL_DestroyTexture( background );
+    SDL_DestroyTexture(background);
     background = NULL;
     IMG_Quit();
     SDL_DestroyRenderer(graphics.renderer);

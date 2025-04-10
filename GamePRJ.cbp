@@ -34,6 +34,8 @@
 		</Compiler>
 		<Unit filename="background.cpp" />
 		<Unit filename="background.h" />
+		<Unit filename="bullet.cpp" />
+		<Unit filename="bullet.h" />
 		<Unit filename="def.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

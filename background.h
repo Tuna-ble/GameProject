@@ -11,14 +11,16 @@ struct Camera
     const int w = SCREEN_WIDTH, h = SCREEN_HEIGHT;
 
     SDL_Rect getViewRect() const;
-    void updateCamera(Player &player);
+    void update(Player &player);
 };
 
 struct TiledRenderer
 {
-    float paralaxStrength = 1.0f;
+    float parallaxStrength = 1.0f;
+    int tileWidth;
+    int tileHeight;
 
-    void renderer(SDL_Renderer* renderer, SDL_Texture* texture, Camera& camera);
+    void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera& camera);
 };
 
 #endif // BACKGROUND_H_INCLUDED

@@ -11,15 +11,16 @@ struct Game{
     Graphics graphics;
     Player player;
     Camera camera;
-    TiledRenderer tiledRenderer;
+    TiledRenderer tile;
     SDL_Texture* background;
     SDL_Texture* spaceShip;
     SDL_Texture* cursor;
+    SDL_Texture* bullet;
 
     void init();
     void run();
     void render();
-    void update();
+    void update(float deltaTime);
     void quit();
 };
 

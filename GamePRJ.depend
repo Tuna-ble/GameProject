@@ -7,7 +7,7 @@
 	"game.h"
 	"player.h"
 
-1743876097 c:\users\admin\gamepr\def.h
+1744323050 c:\users\admin\gamepr\def.h
 
 1743036057 c:\users\admin\gamepr\graphics.h
 	<SDL.h>
@@ -20,7 +20,7 @@
 	<SDL_image.h>
 	"graphics.h"
 
-1743947306 c:\users\admin\gamepr\game.h
+1744310011 c:\users\admin\gamepr\game.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -28,7 +28,7 @@
 	"player.h"
 	"background.h"
 
-1743950249 source:c:\users\admin\gamepr\game.cpp
+1744322390 source:c:\users\admin\gamepr\game.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
@@ -36,27 +36,42 @@
 	"player.h"
 	"background.h"
 
-1743947688 source:c:\users\admin\gamepr\player.cpp
+1744325081 source:c:\users\admin\gamepr\player.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
+	"def.h"
 	"player.h"
 	"background.h"
+	"bullet.h"
 
-1743950345 c:\users\admin\gamepr\player.h
+1744325433 c:\users\admin\gamepr\player.h
 	"def.h"
 	"graphics.h"
 	"background.h"
+	"bullet.h"
 
-1743950344 c:\users\admin\gamepr\background.h
+1744035506 c:\users\admin\gamepr\background.h
 	"def.h"
 	"player.h"
 
-1743950111 source:c:\users\admin\gamepr\background.cpp
+1744315334 source:c:\users\admin\gamepr\background.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"background.h"
 	"player.h"
+
+1744325202 source:c:\users\admin\gamepr\bullet.cpp
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	"def.h"
+	"player.h"
+	"bullet.h"
+
+1744325218 c:\users\admin\gamepr\bullet.h
+	"def.h"
+	<bits/stdc++.h>
 
