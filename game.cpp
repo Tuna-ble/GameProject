@@ -4,17 +4,22 @@
 #include "game.h"
 #include "player.h"
 #include "background.h"
+#include "enemy.h"
 
 void Game::init()
 {
     graphics.init();
-    background = graphics.loadTexture("background1.png");
+    background = graphics.loadTexture("assets/background1.png");
 
-    spaceShip = graphics.loadTexture("spaceships.png");
+    spaceShip = graphics.loadTexture("assets/spaceships.png");
 
-    bullet = graphics.loadTexture("projectiles.png");
+    bullet = graphics.loadTexture("assets/projectiles.png");
+
+    enemy = graphics.loadTexture("assets/spaceships.png");
 
     player.init(bullet);
+
+    enemies.init(enemy);
 
     /*cursor = graphics.loadTexture("cursor.png");
     SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
@@ -25,8 +30,10 @@ void Game::update(float deltaTime)
 {
     player.handleInput(bullet, camera);
     player.update(deltaTime);
-    player.bullets.update(deltaTime);
     camera.update(player);
+
+    enemies.spawn(500, 500, enemies.enemyTexture, bullet, player);
+    enemies.update(deltaTime, player);
 }
 
 void Game::render()
@@ -36,7 +43,9 @@ void Game::render()
 
     //camera.getViewRect();
     player.render(graphics.renderer, spaceShip, camera, ID);
-    player.bullets.render(graphics.renderer, camera);
+    //player.bullets.render(graphics.renderer, camera);
+
+    enemies.render(graphics.renderer, camera);
 
     graphics.presentScene();
 }

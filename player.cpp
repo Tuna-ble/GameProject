@@ -79,9 +79,14 @@ void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera
     int mx, my;
     SDL_GetMouseState(&mx, &my);
 
+    float dirX = mx - (drawX + SHIP_SIZE / 2);
+    float dirY = my - (drawY + SHIP_SIZE / 2);
+
     const double angle = atan2(my - drawY - SHIP_SIZE / 2, mx - drawX - SHIP_SIZE / 2) * 180 / M_PI + 90;
 
     //SDL_RenderDrawLine(graphics.renderer, player.x +24, player.y+24, mx, my);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
+
+    bullets.render(renderer, camera);
 }

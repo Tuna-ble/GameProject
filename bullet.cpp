@@ -5,8 +5,7 @@
 #include "player.h"
 #include "bullet.h"
 
-Bullet::Bullet(float x, float y, float vx, float vy,
-    SDL_Texture* texture, SDL_Rect src, float angle)
+Bullet::Bullet(float x, float y, float vx, float vy, SDL_Texture* texture, SDL_Rect src, float angle)
     : x(x), y(y), vx(vx), vy(vy),
       width(BULLET_SIZE), height(BULLET_SIZE),
       active(true), texture(texture), srcRect(src), angle(angle) {}
@@ -23,11 +22,7 @@ void Bullet::update(float deltaTime) {
 
 void Bullet::render(SDL_Renderer* renderer, Camera& camera) {
     if (!active) return;
-    SDL_Rect dst = {
-        (int)(x - camera.x),
-        (int)(y - camera.y),
-        width, height
-    };
+    SDL_Rect dst = {(int)(x - camera.x), (int)(y - camera.y), width, height};
     SDL_RenderCopyEx(renderer, this->texture, &this->srcRect, &dst, angle, NULL, SDL_FLIP_NONE);
 }
 
@@ -39,8 +34,8 @@ void BulletManager::shoot(float x, float y, float dirX, float dirY, float speed,
         bullets.emplace_back(x, y, dirX * speed, dirY * speed, bulletTexture, srcRect, angle);
     }
 
-void BulletManager::update(float dt) {
-        for (auto& b : bullets) b.update(dt);
+void BulletManager::update(float deltaTime) {
+        for (auto& b : bullets) b.update(deltaTime);
         bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
                                      [](const Bullet& b) { return !b.active; }), bullets.end());
     }

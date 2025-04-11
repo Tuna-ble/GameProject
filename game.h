@@ -6,16 +6,20 @@
 #include "graphics.h"
 #include "player.h"
 #include "background.h"
+#include "enemy.h"
 
 struct Game{
     Graphics graphics;
     Player player;
     Camera camera;
     TiledRenderer tile;
+    EnemyManager enemies;
+
     SDL_Texture* background;
     SDL_Texture* spaceShip;
     SDL_Texture* cursor;
     SDL_Texture* bullet;
+    SDL_Texture* enemy;
 
     void init();
     void run();

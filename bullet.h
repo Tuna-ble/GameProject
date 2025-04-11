@@ -1,7 +1,7 @@
 #ifndef BULLET_H_INCLUDED
 #define BULLET_H_INCLUDED
 #include "def.h"
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 struct Player;
 struct Camera;
@@ -13,8 +13,8 @@ struct Bullet{
     bool active;
     float angle;
 
-    SDL_Texture* texture;  // shared texture (sprite sheet)
-    SDL_Rect srcRect;      // phần hình trong sprite sheet
+    SDL_Texture* texture;
+    SDL_Rect srcRect;
 
     Bullet(float x, float y, float vx, float vy, SDL_Texture* tex, SDL_Rect src, float angle);
     void update(float deltaTime);

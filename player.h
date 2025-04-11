@@ -8,11 +8,10 @@
 struct Camera;
 
 struct Player{
-    Graphics graphics;
     BulletManager bullets;
     float x = 100, y = 100;
     float vx, vy;
-    const int speed = 200;
+    int speed = 200;
     bool gameRunning = true;
     const SDL_Rect srcRect = { (ID % 2) * 48, (ID / 2) * 48, 48, 48 };
     const SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
