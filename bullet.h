@@ -1,22 +1,29 @@
 #ifndef BULLET_H_INCLUDED
 #define BULLET_H_INCLUDED
 #include "def.h"
+#include "vector2D.h"
 #include <bits/stdc++.h>
+
+enum class bulletFrom {
+    PLAYER,
+    ENEMY
+};
 
 struct Player;
 struct Camera;
 
 struct Bullet{
-    float x, y;
-    float vx, vy;
+    Vector2D position;
+    Vector2D velocity;
     int width, height;
     bool active;
     float angle;
+    bulletFrom shooter;
 
     SDL_Texture* texture;
     SDL_Rect srcRect;
 
-    Bullet(float x, float y, float vx, float vy, SDL_Texture* tex, SDL_Rect src, float angle);
+    Bullet(Vector2D position, Vector2D velocity, SDL_Texture* tex, SDL_Rect src, float angle, bulletFrom shooter);
     void update(float deltaTime);
     void render(SDL_Renderer* renderer, Camera& camera);
 };
@@ -24,15 +31,17 @@ struct Bullet{
 struct BulletManager{
     std::vector<Bullet> bullets;
     SDL_Texture* bulletTexture;
-    const float bulletSpeed = 200.0f;
+    float bulletSpeed = 200.0f;
 
     void init(SDL_Texture* texture);
 
-    void shoot(float x, float y, float dirX, float dirY, float speed, const SDL_Rect& srcRect, float angle);
+    void shoot(Vector2D position, Vector2D direction, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter);
 
     void update(float dt);
 
     void render(SDL_Renderer* renderer, Camera& camera);
+
+    Vector2D getBulletSpawnPosition(Vector2D& position) const;
 };
 
 #endif // BULLET_H_INCLUDED

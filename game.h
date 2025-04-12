@@ -7,6 +7,7 @@
 #include "player.h"
 #include "background.h"
 #include "enemy.h"
+#include "collision.h"
 
 struct Game{
     Graphics graphics;
@@ -14,6 +15,7 @@ struct Game{
     Camera camera;
     TiledRenderer tile;
     EnemyManager enemies;
+    Collision collision;
 
     SDL_Texture* background;
     SDL_Texture* spaceShip;

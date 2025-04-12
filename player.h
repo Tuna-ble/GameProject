@@ -4,13 +4,19 @@
 #include "graphics.h"
 #include "background.h"
 #include "bullet.h"
+#include "vector2D.h"
+
+#undef position
 
 struct Camera;
 
 struct Player{
     BulletManager bullets;
-    float x = 100, y = 100;
-    float vx, vy;
+    Vector2D position = {100, 100};
+    Vector2D velocity;
+    SDL_Texture* playerTexture;
+
+    float angle;
     int speed = 200;
     bool gameRunning = true;
     const SDL_Rect srcRect = { (ID % 2) * 48, (ID / 2) * 48, 48, 48 };
@@ -20,7 +26,7 @@ struct Player{
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID);
     void renderCursor();
     void handleInput(SDL_Texture* texture, Camera &camera);
-    void update(float deltaTime);
+    void update(float deltaTime, Camera &camera);
 };
 
 #endif // PLAYER_H_INCLUDED

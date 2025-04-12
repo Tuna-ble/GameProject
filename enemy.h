@@ -5,23 +5,31 @@
 #include "def.h"
 #include "player.h"
 #include "bullet.h"
+#include "vector2D.h"
 
 struct Player;
 
 struct Enemy {
-    float x, y;
-    float vx, vy;
+    Vector2D position;
+    Vector2D velocity;
     SDL_Texture* texture;
     SDL_Rect dest;
-    const SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
+    bool alive;
 
     BulletManager bullets;
 
-    const SDL_Rect srcRect = { (1 % 2) * 48, (1 / 2) * 48, 48, 48 };
+    float shootTimer = 0.0f;
+    float shootCooldown = 1.0f;
 
-    Enemy (float x, float y, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet);
+    SDL_Rect srcRect;
+    SDL_Rect bulletSrcRect;
+
+    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera);
     void update(float deltaTime, Player &player);
+
+    void resetShootTimer();
+    bool shootON();
 };
 
 
@@ -29,20 +37,15 @@ struct EnemyManager {
     std::vector <Enemy> enemies;
     SDL_Texture* enemyTexture;
 
-    float shootTimer = 0.0f;
-    float shootCooldown = 1.0f;
-
     float spawnTimer = 0.0f;
     float spawnCooldown = 5.0f;
 
     void init(SDL_Texture* texture);
 
-    void resetShootTimer();
-    bool shootON();
     void resetSpawnTimer();
     bool spawnON();
 
-    void spawn(float x, float y, SDL_Texture* texture, SDL_Texture* bullet, Player &player);
+    void spawn(Vector2D position, SDL_Texture* texture, SDL_Texture* bullet, Player &player);
     void update(float deltaTime, Player &player);
     void render(SDL_Renderer* renderer, Camera &camera);
 };

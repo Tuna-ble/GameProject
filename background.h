@@ -2,12 +2,13 @@
 #define BACKGROUND_H_INCLUDED
 #include "def.h"
 #include "player.h"
+#include "vector2d.h"
 
 struct Player;
 
 struct Camera
 {
-    float x, y;
+    Vector2D position;
     const int w = SCREEN_WIDTH, h = SCREEN_HEIGHT;
 
     SDL_Rect getViewRect() const;

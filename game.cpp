@@ -29,11 +29,12 @@ void Game::init()
 void Game::update(float deltaTime)
 {
     player.handleInput(bullet, camera);
-    player.update(deltaTime);
+    player.update(deltaTime, camera);
     camera.update(player);
 
-    enemies.spawn(500, 500, enemies.enemyTexture, bullet, player);
+    enemies.spawn({500, 500}, enemies.enemyTexture, bullet, player);
     enemies.update(deltaTime, player);
+    collision.checkAll(enemies.enemies, player);
 }
 
 void Game::render()
@@ -43,7 +44,6 @@ void Game::render()
 
     //camera.getViewRect();
     player.render(graphics.renderer, spaceShip, camera, ID);
-    //player.bullets.render(graphics.renderer, camera);
 
     enemies.render(graphics.renderer, camera);
 

@@ -7,7 +7,7 @@
 	"game.h"
 	"player.h"
 
-1744371772 c:\users\admin\gamepr\def.h
+1744496890 c:\users\admin\gamepr\def.h
 
 1743036057 c:\users\admin\gamepr\graphics.h
 	<SDL.h>
@@ -20,7 +20,7 @@
 	<SDL_image.h>
 	"graphics.h"
 
-1744384727 c:\users\admin\gamepr\game.h
+1744497072 c:\users\admin\gamepr\game.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -28,8 +28,9 @@
 	"player.h"
 	"background.h"
 	"enemy.h"
+	"collision.h"
 
-1744384602 source:c:\users\admin\gamepr\game.cpp
+1744497088 source:c:\users\admin\gamepr\game.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
@@ -38,7 +39,7 @@
 	"background.h"
 	"enemy.h"
 
-1744384602 source:c:\users\admin\gamepr\player.cpp
+1744497112 source:c:\users\admin\gamepr\player.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
@@ -46,51 +47,75 @@
 	"player.h"
 	"background.h"
 	"bullet.h"
+	"vector2D.h"
 
-1744326847 c:\users\admin\gamepr\player.h
+1744496890 c:\users\admin\gamepr\player.h
 	"def.h"
 	"graphics.h"
 	"background.h"
 	"bullet.h"
+	"vector2D.h"
 
-1744035506 c:\users\admin\gamepr\background.h
+1744451326 c:\users\admin\gamepr\background.h
 	"def.h"
 	"player.h"
+	"vector2d.h"
 
-1744315334 source:c:\users\admin\gamepr\background.cpp
+1744473698 source:c:\users\admin\gamepr\background.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"background.h"
 	"player.h"
+	"vector2d.h"
 
-1744333836 source:c:\users\admin\gamepr\bullet.cpp
+1744496957 source:c:\users\admin\gamepr\bullet.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"player.h"
 	"bullet.h"
+	"vector2D.h"
 
-1744327904 c:\users\admin\gamepr\bullet.h
+1744498955 c:\users\admin\gamepr\bullet.h
 	"def.h"
+	"vector2D.h"
 	<bits/stdc++.h>
 
-1744384602 c:\users\admin\gamepr\enemy.h
+1744499341 c:\users\admin\gamepr\enemy.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"player.h"
 	"bullet.h"
+	"vector2D.h"
 
-1744384652 source:c:\users\admin\gamepr\enemy.cpp
+1744496890 source:c:\users\admin\gamepr\enemy.cpp
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"player.h"
 	"bullet.h"
 	"enemy.h"
+	"vector2D.h"
 
-1744384829 source:c:\users\admin\gamepr\collision.cpp
+1744497798 source:c:\users\admin\gamepr\collision.cpp
+	"collision.h"
+
+1744451295 c:\users\admin\gamepr\vector2d.h
+
+1744451274 source:c:\users\admin\gamepr\vector2d.cpp
+	<math.h>
+	"vector2D.h"
+
+1744497367 c:\users\admin\gamepr\collision.h
+	<SDL.h>
+	<SDL_image.h>
+	"def.h"
+	"player.h"
+	"bullet.h"
+	"enemy.h"
+	"vector2D.h"
 

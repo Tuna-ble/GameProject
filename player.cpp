@@ -1,90 +1,67 @@
-#include<bits/stdc++.h>
-#include<SDL.h>
-#include<SDL_image.h>
+#include <bits/stdc++.h>
+#include <SDL.h>
+#include <SDL_image.h>
 #include "def.h"
 #include "player.h"
 #include "background.h"
 #include "bullet.h"
+#include "vector2D.h"
 
 void Player::init(SDL_Texture* bulletTexture) {
     bullets.init(bulletTexture);
 }
 
-void Player::handleInput(SDL_Texture* texture, Camera &camera)
-{
+void Player::handleInput(SDL_Texture* texture, Camera &camera) {
     SDL_Event event;
-    int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
+    int mousex, mousey;
+    SDL_GetMouseState(&mousex, &mousey);
+    Vector2D mouse(static_cast<float>(mousex), static_cast<float>(mousey));
 
-    while(SDL_PollEvent(&event))
-    {
-    switch (event.type)
-    {
-        case SDL_QUIT:
-            gameRunning = false;
-            exit(0);
-            break;
-        case SDL_MOUSEBUTTONDOWN:
-            float worldMouseX = mouseX + camera.x;
-            float worldMouseY = mouseY + camera.y;
-
-            float dirX = worldMouseX - (x + SHIP_SIZE / 2);
-            float dirY = worldMouseY - (y + SHIP_SIZE / 2) ;
-
-            float spawnX = x + SHIP_SIZE / 2 - BULLET_SIZE / 2;
-            float spawnY = y + SHIP_SIZE / 2 - BULLET_SIZE / 2;
-
-            float len = std::sqrt(dirX * dirX + dirY * dirY);
-            if (len != 0) {
-            dirX /= len;
-            dirY /= len;
-            float angle = atan2(worldMouseY - spawnY - BULLET_SIZE / 2, worldMouseX - spawnX - BULLET_SIZE / 2) * 180 / M_PI + 90;
-            bullets.shoot(spawnX, spawnY, dirX, dirY, bullets.bulletSpeed, bulletSrcRect, angle);
-            }
-            break;
-//        case SDL_MOUSEBUTTONUP:
-//            std::cerr << "Up at (" << mx << ", " << my << ")\n";
-//            break;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                gameRunning = false;
+                exit(0);
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                Vector2D worldMouse = mouse + camera.position;
+                Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
+                Vector2D direction = worldMouse - playerCenter;
+                Vector2D spawn = bullets.getBulletSpawnPosition(position);
+                direction = direction.normalize();
+                float bulletAngle = atan2(worldMouse.y - spawn.y - BULLET_SIZE / 2, worldMouse.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
+                bullets.shoot(spawn, direction, bullets.bulletSpeed, bulletSrcRect, bulletAngle, bulletFrom::PLAYER);
+                break;
+        }
     }
-    }
+
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+    velocity = Vector2D(0, 0);
 
-    vx=0;
-    vy=0;
-
-    if (currentKeyStates[SDL_SCANCODE_W] ) vy = -speed;
-    if (currentKeyStates[SDL_SCANCODE_S] ) vy = speed;
-    if (currentKeyStates[SDL_SCANCODE_A] ) vx = -speed;
-    if (currentKeyStates[SDL_SCANCODE_D] ) vx = speed;
-
+    if (currentKeyStates[SDL_SCANCODE_W]) velocity.y = -speed;
+    if (currentKeyStates[SDL_SCANCODE_S]) velocity.y = speed;
+    if (currentKeyStates[SDL_SCANCODE_A]) velocity.x = -speed;
+    if (currentKeyStates[SDL_SCANCODE_D]) velocity.x = speed;
 }
 
-void Player::update(float deltaTime)
-{
-    x += vx * deltaTime;
-    y += vy * deltaTime;
+void Player::update(float deltaTime, Camera &camera) {
+    position += velocity * deltaTime;
 
-    x = std::max(0.f, std::min(x, mapWidth - (float)SHIP_SIZE));
-    y = std::max(0.f, std::min(y, mapHeight - (float)SHIP_SIZE));
+    position.x = std::max(0.f, std::min(position.x, (float)mapWidth - (float)SHIP_SIZE));
+    position.y = std::max(0.f, std::min(position.y, (float)mapHeight - (float)SHIP_SIZE));
+
+    int mousex, mousey;
+    SDL_GetMouseState(&mousex, &mousey);
+    Vector2D worldMouse = Vector2D(static_cast<float>(mousex), static_cast<float>(mousey)) + camera.position;
+    Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
+    angle = atan2(worldMouse.y - playerCenter.y, worldMouse.x - playerCenter.x) * 180 / M_PI + 90;
 
     bullets.update(deltaTime);
 }
 
-void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID)
-{
-    int drawX = static_cast<int>(x - camera.x);
-    int drawY = static_cast<int>(y - camera.y);
-    SDL_Rect dest = { drawX, drawY, SHIP_SIZE, SHIP_SIZE };
-
-    int mx, my;
-    SDL_GetMouseState(&mx, &my);
-
-    float dirX = mx - (drawX + SHIP_SIZE / 2);
-    float dirY = my - (drawY + SHIP_SIZE / 2);
-
-    const double angle = atan2(my - drawY - SHIP_SIZE / 2, mx - drawX - SHIP_SIZE / 2) * 180 / M_PI + 90;
-
-    //SDL_RenderDrawLine(graphics.renderer, player.x +24, player.y+24, mx, my);
+void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID) {
+    Vector2D draw = position - camera.position;
+    SDL_Rect dest = { static_cast<int>(draw.x), static_cast<int>(draw.y), SHIP_SIZE, SHIP_SIZE };
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
