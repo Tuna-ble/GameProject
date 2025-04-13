@@ -1,8 +1,8 @@
 #include "player.h"
 #include "bullet.h"
 
-Bullet::Bullet(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect src, float angle, bulletFrom shooter)
-    : position(position), velocity(velocity),
+Bullet::Bullet(Vector2D position, Vector2D velocity, int damage, SDL_Texture* texture, SDL_Rect src, float angle, bulletFrom shooter)
+    : position(position), velocity(velocity), damage(damage),
       width(BULLET_SIZE), height(BULLET_SIZE),
       active(true), texture(texture), srcRect(src), angle(angle), shooter(shooter) {}
 
@@ -25,9 +25,9 @@ void BulletManager::init(SDL_Texture* texture) {
     bulletTexture = texture;
     }
 
-void BulletManager::shoot(Vector2D position, Vector2D direction, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter) {
+void BulletManager::shoot(Vector2D position, Vector2D direction, int enemyDamage, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter) {
 
-        bullets.emplace_back(position, direction * speed, bulletTexture, srcRect, angle, shooter);
+        bullets.emplace_back(position, direction * speed, enemyDamage, bulletTexture, srcRect, angle, shooter);
     }
 
 void BulletManager::update(float deltaTime) {

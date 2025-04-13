@@ -34,13 +34,17 @@ void Collision::checkAll(std::vector<Enemy>& enemies, Player& player) {
         if (!e.alive) continue;
         if (enemyXPlayer(player, e)) {
             e.alive = false;
+            player.health.takeDamage(e.damage);
             std::cerr << "You are caught in explosion" << "\n";
+            std::cerr << "Health :" << player.health.getPercent() << "\n";
         }
         for (auto& b : e.bullets.bullets) {
             if (!b.active) continue;
             if (bulletXPlayer(player, b)) {
             b.active = false;
+            player.health.takeDamage(e.damage);
             std::cerr << "You are shot" << "\n";
+            std::cerr << "Health :" << player.health.getPercent() << "\n";
         }
         }
     }
@@ -52,7 +56,8 @@ void Collision::checkAll(std::vector<Enemy>& enemies, Player& player) {
 
             if (bulletXEnemy(e, b)) {
                 b.active = false;
-                e.alive = false;
+                e.health.takeDamage(player.damage);
+                if (e.health.isDead()) e.alive = false;
             }
         }
     }

@@ -6,6 +6,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "vector2D.h"
+#include "health.h"
 
 struct Player;
 
@@ -14,9 +15,11 @@ struct Enemy {
     Vector2D velocity;
     SDL_Texture* texture;
     SDL_Rect dest;
+    int damage = 2;
     bool alive;
 
     BulletManager bullets;
+    Health health;
 
     float shootTimer = 0.0f;
     float shootCooldown = 1.0f;

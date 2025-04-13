@@ -2,6 +2,7 @@
 
 void Player::init(SDL_Texture* bulletTexture) {
     bullets.init(bulletTexture);
+    health = Health(10);
 }
 
 void Player::handleInput(SDL_Texture* texture, Camera &camera) {
@@ -23,7 +24,7 @@ void Player::handleInput(SDL_Texture* texture, Camera &camera) {
                 Vector2D spawn = bullets.getBulletSpawnPosition(position);
                 direction = direction.normalize();
                 float bulletAngle = atan2(worldMouse.y - spawn.y - BULLET_SIZE / 2, worldMouse.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
-                bullets.shoot(spawn, direction, bullets.bulletSpeed, bulletSrcRect, bulletAngle, bulletFrom::PLAYER);
+                bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, bulletAngle, bulletFrom::PLAYER);
                 break;
         }
     }
@@ -48,6 +49,13 @@ void Player::update(float deltaTime, Camera &camera) {
     Vector2D worldMouse = Vector2D(static_cast<float>(mousex), static_cast<float>(mousey)) + camera.position;
     Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
     angle = atan2(worldMouse.y - playerCenter.y, worldMouse.x - playerCenter.x) * 180 / M_PI + 90;
+
+    if (health.getPercent() < 1.0f) healTimer += deltaTime;
+    if (healTimer >= healCooldown) {
+        health.heal(2);
+        std::cerr << "Health :" << health.getPercent() << "\n";
+        healTimer = 0.0f;
+    }
 
     bullets.update(deltaTime);
 }

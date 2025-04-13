@@ -20,12 +20,13 @@ struct Bullet{
     int width, height;
     bool active;
     float angle;
+    int damage;
     bulletFrom shooter;
 
     SDL_Texture* texture;
     SDL_Rect srcRect;
 
-    Bullet(Vector2D position, Vector2D velocity, SDL_Texture* tex, SDL_Rect src, float angle, bulletFrom shooter);
+    Bullet(Vector2D position, Vector2D velocity, int damage, SDL_Texture* tex, SDL_Rect src, float angle, bulletFrom shooter);
     void update(float deltaTime);
     void render(SDL_Renderer* renderer, Camera& camera);
 };
@@ -37,7 +38,7 @@ struct BulletManager{
 
     void init(SDL_Texture* texture);
 
-    void shoot(Vector2D position, Vector2D direction, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter);
+    void shoot(Vector2D position, Vector2D direction, int damage, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter);
 
     void update(float dt);
 

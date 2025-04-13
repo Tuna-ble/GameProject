@@ -4,7 +4,7 @@
 #define speed 150
 
 Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet)
-    : position(position), texture(texture), dest(dest), alive(true) {
+    : position(position), texture(texture), dest(dest), alive(true), health(4) {
         bullets.init(bullet);
         srcRect = { (1 % 2) * 48, (1 / 2) * 48, 48, 48 };
         bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
@@ -39,7 +39,7 @@ void Enemy::update(float deltaTime, Player &player) {
 
             float angle = atan2(player.position.y - spawn.y - BULLET_SIZE / 2, player.position.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
 
-            bullets.shoot(spawn, direction, bullets.bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
+            bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
 
             resetShootTimer();
             }

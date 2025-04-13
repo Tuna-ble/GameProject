@@ -7,6 +7,7 @@
 #include "background.h"
 #include "bullet.h"
 #include "vector2D.h"
+#include "health.h"
 
 #undef position
 
@@ -14,12 +15,17 @@ struct Camera;
 
 struct Player{
     BulletManager bullets;
+    Health health;
     Vector2D position = {100, 100};
     Vector2D velocity;
     SDL_Texture* playerTexture;
 
+    float healTimer = 0.0f;
+    float healCooldown = 1.0f;
+
     float angle;
     int speed = 200;
+    int damage = 2;
     bool gameRunning = true;
     const SDL_Rect srcRect = { (ID % 2) * 48, (ID / 2) * 48, 48, 48 };
     const SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
