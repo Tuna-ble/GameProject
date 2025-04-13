@@ -1,5 +1,6 @@
 #ifndef _DEFS__H
 #define _DEFS__H
+#include<bits/stdc++.h>
 
 const int SCREEN_WIDTH = 900;
 const int SCREEN_HEIGHT = 700;

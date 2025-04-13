@@ -1,26 +1,22 @@
 # depslib dependency file v1.0
-1743076925 source:c:\users\admin\gamepr\main.cpp
-	<iostream>
+1744537513 source:c:\users\admin\gamepr\main.cpp
 	<SDL.h>
 	<SDL_image.h>
-	"def.h"
 	"game.h"
-	"player.h"
 
-1744496890 c:\users\admin\gamepr\def.h
+1744537513 c:\users\admin\gamepr\def.h
+	<bits/stdc++.h>
 
-1743036057 c:\users\admin\gamepr\graphics.h
+1744537392 c:\users\admin\gamepr\graphics.h
 	<SDL.h>
 	<SDL_image.h>
+	<iostream>
 	"def.h"
 
-1743077225 source:c:\users\admin\gamepr\graphics.cpp
-	<iostream>
-	<SDL.h>
-	<SDL_image.h>
+1744537392 source:c:\users\admin\gamepr\graphics.cpp
 	"graphics.h"
 
-1744497072 c:\users\admin\gamepr\game.h
+1744537304 c:\users\admin\gamepr\game.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -30,48 +26,43 @@
 	"enemy.h"
 	"collision.h"
 
-1744497088 source:c:\users\admin\gamepr\game.cpp
-	<bits/stdc++.h>
-	<SDL.h>
-	<SDL_image.h>
+1744537293 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
-	"player.h"
-	"background.h"
-	"enemy.h"
 
-1744497112 source:c:\users\admin\gamepr\player.cpp
-	<bits/stdc++.h>
+1744537224 source:c:\users\admin\gamepr\player.cpp
+	"player.h"
+
+1744537513 c:\users\admin\gamepr\player.h
 	<SDL.h>
 	<SDL_image.h>
-	"def.h"
-	"player.h"
-	"background.h"
-	"bullet.h"
-	"vector2D.h"
-
-1744496890 c:\users\admin\gamepr\player.h
 	"def.h"
 	"graphics.h"
 	"background.h"
 	"bullet.h"
 	"vector2D.h"
 
-1744451326 c:\users\admin\gamepr\background.h
+1744537513 c:\users\admin\gamepr\background.h
+	<SDL.h>
+	<SDL_image.h>
 	"def.h"
 	"player.h"
 	"vector2d.h"
 
-1744473698 source:c:\users\admin\gamepr\background.cpp
-	<bits/stdc++.h>
+1744537392 source:c:\users\admin\gamepr\background.cpp
+	"background.h"
+
+1744536966 source:c:\users\admin\gamepr\bullet.cpp
+	"player.h"
+	"bullet.h"
+
+1744537513 c:\users\admin\gamepr\bullet.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"background.h"
-	"player.h"
-	"vector2d.h"
+	"vector2D.h"
 
-1744496957 source:c:\users\admin\gamepr\bullet.cpp
-	<bits/stdc++.h>
+1744537121 c:\users\admin\gamepr\enemy.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -79,35 +70,16 @@
 	"bullet.h"
 	"vector2D.h"
 
-1744498955 c:\users\admin\gamepr\bullet.h
-	"def.h"
-	"vector2D.h"
-	<bits/stdc++.h>
-
-1744499341 c:\users\admin\gamepr\enemy.h
-	<SDL.h>
-	<SDL_image.h>
-	"def.h"
-	"player.h"
-	"bullet.h"
-	"vector2D.h"
-
-1744496890 source:c:\users\admin\gamepr\enemy.cpp
-	<SDL.h>
-	<SDL_image.h>
-	"def.h"
-	"player.h"
-	"bullet.h"
+1744536510 source:c:\users\admin\gamepr\enemy.cpp
 	"enemy.h"
-	"vector2D.h"
 
 1744497798 source:c:\users\admin\gamepr\collision.cpp
 	"collision.h"
 
-1744451295 c:\users\admin\gamepr\vector2d.h
+1744537513 c:\users\admin\gamepr\vector2d.h
+	"def.h"
 
-1744451274 source:c:\users\admin\gamepr\vector2d.cpp
-	<math.h>
+1744537513 source:c:\users\admin\gamepr\vector2d.cpp
 	"vector2D.h"
 
 1744497367 c:\users\admin\gamepr\collision.h

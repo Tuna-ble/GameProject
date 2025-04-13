@@ -1,5 +1,7 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
+#include <SDL.h>
+#include <SDL_image.h>
 #include "def.h"
 #include "graphics.h"
 #include "background.h"

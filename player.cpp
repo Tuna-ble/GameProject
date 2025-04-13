@@ -1,11 +1,4 @@
-#include <bits/stdc++.h>
-#include <SDL.h>
-#include <SDL_image.h>
-#include "def.h"
 #include "player.h"
-#include "background.h"
-#include "bullet.h"
-#include "vector2D.h"
 
 void Player::init(SDL_Texture* bulletTexture) {
     bullets.init(bulletTexture);

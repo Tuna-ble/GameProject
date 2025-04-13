@@ -1,10 +1,4 @@
-#include<bits/stdc++.h>
-#include<SDL.h>
-#include<SDL_image.h>
 #include "game.h"
-#include "player.h"
-#include "background.h"
-#include "enemy.h"
 
 void Game::init()
 {

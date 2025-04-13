@@ -1,18 +1,13 @@
-#include<SDL.h>
-#include<SDL_image.h>
-#include "def.h"
-#include "player.h"
-#include "bullet.h"
 #include "enemy.h"
-#include "vector2D.h"
+
 
 #define speed 150
 
 Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet)
     : position(position), texture(texture), dest(dest), alive(true) {
         bullets.init(bullet);
-        SDL_Rect srcRect = { (1 % 2) * 48, (1 / 2) * 48, 48, 48 };
-        SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
+        srcRect = { (1 % 2) * 48, (1 / 2) * 48, 48, 48 };
+        bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
     }
 
 void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera) {
@@ -45,8 +40,9 @@ void Enemy::update(float deltaTime, Player &player) {
             float angle = atan2(player.position.y - spawn.y - BULLET_SIZE / 2, player.position.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
 
             bullets.shoot(spawn, direction, bullets.bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
-            }
+
             resetShootTimer();
+            }
 
     bullets.update(deltaTime);
 }

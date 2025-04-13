@@ -1,5 +1,6 @@
 #ifndef VECTOR2D_H_INCLUDED
 #define VECTOR2D_H_INCLUDED
+#include "def.h"
 
 struct Vector2D {
     float x, y;

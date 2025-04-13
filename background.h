@@ -1,5 +1,7 @@
 #ifndef BACKGROUND_H_INCLUDED
 #define BACKGROUND_H_INCLUDED
+#include<SDL.h>
+#include<SDL_image.h>
 #include "def.h"
 #include "player.h"
 #include "vector2d.h"

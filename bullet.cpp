@@ -1,10 +1,5 @@
-#include<bits/stdc++.h>
-#include<SDL.h>
-#include<SDL_image.h>
-#include "def.h"
 #include "player.h"
 #include "bullet.h"
-#include "vector2D.h"
 
 Bullet::Bullet(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect src, float angle, bulletFrom shooter)
     : position(position), velocity(velocity),

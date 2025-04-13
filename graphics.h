@@ -2,6 +2,7 @@
 #define _GRAPHICS__H
 #include <SDL.h>
 #include <SDL_image.h>
+#include <iostream>
 #include "def.h"
 
 struct Graphics {

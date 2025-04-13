@@ -1,9 +1,6 @@
-#include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
-#include "def.h"
 #include "game.h"
-#include "player.h"
 
 using namespace std;
 

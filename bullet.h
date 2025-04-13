@@ -1,8 +1,10 @@
 #ifndef BULLET_H_INCLUDED
 #define BULLET_H_INCLUDED
+#include<SDL.h>
+#include<SDL_image.h>
 #include "def.h"
+#include "background.h"
 #include "vector2D.h"
-#include <bits/stdc++.h>
 
 enum class bulletFrom {
     PLAYER,
