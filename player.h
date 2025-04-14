@@ -23,6 +23,9 @@ struct Player{
     float healTimer = 0.0f;
     float healCooldown = 1.0f;
 
+    float hurtTimer = 0.0f;
+    float hurtDuration = 0.15f;
+
     float angle;
     int speed = 200;
     int damage = 2;

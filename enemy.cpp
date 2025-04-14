@@ -12,15 +12,29 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
 
 void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera) {
     if (!alive) return;
+
     float angle = atan2(velocity.y, velocity.x) * 180 / M_PI + 90;
+    Vector2D draw = position - camera.position;
+
+    if (hurtTimer > 0.0f) {
+    draw.x += rand() % 5 - 2;
+    draw.y += rand() % 5 - 2;
+    }
 
     SDL_Rect drawRect = {
-        static_cast<int>(position.x - camera.position.x),
-        static_cast<int>(position.y - camera.position.y),
+        static_cast<int>(draw.x),
+        static_cast<int>(draw.y),
         ENEMY_SIZE, ENEMY_SIZE
     };
 
+    if (hurtTimer > 0.0f)
+    SDL_SetTextureColorMod(texture, 255, 100, 100);
+    else
+    SDL_SetTextureColorMod(texture, 255, 255, 255);
+
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
+
+    health.renderHealthBar(renderer, {draw.x, draw.y - 6}, ENEMY_SIZE, 5, health.getPercent());
 }
 
 void Enemy::update(float deltaTime, Player &player) {
@@ -43,6 +57,9 @@ void Enemy::update(float deltaTime, Player &player) {
 
             resetShootTimer();
             }
+
+    if (hurtTimer > 0.0f)
+    hurtTimer -= deltaTime;
 
     bullets.update(deltaTime);
 }

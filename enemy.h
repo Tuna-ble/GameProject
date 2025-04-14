@@ -24,6 +24,9 @@ struct Enemy {
     float shootTimer = 0.0f;
     float shootCooldown = 1.0f;
 
+    float hurtTimer = 0.0f;
+    float hurtDuration = 0.15f;
+
     SDL_Rect srcRect;
     SDL_Rect bulletSrcRect;
 

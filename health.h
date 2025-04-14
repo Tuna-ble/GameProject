@@ -2,6 +2,7 @@
 #define HEALTH_H_INCLUDED
 #include<SDL.h>
 #include<SDL_image.h>
+#include "vector2D.h"
 
 struct Health {
     int cap, current;
@@ -15,6 +16,8 @@ struct Health {
     bool isDead() const;
 
     float getPercent() const;
+
+    void renderHealthBar(SDL_Renderer* renderer, Vector2D position, int width, int height, float percent);
 };
 
 #endif // HEALTH_H_INCLUDED

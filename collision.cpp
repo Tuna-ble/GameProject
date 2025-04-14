@@ -43,6 +43,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, Player& player) {
             if (bulletXPlayer(player, b)) {
             b.active = false;
             player.health.takeDamage(e.damage);
+            player.hurtTimer = player.hurtDuration;
             std::cerr << "You are shot" << "\n";
             std::cerr << "Health :" << player.health.getPercent() << "\n";
         }
@@ -57,6 +58,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, Player& player) {
             if (bulletXEnemy(e, b)) {
                 b.active = false;
                 e.health.takeDamage(player.damage);
+                e.hurtTimer = e.hurtDuration;
                 if (e.health.isDead()) e.alive = false;
             }
         }

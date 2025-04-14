@@ -57,14 +57,30 @@ void Player::update(float deltaTime, Camera &camera) {
         healTimer = 0.0f;
     }
 
+    if (hurtTimer > 0.0f)
+    hurtTimer -= deltaTime;
+
     bullets.update(deltaTime);
 }
 
 void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID) {
     Vector2D draw = position - camera.position;
+
+    if (hurtTimer > 0.0f) {
+    draw.x += rand() % 5 - 2;
+    draw.y += rand() % 5 - 2;
+    }
+
     SDL_Rect dest = { static_cast<int>(draw.x), static_cast<int>(draw.y), SHIP_SIZE, SHIP_SIZE };
+
+    if (hurtTimer > 0.0f)
+    SDL_SetTextureColorMod(texture, 255, 100, 100);
+    else
+    SDL_SetTextureColorMod(texture, 255, 255, 255);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
     bullets.render(renderer, camera);
+
+    health.renderHealthBar(renderer, {draw.x, draw.y - 10}, SHIP_SIZE, 6, health.getPercent());
 }
