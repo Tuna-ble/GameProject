@@ -17,7 +17,6 @@ void TiledRenderer::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera&
 {
     Vector2D parallaxOffset = (Vector2D(0, 0) - camera.position) * parallaxStrength;
 
-    // Dùng floor để tránh mất tile do làm tròn sai
     int tileXStart = (int)std::floor((camera.position.x - parallaxOffset.x) / backgroundSize);
     int tileYStart = (int)std::floor((camera.position.y - parallaxOffset.y) / backgroundSize);
 

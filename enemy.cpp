@@ -3,9 +3,10 @@
 
 #define speed 150
 
-Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet)
+Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture)
     : position(position), texture(texture), dest(dest), alive(true), health(4) {
         bullets.init(bullet);
+        thruster.init(thrusterTexture, THRUSTER_FRAMES, THRUSTER_CLIPS);
         srcRect = { (1 % 2) * 48, (1 / 2) * 48, 48, 48 };
         bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
     }
@@ -31,6 +32,8 @@ void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera)
     SDL_SetTextureColorMod(texture, 255, 100, 100);
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
+
+    thruster.render(renderer, position, camera, ENEMY_SIZE, angle);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
@@ -61,6 +64,8 @@ void Enemy::update(float deltaTime, Player &player) {
     if (hurtTimer > 0.0f)
     hurtTimer -= deltaTime;
 
+    thruster.update();
+
     bullets.update(deltaTime);
 }
 
@@ -84,11 +89,11 @@ void EnemyManager::resetSpawnTimer() {
     spawnTimer = 0.0f;
 }
 
-void EnemyManager::spawn(Vector2D spawn, SDL_Texture* texture, SDL_Texture* bullet, Player &player) {
+void EnemyManager::spawn(Vector2D spawn, SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Player &player) {
     if (spawnON()) {
         SDL_Rect dest = { static_cast<float>(spawn.x), static_cast<float>(spawn.y), ENEMY_SIZE, ENEMY_SIZE };
 
-        enemies.emplace_back(spawn, texture, dest, bullet);
+        enemies.emplace_back(spawn, texture, dest, bullet, thruster);
 
         resetSpawnTimer();
     }

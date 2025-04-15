@@ -8,6 +8,7 @@
 #include "background.h"
 #include "enemy.h"
 #include "collision.h"
+#include "sprite.h"
 
 struct Game{
     Graphics graphics;
@@ -22,6 +23,7 @@ struct Game{
     SDL_Texture* cursor;
     SDL_Texture* bullet;
     SDL_Texture* enemy;
+    SDL_Texture* sprite;
 
     void init();
     void run();

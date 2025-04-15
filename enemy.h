@@ -7,6 +7,7 @@
 #include "bullet.h"
 #include "vector2D.h"
 #include "health.h"
+#include "sprite.h"
 
 struct Player;
 
@@ -20,6 +21,7 @@ struct Enemy {
 
     BulletManager bullets;
     Health health;
+    Sprite thruster;
 
     float shootTimer = 0.0f;
     float shootCooldown = 1.0f;
@@ -30,7 +32,7 @@ struct Enemy {
     SDL_Rect srcRect;
     SDL_Rect bulletSrcRect;
 
-    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet);
+    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera);
     void update(float deltaTime, Player &player);
 
@@ -51,7 +53,7 @@ struct EnemyManager {
     void resetSpawnTimer();
     bool spawnON();
 
-    void spawn(Vector2D position, SDL_Texture* texture, SDL_Texture* bullet, Player &player);
+    void spawn(Vector2D position, SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Player &player);
     void update(float deltaTime, Player &player);
     void render(SDL_Renderer* renderer, Camera &camera);
 };

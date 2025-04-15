@@ -4,7 +4,7 @@
 	<SDL_image.h>
 	"game.h"
 
-1744537513 c:\users\admin\gamepr\def.h
+1744716093 c:\users\admin\gamepr\def.h
 	<bits/stdc++.h>
 
 1744537392 c:\users\admin\gamepr\graphics.h
@@ -16,7 +16,7 @@
 1744537392 source:c:\users\admin\gamepr\graphics.cpp
 	"graphics.h"
 
-1744537304 c:\users\admin\gamepr\game.h
+1744673572 c:\users\admin\gamepr\game.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -25,31 +25,32 @@
 	"background.h"
 	"enemy.h"
 	"collision.h"
+	"sprite.h"
 
-1744537293 source:c:\users\admin\gamepr\game.cpp
+1744685917 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
 
-1744581673 source:c:\users\admin\gamepr\player.cpp
+1744714902 source:c:\users\admin\gamepr\player.cpp
 	"player.h"
 
-1744630757 c:\users\admin\gamepr\player.h
+1744709576 c:\users\admin\gamepr\player.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"graphics.h"
-	"background.h"
 	"bullet.h"
 	"vector2D.h"
 	"health.h"
+	"sprite.h"
 
-1744537513 c:\users\admin\gamepr\background.h
+1744686406 c:\users\admin\gamepr\background.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"player.h"
 	"vector2d.h"
 
-1744537392 source:c:\users\admin\gamepr\background.cpp
+1744655569 source:c:\users\admin\gamepr\background.cpp
 	"background.h"
 
 1744552201 source:c:\users\admin\gamepr\bullet.cpp
@@ -63,7 +64,7 @@
 	"background.h"
 	"vector2D.h"
 
-1744630757 c:\users\admin\gamepr\enemy.h
+1744673572 c:\users\admin\gamepr\enemy.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -71,11 +72,12 @@
 	"bullet.h"
 	"vector2D.h"
 	"health.h"
+	"sprite.h"
 
-1744581703 source:c:\users\admin\gamepr\enemy.cpp
+1744714902 source:c:\users\admin\gamepr\enemy.cpp
 	"enemy.h"
 
-1744552201 source:c:\users\admin\gamepr\collision.cpp
+1744630757 source:c:\users\admin\gamepr\collision.cpp
 	"collision.h"
 
 1744537513 c:\users\admin\gamepr\vector2d.h
@@ -100,4 +102,14 @@
 
 1744581673 source:c:\users\admin\gamepr\health.cpp
 	"health.h"
+
+1744714912 c:\users\admin\gamepr\sprite.h
+	<SDL.h>
+	<SDL_image.h>
+	"def.h"
+	"vector2D.h"
+
+1744709722 source:c:\users\admin\gamepr\sprite.cpp
+	"sprite.h"
+	"background.h"
 

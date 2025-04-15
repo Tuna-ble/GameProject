@@ -11,7 +11,9 @@ void Game::init()
 
     enemy = graphics.loadTexture("assets/spaceships.png");
 
-    player.init(bullet);
+    sprite = graphics.loadTexture("assets/thrusters.png");
+
+    player.init(bullet, sprite);
 
     enemies.init(enemy);
 
@@ -26,7 +28,7 @@ void Game::update(float deltaTime)
     player.update(deltaTime, camera);
     camera.update(player);
 
-    enemies.spawn({500, 500}, enemies.enemyTexture, bullet, player);
+    enemies.spawn({500, 500}, enemies.enemyTexture, bullet, sprite, player);
     enemies.update(deltaTime, player);
     collision.checkAll(enemies.enemies, player);
 }

@@ -1,7 +1,8 @@
 #include "player.h"
 
-void Player::init(SDL_Texture* bulletTexture) {
+void Player::init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture) {
     bullets.init(bulletTexture);
+    thruster.init(thrusterTexture, THRUSTER_FRAMES, THRUSTER_CLIPS);
     health = Health(10);
 }
 
@@ -60,6 +61,8 @@ void Player::update(float deltaTime, Camera &camera) {
     if (hurtTimer > 0.0f)
     hurtTimer -= deltaTime;
 
+    thruster.update();
+
     bullets.update(deltaTime);
 }
 
@@ -77,6 +80,8 @@ void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera
     SDL_SetTextureColorMod(texture, 255, 100, 100);
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
+
+    thruster.render(renderer, position, camera, SHIP_SIZE, angle);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 

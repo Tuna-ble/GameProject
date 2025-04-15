@@ -14,6 +14,13 @@ const int backgroundSize = 512;
 const int mapWidth = 1800;
 const int mapHeight = 1400;
 const int ID = 0;
+const int THRUSTER_CLIPS[][4] = {
+    {  0, 512, 256, 512},
+    { 256, 512, 256, 512},
+    {512, 512, 256, 512},
+    {768, 512, 256, 512}};
+    const int THRUSTER_FRAMES = sizeof(THRUSTER_CLIPS)/sizeof(int)/4;
+
 #define WINDOW_TITLE "Spaceship Shooter"
 
 #endif

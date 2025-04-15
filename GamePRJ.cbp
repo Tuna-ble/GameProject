@@ -47,9 +47,13 @@
 		<Unit filename="game.h" />
 		<Unit filename="graphics.cpp" />
 		<Unit filename="graphics.h" />
+		<Unit filename="health.cpp" />
+		<Unit filename="health.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="player.cpp" />
 		<Unit filename="player.h" />
+		<Unit filename="sprite.cpp" />
+		<Unit filename="sprite.h" />
 		<Unit filename="vector2D.cpp" />
 		<Unit filename="vector2D.h" />
 		<Extensions>
