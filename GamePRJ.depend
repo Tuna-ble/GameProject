@@ -1,24 +1,27 @@
 # depslib dependency file v1.0
-1744537513 source:c:\users\admin\gamepr\main.cpp
+1744829183 source:c:\users\admin\gamepr\main.cpp
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_ttf.h>
 	"game.h"
 
 1744716093 c:\users\admin\gamepr\def.h
 	<bits/stdc++.h>
 
-1744537392 c:\users\admin\gamepr\graphics.h
+1744836270 c:\users\admin\gamepr\graphics.h
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_ttf.h>
 	<iostream>
 	"def.h"
 
-1744537392 source:c:\users\admin\gamepr\graphics.cpp
+1744836270 source:c:\users\admin\gamepr\graphics.cpp
 	"graphics.h"
 
-1744673572 c:\users\admin\gamepr\game.h
+1744836270 c:\users\admin\gamepr\game.h
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_ttf.h>
 	"def.h"
 	"graphics.h"
 	"player.h"
@@ -26,14 +29,15 @@
 	"enemy.h"
 	"collision.h"
 	"sprite.h"
+	"gameUI.h"
 
-1744685917 source:c:\users\admin\gamepr\game.cpp
+1744836480 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
 
-1744714902 source:c:\users\admin\gamepr\player.cpp
+1744836270 source:c:\users\admin\gamepr\player.cpp
 	"player.h"
 
-1744709576 c:\users\admin\gamepr\player.h
+1744836383 c:\users\admin\gamepr\player.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -109,7 +113,16 @@
 	"def.h"
 	"vector2D.h"
 
-1744709722 source:c:\users\admin\gamepr\sprite.cpp
+1744716093 source:c:\users\admin\gamepr\sprite.cpp
 	"sprite.h"
 	"background.h"
+
+1744836290 c:\users\admin\gamepr\gameui.h
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	"graphics.h"
+
+1744836429 source:c:\users\admin\gamepr\gameui.cpp
+	"gameUI.h"
 

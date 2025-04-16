@@ -3,6 +3,9 @@
 void Game::init()
 {
     graphics.init();
+
+    menu.init(graphics);
+
     background = graphics.loadTexture("assets/background1.png");
 
     spaceShip = graphics.loadTexture("assets/spaceships.png");
@@ -24,7 +27,7 @@ void Game::init()
 
 void Game::update(float deltaTime)
 {
-    player.handleInput(bullet, camera);
+    player.handleInput(bullet, camera, quitGame);
     player.update(deltaTime, camera);
     camera.update(player);
 
@@ -43,39 +46,49 @@ void Game::render()
 
     enemies.render(graphics.renderer, camera);
 
+    graphics.renderTexture(text, 200, 200);
+
     graphics.presentScene();
 }
 
 void Game::run()
 {
-    Uint32 lastTime = SDL_GetTicks();
-    while (player.gameRunning)
-    {
-        Uint32 currentTime = SDL_GetTicks();
-        float deltaTime = (currentTime - lastTime) / 1000.0f;
-        lastTime = currentTime;
-
-        update(deltaTime);
-        render();
-
-        int frameTime = SDL_GetTicks() - currentTime;
-        if (frameTime < FRAME_DELAY)
-            SDL_Delay(FRAME_DELAY - frameTime);
-        Uint32 fullFrameTime = SDL_GetTicks() - currentTime;
-        float avgFPS = 1000.0f / fullFrameTime;
-        //std::cerr << "FPS: " << avgFPS << "\n";
+    while (menu.menuON) {
+            SDL_RenderClear(graphics.renderer);
+            menu.render(graphics.renderer);
+            menu.handleEvent(startGame, quitGame);
+            graphics.presentScene();
     }
-    quit();
+    Uint32 lastTime = SDL_GetTicks();
+    if (startGame) {
+        menu.cleanUp();
+        while (!quitGame)
+        {
+            Uint32 currentTime = SDL_GetTicks();
+            float deltaTime = (currentTime - lastTime) / 1000.0f;
+            lastTime = currentTime;
+
+            update(deltaTime);
+            render();
+
+            int frameTime = SDL_GetTicks() - currentTime;
+            if (frameTime < FRAME_DELAY)
+                SDL_Delay(FRAME_DELAY - frameTime);
+            Uint32 fullFrameTime = SDL_GetTicks() - currentTime;
+            float avgFPS = 1000.0f / fullFrameTime;
+            //std::cerr << "FPS: " << avgFPS << "\n";
+        }
+        quit();
+    }
 }
 
 void Game::quit()
 {
+    SDL_DestroyTexture( text );
+    TTF_CloseFont( font );
     SDL_DestroyTexture(spaceShip);
     spaceShip = NULL;
     SDL_DestroyTexture(background);
     background = NULL;
-    IMG_Quit();
-    SDL_DestroyRenderer(graphics.renderer);
-    SDL_DestroyWindow(graphics.window);
-    SDL_Quit();
+    graphics.quit();
 }

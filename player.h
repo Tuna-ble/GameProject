@@ -36,7 +36,7 @@ struct Player{
     void init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID);
     void renderCursor();
-    void handleInput(SDL_Texture* texture, Camera &camera);
+    void handleInput(SDL_Texture* texture, Camera &camera, bool& quitGame);
     void update(float deltaTime, Camera &camera);
 };
 

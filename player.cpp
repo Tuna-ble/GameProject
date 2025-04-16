@@ -6,7 +6,7 @@ void Player::init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture) {
     health = Health(10);
 }
 
-void Player::handleInput(SDL_Texture* texture, Camera &camera) {
+void Player::handleInput(SDL_Texture* texture, Camera &camera, bool& quitGame) {
     SDL_Event event;
     int mousex, mousey;
     SDL_GetMouseState(&mousex, &mousey);
@@ -15,7 +15,7 @@ void Player::handleInput(SDL_Texture* texture, Camera &camera) {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-                gameRunning = false;
+                quitGame = true;
                 exit(0);
                 break;
             case SDL_MOUSEBUTTONDOWN:
