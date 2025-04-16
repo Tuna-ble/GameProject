@@ -50,19 +50,28 @@ void MainMenu::handleEvent(bool& startGame, bool& quitGame) {
     }
 }
 
+void MainMenu::drawButton(SDL_Renderer* renderer, SDL_Texture* text, SDL_Rect* rect, bool& mouseInButton) {
+    if (mouseInButton) {
+        SDL_SetRenderDrawColor(renderer, 70, 170, 255, 255);
+    }
+    else {
+        SDL_SetRenderDrawColor(renderer, 50, 130, 200, 255);
+    }
+    SDL_RenderFillRect(renderer, rect);
+
+    SDL_SetRenderDrawColor(renderer, 30, 90, 150, 255);
+    SDL_RenderDrawRect(renderer, rect);
+
+    SDL_RenderCopy(renderer, text, nullptr, rect);
+}
+
 void MainMenu::render(SDL_Renderer* renderer) {
-    SDL_RenderClear( renderer );
     SDL_RenderCopy( renderer, backgroundTexture, NULL, NULL);
 
-    SDL_SetRenderDrawColor(renderer, 50, 130, 200, 255);
-    SDL_RenderDrawRect(renderer, &playButton);
-    SDL_RenderDrawRect(renderer, &settingsButton);
-    SDL_RenderDrawRect(renderer, &quitButton);
-
     SDL_RenderCopy(renderer, titleText, nullptr, &titleRect);
-    SDL_RenderCopy(renderer, playText, nullptr, &playButton);
-    SDL_RenderCopy(renderer, settingsText, nullptr, &settingsButton);
-    SDL_RenderCopy(renderer, quitText, nullptr, &quitButton);
+    drawButton(renderer, playText, &playButton, mouseInPlay);
+    drawButton(renderer, settingsText, &settingsButton, mouseInSettings);
+    drawButton(renderer, quitText, &quitButton, mouseInQuit);
 }
 
 void MainMenu::cleanUp() {

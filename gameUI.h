@@ -26,6 +26,7 @@ struct MainMenu {
     void init(Graphics& graphics);
     void handleEvent(bool& startGame, bool& quitGame);
     void render(SDL_Renderer* renderer);
+    void drawButton(SDL_Renderer* renderer, SDL_Texture* text, SDL_Rect* rect, bool& mouseInButton);
     void cleanUp();
 };
 

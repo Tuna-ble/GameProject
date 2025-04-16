@@ -9,7 +9,6 @@ Bullet::Bullet(Vector2D position, Vector2D velocity, int damage, SDL_Texture* te
 void Bullet::update(float deltaTime) {
     position += velocity * deltaTime;
 
-    // Xóa nếu ra khỏi màn hình hoặc tùy game logic
     if (position.x < -SCREEN_WIDTH || position.x > 5000 || position.y < -SCREEN_HEIGHT || position.y > 5000) {
         active = false;
     }
