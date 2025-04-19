@@ -21,6 +21,8 @@ const int THRUSTER_CLIPS[][4] = {
     {768, 512, 256, 512}};
     const int THRUSTER_FRAMES = sizeof(THRUSTER_CLIPS)/sizeof(int)/4;
 
+const int startX = 100, startY = 100;
+
 #define WINDOW_TITLE "Space War"
 
 #endif

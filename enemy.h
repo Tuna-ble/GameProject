@@ -56,5 +56,6 @@ struct EnemyManager {
     void spawn(Vector2D position, SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Player &player);
     void update(float deltaTime, Player &player);
     void render(SDL_Renderer* renderer, Camera &camera);
+    void reset();
 };
 #endif // ENEMY_H_INCLUDED

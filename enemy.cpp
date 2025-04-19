@@ -3,6 +3,8 @@
 
 #define speed 150
 
+// ==== Enemy ====
+
 Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture)
     : position(position), texture(texture), dest(dest), alive(true), health(4) {
         bullets.init(bullet);
@@ -33,7 +35,7 @@ void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera)
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
 
-    thruster.render(renderer, position, camera, ENEMY_SIZE, angle);
+    thruster.render(renderer, position, camera, ENEMY_SIZE);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
@@ -77,6 +79,8 @@ void Enemy::resetShootTimer() {
     shootTimer = 0.0f;
 }
 
+// ==== Enemy Manager ====
+
 void EnemyManager::init(SDL_Texture* texture) {
     enemyTexture = texture;
 }
@@ -114,4 +118,9 @@ void EnemyManager::update(float deltaTime, Player &player) {
     spawnTimer += deltaTime;
     enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
                                      [](const Enemy& e) { return !e.alive; }), enemies.end());
+}
+
+void EnemyManager::reset() {
+    enemies.clear();
+    spawnTimer = 0;
 }

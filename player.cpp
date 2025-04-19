@@ -6,28 +6,25 @@ void Player::init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture) {
     health = Health(10);
 }
 
-void Player::handleInput(SDL_Texture* texture, Camera &camera, bool& quitGame) {
-    SDL_Event event;
+void Player::handleInput(SDL_Event& event, Camera &camera) {
     int mousex, mousey;
     SDL_GetMouseState(&mousex, &mousey);
     Vector2D mouse(static_cast<float>(mousex), static_cast<float>(mousey));
 
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_QUIT:
-                quitGame = true;
-                exit(0);
-                break;
-            case SDL_MOUSEBUTTONDOWN:
-                Vector2D worldMouse = mouse + camera.position;
-                Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
-                Vector2D direction = worldMouse - playerCenter;
-                Vector2D spawn = bullets.getBulletSpawnPosition(position);
-                direction = direction.normalize();
-                float bulletAngle = atan2(worldMouse.y - spawn.y - BULLET_SIZE / 2, worldMouse.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
-                bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, bulletAngle, bulletFrom::PLAYER);
-                break;
-        }
+    switch (event.type) {
+        case SDL_QUIT:
+            gameRunning = false;
+            exit(0);
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            Vector2D worldMouse = mouse + camera.position;
+            Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
+            Vector2D direction = worldMouse - playerCenter;
+            Vector2D spawn = bullets.getBulletSpawnPosition(position);
+            direction = direction.normalize();
+            float bulletAngle = atan2(worldMouse.y - spawn.y - BULLET_SIZE / 2, worldMouse.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
+            bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, bulletAngle, bulletFrom::PLAYER);
+            break;
     }
 
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
@@ -81,11 +78,19 @@ void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
 
-    thruster.render(renderer, position, camera, SHIP_SIZE, angle);
+    thruster.render(renderer, position, camera, SHIP_SIZE);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
     bullets.render(renderer, camera);
 
     health.renderHealthBar(renderer, {draw.x, draw.y - 10}, SHIP_SIZE, 6, health.getPercent());
+}
+
+void Player::reset() {
+    position = {startX, startY};
+    velocity = Vector2D(0, 0);
+    health = Health(10);
+    bullets.bullets.clear();
+    gameRunning = true;
 }

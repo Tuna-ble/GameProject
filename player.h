@@ -16,7 +16,7 @@ struct Player{
     BulletManager bullets;
     Health health;
     Sprite thruster;
-    Vector2D position = {100, 100};
+    Vector2D position = {startX, startY};
     Vector2D velocity;
     SDL_Texture* playerTexture;
 
@@ -36,8 +36,9 @@ struct Player{
     void init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID);
     void renderCursor();
-    void handleInput(SDL_Texture* texture, Camera &camera, bool& quitGame);
+    void handleInput(SDL_Event& event, Camera &camera);
     void update(float deltaTime, Camera &camera);
+    void reset();
 };
 
 #endif // PLAYER_H_INCLUDED

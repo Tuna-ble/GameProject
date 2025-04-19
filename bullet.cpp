@@ -1,6 +1,8 @@
 #include "player.h"
 #include "bullet.h"
 
+// ==== Bullet ====
+
 Bullet::Bullet(Vector2D position, Vector2D velocity, int damage, SDL_Texture* texture, SDL_Rect src, float angle, bulletFrom shooter)
     : position(position), velocity(velocity), damage(damage),
       width(BULLET_SIZE), height(BULLET_SIZE),
@@ -19,6 +21,8 @@ void Bullet::render(SDL_Renderer* renderer, Camera& camera) {
     SDL_Rect dst = {(int)(position.x - camera.position.x), (int)(position.y - camera.position.y), width, height};
     SDL_RenderCopyEx(renderer, this->texture, &this->srcRect, &dst, angle, NULL, SDL_FLIP_NONE);
 }
+
+// ==== Bullet Manager ====
 
 void BulletManager::init(SDL_Texture* texture) {
     bulletTexture = texture;

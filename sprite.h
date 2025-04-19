@@ -16,7 +16,7 @@ struct Sprite {
     void update();
     const SDL_Rect* getCurrentClip() const;
 
-    void render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, int size, float angle);
+    void render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, int size);
 };
 
 #endif // SPRITE_H_INCLUDED, const Sprite& sprite

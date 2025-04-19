@@ -11,6 +11,7 @@
 #include "collision.h"
 #include "sprite.h"
 #include "gameUI.h"
+#include "gameState.h"
 
 struct Game{
     Graphics graphics;
@@ -19,7 +20,8 @@ struct Game{
     TiledRenderer tile;
     EnemyManager enemies;
     Collision collision;
-    MainMenu menu;
+    MainMenu mainMenu;
+    PauseMenu pauseMenu;
 
     TTF_Font* font;
     SDL_Texture* text;
@@ -30,11 +32,15 @@ struct Game{
     SDL_Texture* enemy;
     SDL_Texture* sprite;
 
-    bool startGame;
-    bool quitGame;
+    gameState currentState;
 
+    bool isRunning = true;
+
+    Game();
     void init();
     void run();
+    void restart();
+    void logicRun();
     void render();
     void update(float deltaTime);
     void quit();
