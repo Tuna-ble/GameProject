@@ -1,9 +1,6 @@
 #include "background.h"
 
-//SDL_Rect Camera::getViewRect() const
-//{
-//    return {(int)x, (int)y, w, h};
-//}
+// ==== Camera ====
 
 void Camera::update(Player &player)
 {
@@ -12,6 +9,8 @@ void Camera::update(Player &player)
     position.x = std::max(0, std::min((int)position.x, mapWidth - w));
     position.y = std::max(0, std::min((int)position.y, mapHeight - h));
 }
+
+// ==== Map ====
 
 void TiledRenderer::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera& camera)
 {

@@ -6,11 +6,14 @@ void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont
     font = textFont;
     text = graphics.renderText(textname, font, color);
     rect = _rect;
+    SFX.loadSound("hover", "audio/hover.mp3");
+    SFX.loadSound("hover", "audio/click.mp3");
 }
 
 void UIButton::updateHover(int mouseX, int mouseY) {
     SDL_Point p = {mouseX, mouseY};
     mouseHover = SDL_PointInRect( &p, &rect );
+    if (mouseHover == 1) SFX.playSound("hover");
 }
 
 bool UIButton::isClicked(SDL_Event& e) {
@@ -90,7 +93,8 @@ void PauseMenu::init(Graphics& graphics, TTF_Font* textFont) {
 
     pausedText = graphics.renderText("PAUSED", font, textColor);
     resumeButton.init(graphics, "Resume", font, textColor, { 360, 250, 180, 50 });
-    settingsButton.init(graphics, "Settings", font, textColor, { 360, 305, 180, 50 });
+    musicButton.init(graphics, "Music", font, textColor, { 348, 305, 100, 50 });
+    soundButton.init(graphics, "Sound", font, textColor, { 452, 305, 100, 50 });
     mainMenuButton.init(graphics, "Main Menu", font, textColor, { 360, 360, 180, 50 });
     quitButton.init(graphics, "Quit", font, textColor, { 360, 415, 180, 50 });
 
@@ -99,17 +103,25 @@ void PauseMenu::init(Graphics& graphics, TTF_Font* textFont) {
     pausedRect = { 300, 150, 300, 75 };
 }
 
-void PauseMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY) {
+void PauseMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
     resumeButton.updateHover(mouseX, mouseY);
-    settingsButton.updateHover(mouseX, mouseY);
+    musicButton.updateHover(mouseX, mouseY);
+    soundButton.updateHover(mouseX, mouseY);
     mainMenuButton.updateHover(mouseX, mouseY);
     quitButton.updateHover(mouseX, mouseY);
 
     if (resumeButton.isClicked(e)) {
         state = gameState::PLAY;
     }
-    else if (settingsButton.isClicked(e)) {
-        state = gameState::SETTINGS;
+    else if (musicButton.isClicked(e)) {
+        audio.musicEnabled = !audio.musicEnabled;
+        if (!audio.musicEnabled)
+            audio.stopMusic();
+        else
+            audio.playMusic();
+    }
+    else if (soundButton.isClicked(e)) {
+        audio.sfxEnabled = !audio.sfxEnabled;
     }
     else if (mainMenuButton.isClicked(e)) {
         state = gameState::MAIN_MENU;
@@ -124,7 +136,8 @@ void PauseMenu::render(SDL_Renderer* renderer) {
 
     SDL_RenderCopy(renderer, pausedText, NULL, &pausedRect);
     resumeButton.render(renderer);
-    settingsButton.render(renderer);
+    musicButton.render(renderer);
+    soundButton.render(renderer);
     mainMenuButton.render(renderer);
     quitButton.render(renderer);
 }
@@ -132,7 +145,54 @@ void PauseMenu::render(SDL_Renderer* renderer) {
 void PauseMenu::cleanUp() {
     SDL_DestroyTexture(pausedText);
     SDL_DestroyTexture(resumeButton.text);
-    SDL_DestroyTexture(settingsButton.text);
+    SDL_DestroyTexture(musicButton.text);
+    SDL_DestroyTexture(soundButton.text);
     SDL_DestroyTexture(mainMenuButton.text);
     SDL_DestroyTexture(quitButton.text);
+}
+
+// ==== Settings Menu =====
+
+SettingsMenu::SettingsMenu(gameState& s) : state(s) {}
+
+void SettingsMenu::init(Graphics& graphics, TTF_Font* textFont) {
+    font = textFont;
+
+    settingsText = graphics.renderText("Settings", font, textColor);
+    musicButton.init(graphics, "Music", font, textColor, { 360, 270, 180, 50 });
+    soundButton.init(graphics, "Sound", font, textColor, { 360, 325, 180, 50 });
+    backButton.init(graphics, "Back", font, textColor, { 360, 380, 180, 50 });
+
+    backgroundTexture = graphics.loadTexture("assets/background1.png");
+
+    settingsRect = { 300, 150, 300, 75 };
+}
+void SettingsMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
+    musicButton.updateHover(mouseX, mouseY);
+    soundButton.updateHover(mouseX, mouseY);
+    backButton.updateHover(mouseX, mouseY);
+
+    if (musicButton.isClicked(e)) {
+        audio.musicEnabled = !audio.musicEnabled;
+    }
+    else if (soundButton.isClicked(e)) {
+        audio.sfxEnabled = !audio.sfxEnabled;
+    }
+    else if (backButton.isClicked(e)) {
+        state = gameState::MAIN_MENU;
+    }
+}
+void SettingsMenu::render(SDL_Renderer* renderer) {
+    SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+
+    SDL_RenderCopy(renderer, settingsText, NULL, &settingsRect);
+    musicButton.render(renderer);
+    soundButton.render(renderer);
+    backButton.render(renderer);
+}
+void SettingsMenu::cleanUp() {
+    SDL_DestroyTexture(settingsText);
+    SDL_DestroyTexture(musicButton.text);
+    SDL_DestroyTexture(soundButton.text);
+    SDL_DestroyTexture(backButton.text);
 }

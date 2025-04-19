@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game() : mainMenu(currentState), pauseMenu(currentState) {}
+Game::Game() : mainMenu(currentState), pauseMenu(currentState), settingsMenu(currentState) {}
 
 void Game::init()
 {
@@ -11,6 +11,11 @@ void Game::init()
     currentState = gameState::MAIN_MENU;
     mainMenu.init(graphics, font);
     pauseMenu.init(graphics, font);
+    settingsMenu.init(graphics, font);
+
+    musicAndSFX.loadMusic("audio/OST.mp3");
+    musicAndSFX.loadSound("shoot", "audio/shoot.flac");
+    musicAndSFX.loadSound("hit", "audio/hit.mp3");
 
     background = graphics.loadTexture("assets/background1.png");
 
@@ -22,9 +27,9 @@ void Game::init()
 
     sprite = graphics.loadTexture("assets/thrusters.png");
 
-    player.init(bullet, sprite);
+    player.init(bullet, sprite, musicAndSFX);
 
-    enemies.init(enemy);
+    enemies.init(enemy, musicAndSFX);
 
     /*cursor = graphics.loadTexture("cursor.png");
     SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
@@ -71,8 +76,11 @@ void Game::run() {
                 case gameState::MAIN_MENU:
                     mainMenu.handleEvent(event, mouseX, mouseY);
                     break;
+                case gameState::SETTINGS:
+                    settingsMenu.handleEvent(event, mouseX, mouseY, musicAndSFX);
+                    break;
                 case gameState::PAUSED:
-                    pauseMenu.handleEvent(event, mouseX, mouseY);
+                    pauseMenu.handleEvent(event, mouseX, mouseY, musicAndSFX);
                     break;
                 case gameState::PLAY:
                     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
@@ -95,13 +103,17 @@ void Game::run() {
                 mainMenu.render(graphics.renderer);
                 break;
 
+            case gameState::SETTINGS:
+                settingsMenu.render(graphics.renderer);
+                break;
+
             case gameState::PLAY:
+                //musicAndSFX.playMusic();
                 update(deltaTime);
                 render();
                 break;
 
             case gameState::PAUSED:
-//                render();
                 pauseMenu.render(graphics.renderer);
                 break;
 
@@ -129,6 +141,8 @@ void Game::restart() {
 
 void Game::quit()
 {
+    mainMenu.cleanUp();
+    pauseMenu.cleanUp();
     SDL_DestroyTexture( text );
     TTF_CloseFont( font );
     SDL_DestroyTexture(spaceShip);

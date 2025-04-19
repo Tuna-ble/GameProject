@@ -8,6 +8,7 @@
 #include "vector2D.h"
 #include "health.h"
 #include "sprite.h"
+#include "audio.h"
 
 struct Player;
 
@@ -22,6 +23,7 @@ struct Enemy {
     BulletManager bullets;
     Health health;
     Sprite thruster;
+    Audio SFX;
 
     float shootTimer = 0.0f;
     float shootCooldown = 1.0f;
@@ -32,7 +34,7 @@ struct Enemy {
     SDL_Rect srcRect;
     SDL_Rect bulletSrcRect;
 
-    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster);
+    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio& sound);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera);
     void update(float deltaTime, Player &player);
 
@@ -44,11 +46,12 @@ struct Enemy {
 struct EnemyManager {
     std::vector <Enemy> enemies;
     SDL_Texture* enemyTexture;
+    Audio SFX;
 
     float spawnTimer = 0.0f;
     float spawnCooldown = 5.0f;
 
-    void init(SDL_Texture* texture);
+    void init(SDL_Texture* texture, Audio& sound);
 
     void resetSpawnTimer();
     bool spawnON();

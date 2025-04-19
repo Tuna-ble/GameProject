@@ -5,12 +5,13 @@
 
 // ==== Enemy ====
 
-Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture)
+Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio& sound)
     : position(position), texture(texture), dest(dest), alive(true), health(4) {
         bullets.init(bullet);
         thruster.init(thrusterTexture, THRUSTER_FRAMES, THRUSTER_CLIPS);
         srcRect = { (1 % 2) * 48, (1 / 2) * 48, 48, 48 };
         bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
+        SFX = sound;
     }
 
 void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera) {
@@ -59,12 +60,14 @@ void Enemy::update(float deltaTime, Player &player) {
             float angle = atan2(player.position.y - spawn.y - BULLET_SIZE / 2, player.position.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
 
             bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
+            SFX.playSound("shoot");
 
             resetShootTimer();
             }
 
-    if (hurtTimer > 0.0f)
-    hurtTimer -= deltaTime;
+    if (hurtTimer > 0.0f) {
+        hurtTimer -= deltaTime;
+    }
 
     thruster.update();
 
@@ -81,8 +84,9 @@ void Enemy::resetShootTimer() {
 
 // ==== Enemy Manager ====
 
-void EnemyManager::init(SDL_Texture* texture) {
+void EnemyManager::init(SDL_Texture* texture, Audio& sound) {
     enemyTexture = texture;
+    SFX = sound;
 }
 
 bool EnemyManager::spawnON() {
@@ -97,7 +101,7 @@ void EnemyManager::spawn(Vector2D spawn, SDL_Texture* texture, SDL_Texture* bull
     if (spawnON()) {
         SDL_Rect dest = { static_cast<float>(spawn.x), static_cast<float>(spawn.y), ENEMY_SIZE, ENEMY_SIZE };
 
-        enemies.emplace_back(spawn, texture, dest, bullet, thruster);
+        enemies.emplace_back(spawn, texture, dest, bullet, thruster, SFX);
 
         resetSpawnTimer();
     }

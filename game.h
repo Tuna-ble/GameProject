@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "def.h"
 #include "graphics.h"
 #include "player.h"
@@ -12,6 +13,7 @@
 #include "sprite.h"
 #include "gameUI.h"
 #include "gameState.h"
+#include "audio.h"
 
 struct Game{
     Graphics graphics;
@@ -22,6 +24,9 @@ struct Game{
     Collision collision;
     MainMenu mainMenu;
     PauseMenu pauseMenu;
+    SettingsMenu settingsMenu;
+
+    Audio musicAndSFX;
 
     TTF_Font* font;
     SDL_Texture* text;

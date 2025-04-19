@@ -3,6 +3,7 @@
 #include<SDL.h>
 #include<SDL_image.h>
 #include "vector2D.h"
+#include "audio.h"
 
 struct Health {
     int cap, current;

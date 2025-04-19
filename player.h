@@ -4,11 +4,11 @@
 #include <SDL_image.h>
 #include "def.h"
 #include "graphics.h"
-
 #include "bullet.h"
 #include "vector2D.h"
 #include "health.h"
 #include "sprite.h"
+#include "audio.h"
 
 struct Camera;
 
@@ -19,6 +19,7 @@ struct Player{
     Vector2D position = {startX, startY};
     Vector2D velocity;
     SDL_Texture* playerTexture;
+    Audio SFX;
 
     float healTimer = 0.0f;
     float healCooldown = 1.0f;
@@ -33,7 +34,7 @@ struct Player{
     const SDL_Rect srcRect = { (ID % 2) * 48, (ID / 2) * 48, 48, 48 };
     const SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
 
-    void init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture);
+    void init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture, Audio& SFX);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID);
     void renderCursor();
     void handleInput(SDL_Event& event, Camera &camera);

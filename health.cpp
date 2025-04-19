@@ -5,8 +5,8 @@ Health::Health() = default;
 Health::Health(int maxHealth) : cap(maxHealth), current(maxHealth) {}
 
 void Health::takeDamage(int damage) {
-        current -= damage;
-        if (current < 0) current = 0;
+    current -= damage;
+    if (current < 0) current = 0;
 }
 
 void Health::heal(int amount) {

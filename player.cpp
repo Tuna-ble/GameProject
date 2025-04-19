@@ -1,9 +1,10 @@
 #include "player.h"
 
-void Player::init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture) {
+void Player::init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture, Audio& sound) {
     bullets.init(bulletTexture);
     thruster.init(thrusterTexture, THRUSTER_FRAMES, THRUSTER_CLIPS);
     health = Health(10);
+    SFX = sound;
 }
 
 void Player::handleInput(SDL_Event& event, Camera &camera) {
@@ -24,6 +25,9 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
             direction = direction.normalize();
             float bulletAngle = atan2(worldMouse.y - spawn.y - BULLET_SIZE / 2, worldMouse.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
             bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, bulletAngle, bulletFrom::PLAYER);
+
+            SFX.playSound("shoot");
+
             break;
     }
 
@@ -55,8 +59,9 @@ void Player::update(float deltaTime, Camera &camera) {
         healTimer = 0.0f;
     }
 
-    if (hurtTimer > 0.0f)
-    hurtTimer -= deltaTime;
+    if (hurtTimer > 0.0f) {
+        hurtTimer -= deltaTime;
+    }
 
     thruster.update();
 
