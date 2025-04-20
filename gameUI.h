@@ -6,13 +6,17 @@
 #include "graphics.h"
 #include "gameState.h"
 #include "audio.h"
+#include "health.h"
+#include "def.h"
 
 struct UIButton {
     SDL_Rect rect;
     SDL_Texture* text;
     TTF_Font* font;
     Mix_Chunk* chunk;
+
     bool mouseHover = false;
+    bool wasHovering = false;
 
     Audio SFX;
 
@@ -86,8 +90,48 @@ struct SettingsMenu {
     void cleanUp();
 };
 
-struct HUD {
+struct GameOver {
+    gameState& state;
+    SDL_Texture* backgroundTexture;
+    SDL_Texture* resultText;
+    SDL_Texture* scoreText;
 
+    UIButton retryButton;
+    UIButton mainMenuButton;
+    UIButton quitButton;
+
+    TTF_Font* font;
+    SDL_Color textColor = {255, 255, 255};
+    SDL_Rect resultRect;
+    SDL_Rect scoreRect;
+
+    GameOver(gameState& s);
+    void init(Graphics& graphics, TTF_Font* textFont, int score);
+    void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
+    void render(SDL_Renderer* renderer);
+    void cleanUp();
+};
+
+struct HUD {
+    gameState& state;
+    SDL_Texture* scoreText;
+    SDL_Texture* countDownText;
+
+    int timer = 20;
+    float countdownTimer = 0.0f;
+    bool countdownActive = true;
+
+    SDL_Rect scoreRect = {20, 60, 150, 30};
+    SDL_Rect countDownRect = {20, 95, 150, 30};
+
+    TTF_Font* font;
+    SDL_Color textColor = {255, 255, 255, 255};
+
+    HUD(gameState& s);
+    void init(TTF_Font* textFont);
+    void render(Graphics& graphics, SDL_Renderer* renderer, int score);
+    void update(float deltaTime);
+    void cleanUp();
 };
 
 #endif // GAMEUI_H_INCLUDED

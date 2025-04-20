@@ -18,7 +18,19 @@ struct Health {
 
     float getPercent() const;
 
-    void renderHealthBar(SDL_Renderer* renderer, Vector2D position, int width, int height, float percent);
+    void renderHealthBar(SDL_Renderer* renderer, SDL_Texture* barTexture, SDL_Texture* fillTexture, SDL_Rect barRect);
+};
+
+struct HealthBar {
+    static SDL_Texture* barTexture;
+    static SDL_Texture* fillTexture;
+
+    SDL_Rect healthBarRect;
+    SDL_Rect healthFillRect;
+
+    static void setTextures(SDL_Texture* bar, SDL_Texture* fill);
+    void render(SDL_Renderer* renderer, Health& health, Vector2D position, int width, int height);
+    void cleanUp();
 };
 
 #endif // HEALTH_H_INCLUDED

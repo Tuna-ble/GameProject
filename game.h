@@ -14,6 +14,7 @@
 #include "gameUI.h"
 #include "gameState.h"
 #include "audio.h"
+#include "asteroid.h"
 
 struct Game{
     Graphics graphics;
@@ -21,10 +22,13 @@ struct Game{
     Camera camera;
     TiledRenderer tile;
     EnemyManager enemies;
+    AsteroidManager asteroids;
     Collision collision;
     MainMenu mainMenu;
     PauseMenu pauseMenu;
     SettingsMenu settingsMenu;
+    GameOver gameOver;
+    HUD hud;
 
     Audio musicAndSFX;
 
@@ -35,11 +39,15 @@ struct Game{
     SDL_Texture* cursor;
     SDL_Texture* bullet;
     SDL_Texture* enemy;
+    SDL_Texture* asteroid;
     SDL_Texture* sprite;
+    SDL_Texture* healthBar;
+    SDL_Texture* health;
 
     gameState currentState;
 
     bool isRunning = true;
+    int score;
 
     Game();
     void init();

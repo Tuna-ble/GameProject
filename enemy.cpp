@@ -1,17 +1,18 @@
 #include "enemy.h"
 
-
-#define speed 150
-
+#define ID 0
 // ==== Enemy ====
 
 Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio& sound)
     : position(position), texture(texture), dest(dest), alive(true), health(4) {
         bullets.init(bullet);
-        thruster.init(thrusterTexture, THRUSTER_FRAMES, THRUSTER_CLIPS);
-        srcRect = { (1 % 2) * 48, (1 / 2) * 48, 48, 48 };
+        thruster.init(thrusterTexture, SHIP_FRAMES, SHIP_CLIPS);
+        srcRect = { (ID % 4) * 128, (ID / 2) * 128, 128, 128 };
         bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
         SFX = sound;
+        speed = rand() % 150;
+        shootCooldown = (float)(1 + rand() % 3);
+        shootTimer = (float)(rand() % 1000) / 1000.0f;
     }
 
 void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera) {
@@ -36,11 +37,11 @@ void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera)
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
 
-    thruster.render(renderer, position, camera, ENEMY_SIZE);
+    thruster.render(renderer, position, camera, ENEMY_SIZE, angle);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
-    health.renderHealthBar(renderer, {draw.x, draw.y - 6}, ENEMY_SIZE, 5, health.getPercent());
+    healthBar.render(renderer, health, position - camera.position, 75, 20);
 }
 
 void Enemy::update(float deltaTime, Player &player) {
@@ -59,7 +60,8 @@ void Enemy::update(float deltaTime, Player &player) {
 
             float angle = atan2(player.position.y - spawn.y - BULLET_SIZE / 2, player.position.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
 
-            bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
+            int bulletSpeed = 40 + rand() % bullets.bulletSpeed;
+            bullets.shoot(spawn, direction, damage, bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
             SFX.playSound("shoot");
 
             resetShootTimer();
@@ -87,6 +89,7 @@ void Enemy::resetShootTimer() {
 void EnemyManager::init(SDL_Texture* texture, Audio& sound) {
     enemyTexture = texture;
     SFX = sound;
+    spawnCooldown = (float)(1 + rand() % 2);
 }
 
 bool EnemyManager::spawnON() {
@@ -97,9 +100,36 @@ void EnemyManager::resetSpawnTimer() {
     spawnTimer = 0.0f;
 }
 
-void EnemyManager::spawn(Vector2D spawn, SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Player &player) {
+Vector2D EnemyManager::spawnEnemyOutsideCamera(Camera& camera, int margin) {
+    float x, y;
+    int side = rand() % 4;
+
+    switch (side) {
+        case 0:
+            x = camera.position.x + rand() % SCREEN_WIDTH;
+            y = camera.position.y - margin;
+            break;
+        case 1:
+            x = camera.position.x + rand() % SCREEN_WIDTH;
+            y = camera.position.y + SCREEN_HEIGHT + margin;
+            break;
+        case 2:
+            x = camera.position.x - margin;
+            y = camera.position.y + rand() % SCREEN_HEIGHT;
+            break;
+        case 3:
+            x = camera.position.x + SCREEN_WIDTH + margin;
+            y = camera.position.y + rand() % SCREEN_HEIGHT;
+            break;
+    }
+
+    return Vector2D(x, y);
+}
+
+void EnemyManager::spawn(SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Camera& camera) {
     if (spawnON()) {
-        SDL_Rect dest = { static_cast<float>(spawn.x), static_cast<float>(spawn.y), ENEMY_SIZE, ENEMY_SIZE };
+        Vector2D spawn = spawnEnemyOutsideCamera(camera, 200);
+        SDL_Rect dest = { spawn.x, spawn.y, ENEMY_SIZE, ENEMY_SIZE };
 
         enemies.emplace_back(spawn, texture, dest, bullet, thruster, SFX);
 
@@ -117,8 +147,11 @@ void EnemyManager::render(SDL_Renderer* renderer, Camera &camera) {
 void EnemyManager::update(float deltaTime, Player &player) {
     for (auto& e : enemies) {
         e.update(deltaTime, player);
-
+        if (e.health.isDead()) {
+            deadCount++;
+            getScore+=10;
         }
+    }
     spawnTimer += deltaTime;
     enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
                                      [](const Enemy& e) { return !e.alive; }), enemies.end());
@@ -127,4 +160,5 @@ void EnemyManager::update(float deltaTime, Player &player) {
 void EnemyManager::reset() {
     enemies.clear();
     spawnTimer = 0;
+    deadCount = 0;
 }

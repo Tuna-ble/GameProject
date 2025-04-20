@@ -9,6 +9,7 @@
 #include "health.h"
 #include "sprite.h"
 #include "audio.h"
+#include "gameUI.h"
 
 struct Camera;
 
@@ -20,6 +21,7 @@ struct Player{
     Vector2D velocity;
     SDL_Texture* playerTexture;
     Audio SFX;
+    HealthBar healthBar;
 
     float healTimer = 0.0f;
     float healCooldown = 1.0f;
@@ -31,8 +33,9 @@ struct Player{
     int speed = 200;
     int damage = 2;
     bool gameRunning = true;
-    const SDL_Rect srcRect = { (ID % 2) * 48, (ID / 2) * 48, 48, 48 };
+    const SDL_Rect srcRect = { (ID % 4) * 128, (ID / 2) * 128, 128, 128 };
     const SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
+    SDL_Rect healthBarRect = { 20, 20, 200, 30 };
 
     void init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture, Audio& SFX);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID);

@@ -1,5 +1,11 @@
 #include "audio.h"
 
+void Audio::init() {
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+            std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << "\n";
+    }
+}
+
 void Audio::loadMusic(const char* path)
 {
     music = Mix_LoadMUS(path);

@@ -6,6 +6,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "asteroid.h"
 #include "vector2D.h"
 
 struct Collision {
@@ -13,7 +14,8 @@ struct Collision {
     bool bulletXEnemy(Enemy& enemy, Bullet& bullet);
     bool bulletXPlayer(Player& player, Bullet& bullet);
     bool enemyXPlayer(Player& player, Enemy& enemy);
-    void checkAll(std::vector<Enemy>& enemies, Player& player);
+    bool asteroidXPlayer(Player& player, Asteroid& asteroid);
+    void checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& asteroids, Player& player);
 };
 
 #endif // COLLISION_H_INCLUDED

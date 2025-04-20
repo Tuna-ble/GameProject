@@ -6,7 +6,9 @@ enum class gameState {
     PLAY,
     PAUSED,
     SETTINGS,
-    QUIT
+    QUIT,
+    GAME_OVER_WIN,
+    GAME_OVER_LOSE
 };
 
 #endif // GAMESTATE_H_INCLUDED

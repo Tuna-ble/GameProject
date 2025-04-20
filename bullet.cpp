@@ -10,8 +10,9 @@ Bullet::Bullet(Vector2D position, Vector2D velocity, int damage, SDL_Texture* te
 
 void Bullet::update(float deltaTime) {
     position += velocity * deltaTime;
+    activeTimer += deltaTime;
 
-    if (position.x < -SCREEN_WIDTH || position.x > 5000 || position.y < -SCREEN_HEIGHT || position.y > 5000) {
+    if (activeTimer >= activeDuration) {
         active = false;
     }
 }
@@ -46,3 +47,4 @@ void BulletManager::render(SDL_Renderer* renderer, Camera& camera) {
 Vector2D BulletManager::getBulletSpawnPosition(Vector2D& position) const {
     return position + Vector2D(SHIP_SIZE / 2.0f - BULLET_SIZE / 2.0f, SHIP_SIZE / 2.0f - BULLET_SIZE / 2.0f);
 }
+

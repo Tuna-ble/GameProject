@@ -17,6 +17,7 @@ struct Enemy {
     Vector2D velocity;
     SDL_Texture* texture;
     SDL_Rect dest;
+    SDL_Rect healthBarDest;
     int damage = 2;
     bool alive;
 
@@ -24,9 +25,13 @@ struct Enemy {
     Health health;
     Sprite thruster;
     Audio SFX;
+    HealthBar healthBar;
+    Sprite explosion;
 
-    float shootTimer = 0.0f;
-    float shootCooldown = 1.0f;
+    int speed;
+
+    float shootTimer;
+    float shootCooldown;
 
     float hurtTimer = 0.0f;
     float hurtDuration = 0.15f;
@@ -48,15 +53,19 @@ struct EnemyManager {
     SDL_Texture* enemyTexture;
     Audio SFX;
 
+    int deadCount = 0;
+    int getScore = 0;
+
     float spawnTimer = 0.0f;
-    float spawnCooldown = 5.0f;
+    float spawnCooldown;
 
     void init(SDL_Texture* texture, Audio& sound);
 
     void resetSpawnTimer();
     bool spawnON();
 
-    void spawn(Vector2D position, SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Player &player);
+    Vector2D spawnEnemyOutsideCamera(Camera& camera, int margin = 200);
+    void spawn(SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Camera& camera);
     void update(float deltaTime, Player &player);
     void render(SDL_Renderer* renderer, Camera &camera);
     void reset();

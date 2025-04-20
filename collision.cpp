@@ -1,10 +1,12 @@
 #include "collision.h"
 
 bool Collision::checkCollision(const Vector2D& posA, const Vector2D& sizeA, const Vector2D& posB, const Vector2D& sizeB) const {
-        Vector2D halfA = sizeA * 0.5f;
-        Vector2D halfB = sizeB * 0.5f;
-
-        return (abs(posA.x - posB.x) < (halfA.x + halfB.x) && abs(posA.y - posB.y) < (halfA.y + halfB.y));
+    return (
+        posA.x < posB.x + sizeB.x &&
+        posA.x + sizeA.x > posB.x &&
+        posA.y < posB.y + sizeB.y &&
+        posA.y + sizeA.y > posB.y
+    );
 }
 
 bool Collision::bulletXEnemy(Enemy& enemy, Bullet& bullet) {
@@ -29,16 +31,24 @@ bool Collision::enemyXPlayer(Player& player, Enemy& enemy) {
     return false;
 }
 
-void Collision::checkAll(std::vector<Enemy>& enemies, Player& player) {
+bool Collision::asteroidXPlayer(Player& player, Asteroid& asteroid) {
+    if (checkCollision(asteroid.position, {ASTEROID_SIZE, ASTEROID_SIZE}, player.position, {SHIP_SIZE, SHIP_SIZE}))
+        return true;
+    return false;
+}
+
+void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& asteroids, Player& player) {
     for (auto& e : enemies) {
         if (!e.alive) continue;
         if (enemyXPlayer(player, e)) {
             e.alive = false;
+            e.SFX.playSound("explosion");
             player.health.takeDamage(e.damage);
             player.SFX.playSound("hit");
             std::cerr << "You are caught in explosion" << "\n";
             std::cerr << "Health :" << player.health.getPercent() << "\n";
         }
+
         for (auto& b : e.bullets.bullets) {
             if (!b.active) continue;
             if (bulletXPlayer(player, b)) {
@@ -51,6 +61,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, Player& player) {
         }
         }
     }
+
     for (auto& b : player.bullets.bullets) {
         if (!b.active) continue;
 
@@ -62,8 +73,23 @@ void Collision::checkAll(std::vector<Enemy>& enemies, Player& player) {
                 e.health.takeDamage(player.damage);
                 player.SFX.playSound("hit");
                 e.hurtTimer = e.hurtDuration;
-                if (e.health.isDead()) e.alive = false;
+                if (e.health.isDead()) {
+                    e.alive = false;
+                    e.SFX.playSound("explosion");
+                }
             }
+        }
+    }
+
+    for (auto& a : asteroids) {
+        if (!a.active) continue;
+
+        if (asteroidXPlayer(player, a)) {
+            a.active = false;
+            player.health.takeDamage(a.damage);
+            player.SFX.playSound("hit");
+            player.hurtTimer = player.hurtDuration;
+            a.SFX.playSound("explosion");
         }
     }
 }

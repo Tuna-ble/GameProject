@@ -1,10 +1,11 @@
 #include "game.h"
 
-Game::Game() : mainMenu(currentState), pauseMenu(currentState), settingsMenu(currentState) {}
+Game::Game() : mainMenu(currentState), pauseMenu(currentState), settingsMenu(currentState), gameOver(currentState), hud(currentState) {}
 
 void Game::init()
 {
     graphics.init();
+    musicAndSFX.init();
 
     font = graphics.loadFont("assets/font.ttf", 300);
 
@@ -12,10 +13,12 @@ void Game::init()
     mainMenu.init(graphics, font);
     pauseMenu.init(graphics, font);
     settingsMenu.init(graphics, font);
+    hud.init(font);
 
     musicAndSFX.loadMusic("audio/OST.mp3");
     musicAndSFX.loadSound("shoot", "audio/shoot.flac");
     musicAndSFX.loadSound("hit", "audio/hit.mp3");
+    musicAndSFX.loadSound("explosion", "audio/explosion.mp3");
 
     background = graphics.loadTexture("assets/background1.png");
 
@@ -25,11 +28,21 @@ void Game::init()
 
     enemy = graphics.loadTexture("assets/spaceships.png");
 
-    sprite = graphics.loadTexture("assets/thrusters.png");
+    asteroid = graphics.loadTexture("assets/asteroid.png");
+
+    sprite = graphics.loadTexture("assets/thruster.png");
+
+    healthBar = graphics.loadTexture("assets/healthBar.png");
+
+    health = graphics.loadTexture("assets/health.png");
+
+    HealthBar::setTextures(healthBar, health);
 
     player.init(bullet, sprite, musicAndSFX);
 
     enemies.init(enemy, musicAndSFX);
+
+    asteroids.init(asteroid, musicAndSFX);
 
     /*cursor = graphics.loadTexture("cursor.png");
     SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
@@ -41,9 +54,27 @@ void Game::update(float deltaTime)
     player.update(deltaTime, camera);
     camera.update(player);
 
-    enemies.spawn({500, 500}, enemies.enemyTexture, bullet, sprite, player);
+    enemies.spawn(enemies.enemyTexture, bullet, sprite, camera);
     enemies.update(deltaTime, player);
-    collision.checkAll(enemies.enemies, player);
+
+    asteroids.spawn(asteroid, camera);
+    asteroids.update(deltaTime);
+
+    collision.checkAll(enemies.enemies, asteroids.asteroids, player);
+
+    score = enemies.getScore;
+    hud.update(deltaTime);
+
+    if (player.health.current <= 0) {
+        currentState = gameState::GAME_OVER_LOSE;
+        gameOver.init(graphics, font, score);
+        return;
+    }
+    else if (enemies.deadCount == 1000) {
+        currentState = gameState::GAME_OVER_WIN;
+        gameOver.init(graphics, font, score);
+        return;
+    }
 }
 
 void Game::render()
@@ -55,6 +86,10 @@ void Game::render()
     player.render(graphics.renderer, spaceShip, camera, ID);
 
     enemies.render(graphics.renderer, camera);
+
+    asteroids.render(graphics.renderer, camera);
+
+    hud.render(graphics, graphics.renderer, score);
 
     graphics.presentScene();
 }
@@ -82,9 +117,14 @@ void Game::run() {
                 case gameState::PAUSED:
                     pauseMenu.handleEvent(event, mouseX, mouseY, musicAndSFX);
                     break;
+                case gameState::GAME_OVER_WIN:
+                case gameState::GAME_OVER_LOSE:
+                    gameOver.handleEvent(event, mouseX, mouseY, musicAndSFX);
+                    break;
                 case gameState::PLAY:
                     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
                         currentState = gameState::PAUSED;
+                        break;
                     }
                     player.handleInput(event, camera);
                     break;
@@ -108,13 +148,19 @@ void Game::run() {
                 break;
 
             case gameState::PLAY:
-                //musicAndSFX.playMusic();
+                musicAndSFX.playMusic();
                 update(deltaTime);
                 render();
                 break;
 
             case gameState::PAUSED:
                 pauseMenu.render(graphics.renderer);
+                break;
+
+            case gameState::GAME_OVER_WIN:
+            case gameState::GAME_OVER_LOSE:
+                restart();
+                gameOver.render(graphics.renderer);
                 break;
 
             case gameState::QUIT:
@@ -137,12 +183,15 @@ void Game::restart() {
     player.reset();
     camera.position = {0, 0};
     enemies.reset();
+    asteroids.reset();
 }
 
 void Game::quit()
 {
     mainMenu.cleanUp();
     pauseMenu.cleanUp();
+    settingsMenu.cleanUp();
+    musicAndSFX.cleanUp();
     SDL_DestroyTexture( text );
     TTF_CloseFont( font );
     SDL_DestroyTexture(spaceShip);

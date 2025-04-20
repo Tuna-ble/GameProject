@@ -13,6 +13,7 @@ struct Audio {
     bool sfxEnabled = true;
     Mix_Music* music;
 
+    void init();
     void loadMusic(const char* path);
     void playMusic();
     void loadSound(const char* name, const char* path);

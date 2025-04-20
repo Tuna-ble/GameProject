@@ -7,17 +7,24 @@ void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont
     text = graphics.renderText(textname, font, color);
     rect = _rect;
     SFX.loadSound("hover", "audio/hover.mp3");
-    SFX.loadSound("hover", "audio/click.mp3");
+    SFX.loadSound("click", "audio/click.mp3");
 }
 
 void UIButton::updateHover(int mouseX, int mouseY) {
     SDL_Point p = {mouseX, mouseY};
-    mouseHover = SDL_PointInRect( &p, &rect );
-    if (mouseHover == 1) SFX.playSound("hover");
+    bool currentlyHovering = SDL_PointInRect( &p, &rect );
+    if (currentlyHovering && !wasHovering) SFX.playSound("hover");
+
+    wasHovering = currentlyHovering;
+    mouseHover = currentlyHovering;
 }
 
 bool UIButton::isClicked(SDL_Event& e) {
-    return mouseHover && e.type == SDL_MOUSEBUTTONDOWN;
+    if (mouseHover && e.type == SDL_MOUSEBUTTONDOWN) {
+        SFX.playSound("click");
+        return true;
+    }
+    return false;
 }
 
 void UIButton::render(SDL_Renderer* renderer) {
@@ -195,4 +202,106 @@ void SettingsMenu::cleanUp() {
     SDL_DestroyTexture(musicButton.text);
     SDL_DestroyTexture(soundButton.text);
     SDL_DestroyTexture(backButton.text);
+}
+
+// ==== Game Over ====
+
+GameOver::GameOver(gameState& s) : state(s) {}
+
+void GameOver::init(Graphics& graphics, TTF_Font* textFont, int score) {
+    font = textFont;
+
+    const char* result;
+    std::string currentScore = "Score: " + std::to_string(score);
+    if (state == gameState::GAME_OVER_WIN)
+        result = "YOU WIN";
+    else if (state == gameState::GAME_OVER_LOSE)
+        result = "YOU LOSE";
+    resultText = graphics.renderText(result, font, textColor);
+    scoreText = graphics.renderText(currentScore.c_str(), font, textColor);
+    retryButton.init(graphics, "Retry", font, textColor, { 360, 320, 180, 50 });
+    mainMenuButton.init(graphics, "Main Menu", font, textColor, { 360, 375, 180, 50 });
+    quitButton.init(graphics, "Quit", font, textColor, { 360, 430, 180, 50 });
+
+    backgroundTexture = graphics.loadTexture("assets/background1.png");
+
+    resultRect = { 300, 150, 300, 75 };
+    scoreRect = { 350, 250, 200, 50 };
+}
+
+void GameOver::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
+    retryButton.updateHover(mouseX, mouseY);
+    mainMenuButton.updateHover(mouseX, mouseY);
+    quitButton.updateHover(mouseX, mouseY);
+
+    if (retryButton.isClicked(e)) {
+        state = gameState::PLAY;
+    }
+    else if (mainMenuButton.isClicked(e)) {
+        state = gameState::MAIN_MENU;
+    }
+    else if (quitButton.isClicked(e)) {
+        state = gameState::QUIT;
+    }
+}
+
+void GameOver::render(SDL_Renderer* renderer) {
+    SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+
+    SDL_RenderCopy(renderer, resultText, NULL, &resultRect);
+    SDL_RenderCopy(renderer, scoreText, NULL, &scoreRect);
+    retryButton.render(renderer);
+    mainMenuButton.render(renderer);
+    quitButton.render(renderer);
+}
+
+void GameOver::cleanUp() {
+    SDL_DestroyTexture(resultText);
+    SDL_DestroyTexture(retryButton.text);
+    SDL_DestroyTexture(mainMenuButton.text);
+    SDL_DestroyTexture(quitButton.text);
+}
+
+// ==== HUD =====
+
+HUD::HUD(gameState& s) : state(s) {}
+
+void HUD::init(TTF_Font* textFont) {
+    font = textFont;
+}
+
+void HUD::update(float deltaTime) {
+    if (countdownActive) {
+    countdownTimer += deltaTime;
+
+    if (countdownTimer >= 1.0f) {
+        countdownTimer -= 1.0f; // reset lại, không phải = 0 để giữ chính xác
+        timer--;
+
+        if (timer <= 0) {
+            countdownActive = false;
+            timer = 0;
+            state = gameState::GAME_OVER_WIN;
+            std::cout << "Countdown ended!\n";
+        }
+    }
+    }
+}
+
+void HUD::render(Graphics& graphics, SDL_Renderer* renderer, int score) {
+    std::string scoreStr = "Score: " + std::to_string(score);
+    std::string countStr = "Time left: " + std::to_string(timer);
+
+    if (scoreText) SDL_DestroyTexture(scoreText);
+    if (countDownText) SDL_DestroyTexture(countDownText);
+
+    scoreText = graphics.renderText(scoreStr.c_str(), font, textColor);
+    countDownText = graphics.renderText(countStr.c_str(), font, textColor);
+
+    SDL_RenderCopy(renderer, scoreText, nullptr, &scoreRect);
+    SDL_RenderCopy(renderer, countDownText, nullptr, &countDownRect);
+}
+
+void HUD::cleanUp() {
+    SDL_DestroyTexture(scoreText);
 }

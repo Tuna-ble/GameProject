@@ -33,11 +33,6 @@ void Graphics::init()
             logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ",
                              TTF_GetError());
     }
-
-    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
-            logErrorAndExit( "SDL_mixer could not initialize! SDL_mixer Error: %s\n",
-                    Mix_GetError() );
-    }
 }
 
 void Graphics::prepareScene(SDL_Texture * background)

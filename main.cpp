@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <ctime>
 #include "game.h"
 
 using namespace std;
@@ -19,6 +20,7 @@ void waitUntilKeyPressed()
 
 int main(int argc, char *argv[])
 {
+    srand(time(0));
     Game game;
     game.init();
     //SDL_ShowCursor(0);

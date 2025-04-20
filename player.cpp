@@ -2,8 +2,8 @@
 
 void Player::init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture, Audio& sound) {
     bullets.init(bulletTexture);
-    thruster.init(thrusterTexture, THRUSTER_FRAMES, THRUSTER_CLIPS);
-    health = Health(10);
+    thruster.init(thrusterTexture, SHIP_FRAMES, SHIP_CLIPS);
+    health = Health(4);
     SFX = sound;
 }
 
@@ -83,19 +83,19 @@ void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
 
-    thruster.render(renderer, position, camera, SHIP_SIZE);
+    thruster.render(renderer, position, camera, SHIP_SIZE, angle);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
     bullets.render(renderer, camera);
 
-    health.renderHealthBar(renderer, {draw.x, draw.y - 10}, SHIP_SIZE, 6, health.getPercent());
+    healthBar.render(renderer, health, {20 , 20}, 200, 30);
 }
 
 void Player::reset() {
     position = {startX, startY};
     velocity = Vector2D(0, 0);
-    health = Health(10);
+    health = Health(4);
     bullets.bullets.clear();
     gameRunning = true;
 }
