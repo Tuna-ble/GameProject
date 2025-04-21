@@ -46,15 +46,18 @@ void Graphics::presentScene()
     SDL_RenderPresent(renderer);
 }
 
-SDL_Texture* Graphics::loadTexture(const char *filename)
-{
-    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
+void Graphics::loadTexture(const char* filename, const char* filepath) {
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filepath);
 
-    SDL_Texture *texture = IMG_LoadTexture(renderer, filename);
+    SDL_Texture *texture = IMG_LoadTexture(renderer, filepath);
     if (texture == NULL)
         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load texture %s", IMG_GetError());
 
-    return texture;
+    textures[filename] = texture;
+}
+
+SDL_Texture* Graphics::getTexture(const char* filename) {
+    return textures[filename];
 }
 
 void Graphics::renderTexture(SDL_Texture *texture, int x, int y)
@@ -105,6 +108,10 @@ SDL_Texture* Graphics::renderText(const char* text,
 void Graphics::quit() {
     TTF_Quit();
     IMG_Quit();
+    for (auto& [id, tex] : textures) {
+        SDL_DestroyTexture(tex);
+    }
+    textures.clear();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

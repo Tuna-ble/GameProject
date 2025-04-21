@@ -25,8 +25,8 @@ void Asteroid::update(float deltaTime) {
 
 // ==== Asteroid Manager ====
 
-void AsteroidManager::init(SDL_Texture* texture, Audio& sound) {
-    asteroidTexture = texture;
+void AsteroidManager::init(Graphics& graphics, Audio& sound) {
+    asteroidTexture = graphics.getTexture("asteroid");
     SFX = sound;
     spawnCooldown = float(3 + rand() % 7);
     speed = 50 + rand() % 50;
@@ -65,7 +65,7 @@ Vector2D AsteroidManager::spawnOutsideCamera(Camera& camera, int margin) {
     return Vector2D(x, y);
 }
 
-void AsteroidManager::spawn(SDL_Texture* texture, Camera& camera) {
+void AsteroidManager::spawn(Camera& camera) {
     if (spawnON()) {
         Vector2D spawn = spawnOutsideCamera(camera, 50);
         SDL_Rect dest = { static_cast<int>(spawn.x), static_cast<int>(spawn.y), ASTEROID_SIZE, ASTEROID_SIZE};
@@ -73,7 +73,7 @@ void AsteroidManager::spawn(SDL_Texture* texture, Camera& camera) {
         float angle = static_cast<float>(rand()) / RAND_MAX * 2 * M_PI;
         Vector2D direction = Vector2D(cos(angle), sin(angle));
 
-        asteroids.emplace_back(spawn, direction * speed, texture, dest, SFX);
+        asteroids.emplace_back(spawn, direction * speed, asteroidTexture, dest, SFX);
 
         resetSpawnTimer();
     }

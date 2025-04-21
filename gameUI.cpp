@@ -10,6 +10,11 @@ void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont
     SFX.loadSound("click", "audio/click.mp3");
 }
 
+void UIButton::setToggle(bool toggle, bool startOn) {
+    isToggle = toggle;
+    isOn = startOn;
+}
+
 void UIButton::updateHover(int mouseX, int mouseY) {
     SDL_Point p = {mouseX, mouseY};
     bool currentlyHovering = SDL_PointInRect( &p, &rect );
@@ -22,18 +27,24 @@ void UIButton::updateHover(int mouseX, int mouseY) {
 bool UIButton::isClicked(SDL_Event& e) {
     if (mouseHover && e.type == SDL_MOUSEBUTTONDOWN) {
         SFX.playSound("click");
+        if (isToggle) isOn = !isOn;
         return true;
     }
     return false;
 }
 
 void UIButton::render(SDL_Renderer* renderer) {
-    if (mouseHover) {
-        SDL_SetRenderDrawColor(renderer, 70, 170, 255, 255);
+
+    if (isToggle) {
+        if (isOn)
+            SDL_SetRenderDrawColor(renderer, 0, 200, 0, 255);
+        else
+            SDL_SetRenderDrawColor(renderer, 200, 0, 0, 255);
     }
     else {
-        SDL_SetRenderDrawColor(renderer, 50, 130, 200, 255);
+        SDL_SetRenderDrawColor(renderer, mouseHover ? 70 : 50, mouseHover ? 170 : 130, mouseHover ? 255 : 200, 255);
     }
+
     SDL_RenderFillRect(renderer, &rect);
 
     SDL_SetRenderDrawColor(renderer, 30, 90, 150, 255);
@@ -54,7 +65,7 @@ void MainMenu::init(Graphics& graphics, TTF_Font* textFont) {
     settingsButton.init(graphics, "Settings", font, textColor, { 360, 355, 180, 50 });
     quitButton.init(graphics, "Quit", font, textColor, { 360, 410, 180, 50 });
 
-    backgroundTexture = graphics.loadTexture("assets/background1.png");
+    backgroundTexture = graphics.getTexture("background");
 
     titleRect = { 200, 150, 500, 100 };
 }
@@ -95,8 +106,9 @@ void MainMenu::cleanUp() {
 
 PauseMenu::PauseMenu(gameState& s) : state(s) {}
 
-void PauseMenu::init(Graphics& graphics, TTF_Font* textFont) {
+void PauseMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
+    audioPtr = &audio;
 
     pausedText = graphics.renderText("PAUSED", font, textColor);
     resumeButton.init(graphics, "Resume", font, textColor, { 360, 250, 180, 50 });
@@ -105,7 +117,7 @@ void PauseMenu::init(Graphics& graphics, TTF_Font* textFont) {
     mainMenuButton.init(graphics, "Main Menu", font, textColor, { 360, 360, 180, 50 });
     quitButton.init(graphics, "Quit", font, textColor, { 360, 415, 180, 50 });
 
-    backgroundTexture = graphics.loadTexture("assets/background1.png");
+    backgroundTexture = graphics.getTexture("background");
 
     pausedRect = { 300, 150, 300, 75 };
 }
@@ -126,9 +138,14 @@ void PauseMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) 
             audio.stopMusic();
         else
             audio.playMusic();
+
+        musicButton.setToggle(true, audio.musicEnabled);
     }
     else if (soundButton.isClicked(e)) {
-        audio.sfxEnabled = !audio.sfxEnabled;
+        audio.sfxEnabled = soundButton.isOn;
+        std::cout << "SFX toggle: " << audio.sfxEnabled << "\n";
+
+        soundButton.setToggle(true, audio.sfxEnabled);
     }
     else if (mainMenuButton.isClicked(e)) {
         state = gameState::MAIN_MENU;
@@ -140,6 +157,9 @@ void PauseMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) 
 
 void PauseMenu::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+
+    musicButton.setToggle(true, audioPtr->musicEnabled);
+    soundButton.setToggle(true, audioPtr->sfxEnabled);
 
     SDL_RenderCopy(renderer, pausedText, NULL, &pausedRect);
     resumeButton.render(renderer);
@@ -162,15 +182,16 @@ void PauseMenu::cleanUp() {
 
 SettingsMenu::SettingsMenu(gameState& s) : state(s) {}
 
-void SettingsMenu::init(Graphics& graphics, TTF_Font* textFont) {
+void SettingsMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
+    audioPtr = &audio;
 
     settingsText = graphics.renderText("Settings", font, textColor);
     musicButton.init(graphics, "Music", font, textColor, { 360, 270, 180, 50 });
     soundButton.init(graphics, "Sound", font, textColor, { 360, 325, 180, 50 });
     backButton.init(graphics, "Back", font, textColor, { 360, 380, 180, 50 });
 
-    backgroundTexture = graphics.loadTexture("assets/background1.png");
+    backgroundTexture = graphics.getTexture("background");
 
     settingsRect = { 300, 150, 300, 75 };
 }
@@ -181,9 +202,18 @@ void SettingsMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audi
 
     if (musicButton.isClicked(e)) {
         audio.musicEnabled = !audio.musicEnabled;
+        if (!audio.musicEnabled)
+            audio.stopMusic();
+        else
+            audio.playMusic();
+
+        musicButton.setToggle(true, audio.musicEnabled);
     }
     else if (soundButton.isClicked(e)) {
-        audio.sfxEnabled = !audio.sfxEnabled;
+        audio.sfxEnabled = soundButton.isOn;
+        std::cout << "SFX toggle: " << audio.sfxEnabled << "\n";
+
+        soundButton.setToggle(true, audio.sfxEnabled);
     }
     else if (backButton.isClicked(e)) {
         state = gameState::MAIN_MENU;
@@ -191,6 +221,9 @@ void SettingsMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audi
 }
 void SettingsMenu::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+
+    musicButton.setToggle(true, audioPtr->musicEnabled);
+    soundButton.setToggle(true, audioPtr->sfxEnabled);
 
     SDL_RenderCopy(renderer, settingsText, NULL, &settingsRect);
     musicButton.render(renderer);
@@ -223,7 +256,7 @@ void GameOver::init(Graphics& graphics, TTF_Font* textFont, int score) {
     mainMenuButton.init(graphics, "Main Menu", font, textColor, { 360, 375, 180, 50 });
     quitButton.init(graphics, "Quit", font, textColor, { 360, 430, 180, 50 });
 
-    backgroundTexture = graphics.loadTexture("assets/background1.png");
+    backgroundTexture = graphics.getTexture("background");
 
     resultRect = { 300, 150, 300, 75 };
     scoreRect = { 350, 250, 200, 50 };
@@ -268,9 +301,10 @@ HUD::HUD(gameState& s) : state(s) {}
 
 void HUD::init(TTF_Font* textFont) {
     font = textFont;
+    countdownActive = true;
 }
 
-void HUD::update(float deltaTime) {
+bool HUD::win(float deltaTime) {
     if (countdownActive) {
     countdownTimer += deltaTime;
 
@@ -281,11 +315,11 @@ void HUD::update(float deltaTime) {
         if (timer <= 0) {
             countdownActive = false;
             timer = 0;
-            state = gameState::GAME_OVER_WIN;
-            std::cout << "Countdown ended!\n";
+            return true;
         }
     }
     }
+    return false;
 }
 
 void HUD::render(Graphics& graphics, SDL_Renderer* renderer, int score) {
@@ -304,4 +338,7 @@ void HUD::render(Graphics& graphics, SDL_Renderer* renderer, int score) {
 
 void HUD::cleanUp() {
     SDL_DestroyTexture(scoreText);
+    SDL_DestroyTexture(countDownText);
+    timer = playTime;
+    countdownActive = true;
 }

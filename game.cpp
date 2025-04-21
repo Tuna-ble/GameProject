@@ -9,40 +9,44 @@ void Game::init()
 
     font = graphics.loadFont("assets/font.ttf", 300);
 
-    currentState = gameState::MAIN_MENU;
-    mainMenu.init(graphics, font);
-    pauseMenu.init(graphics, font);
-    settingsMenu.init(graphics, font);
-    hud.init(font);
-
     musicAndSFX.loadMusic("audio/OST.mp3");
     musicAndSFX.loadSound("shoot", "audio/shoot.flac");
     musicAndSFX.loadSound("hit", "audio/hit.mp3");
     musicAndSFX.loadSound("explosion", "audio/explosion.mp3");
+    musicAndSFX.loadSound("hover", "audio/hover.mp3");
+    musicAndSFX.loadSound("click", "audio/click.mp3");
 
-    background = graphics.loadTexture("assets/background1.png");
+    graphics.loadTexture("background", "assets/background1.png");
 
-    spaceShip = graphics.loadTexture("assets/spaceships.png");
+    graphics.loadTexture("spaceShip", "assets/spaceships.png");
 
-    bullet = graphics.loadTexture("assets/projectiles.png");
+    graphics.loadTexture("bullet", "assets/projectiles.png");
 
-    enemy = graphics.loadTexture("assets/spaceships.png");
+    graphics.loadTexture("enemy", "assets/spaceships.png");
 
-    asteroid = graphics.loadTexture("assets/asteroid.png");
+    graphics.loadTexture("asteroid", "assets/asteroid.png");
 
-    sprite = graphics.loadTexture("assets/thruster.png");
+    graphics.loadTexture("thruster", "assets/thruster.png");
 
-    healthBar = graphics.loadTexture("assets/healthBar.png");
+    graphics.loadTexture("healthBar", "assets/healthBar.png");
 
-    health = graphics.loadTexture("assets/health.png");
+    graphics.loadTexture("health", "assets/health.png");
 
-    HealthBar::setTextures(healthBar, health);
+    graphics.loadTexture("power-up", "assets/power-up.png");
 
-    player.init(bullet, sprite, musicAndSFX);
+    HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
 
-    enemies.init(enemy, musicAndSFX);
+    currentState = gameState::MAIN_MENU;
+    mainMenu.init(graphics, font);
+    pauseMenu.init(graphics, font, musicAndSFX);
+    settingsMenu.init(graphics, font, musicAndSFX);
+    hud.init(font);
 
-    asteroids.init(asteroid, musicAndSFX);
+    player.init(graphics, musicAndSFX);
+
+    enemies.init(graphics, musicAndSFX);
+
+    asteroids.init(graphics, musicAndSFX);
 
     /*cursor = graphics.loadTexture("cursor.png");
     SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
@@ -54,25 +58,27 @@ void Game::update(float deltaTime)
     player.update(deltaTime, camera);
     camera.update(player);
 
-    enemies.spawn(enemies.enemyTexture, bullet, sprite, camera);
+    enemies.spawn(camera);
     enemies.update(deltaTime, player);
 
-    asteroids.spawn(asteroid, camera);
+    asteroids.spawn(camera);
     asteroids.update(deltaTime);
 
     collision.checkAll(enemies.enemies, asteroids.asteroids, player);
 
     score = enemies.getScore;
-    hud.update(deltaTime);
 
-    if (player.health.current <= 0) {
-        currentState = gameState::GAME_OVER_LOSE;
-        gameOver.init(graphics, font, score);
-        return;
-    }
-    else if (enemies.deadCount == 1000) {
+    if (hud.win(deltaTime)) {
         currentState = gameState::GAME_OVER_WIN;
         gameOver.init(graphics, font, score);
+        hud.cleanUp();
+        return;
+    }
+
+    else if (player.health.current <= 0) {
+        currentState = gameState::GAME_OVER_LOSE;
+        gameOver.init(graphics, font, score);
+        hud.cleanUp();
         return;
     }
 }
@@ -80,10 +86,10 @@ void Game::update(float deltaTime)
 void Game::render()
 {
     SDL_RenderClear(graphics.renderer);
-    tile.render(graphics.renderer, background, camera);
+    tile.render(graphics.renderer, graphics.getTexture("background"), camera);
 
     //camera.getViewRect();
-    player.render(graphics.renderer, spaceShip, camera, ID);
+    player.render(graphics.renderer, camera, ID);
 
     enemies.render(graphics.renderer, camera);
 
@@ -140,6 +146,7 @@ void Game::run() {
         switch (currentState) {
             case gameState::MAIN_MENU:
                 restart();
+                musicAndSFX.playMusic();
                 mainMenu.render(graphics.renderer);
                 break;
 
@@ -194,9 +201,5 @@ void Game::quit()
     musicAndSFX.cleanUp();
     SDL_DestroyTexture( text );
     TTF_CloseFont( font );
-    SDL_DestroyTexture(spaceShip);
-    spaceShip = NULL;
-    SDL_DestroyTexture(background);
-    background = NULL;
     graphics.quit();
 }

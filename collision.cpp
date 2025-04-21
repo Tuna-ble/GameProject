@@ -42,9 +42,9 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
         if (!e.alive) continue;
         if (enemyXPlayer(player, e)) {
             e.alive = false;
-            e.SFX.playSound("explosion");
+            e.SFX->playSound("explosion");
             player.health.takeDamage(e.damage);
-            player.SFX.playSound("hit");
+            player.SFX->playSound("hit");
             std::cerr << "You are caught in explosion" << "\n";
             std::cerr << "Health :" << player.health.getPercent() << "\n";
         }
@@ -54,7 +54,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             if (bulletXPlayer(player, b)) {
             b.active = false;
             player.health.takeDamage(e.damage);
-            player.SFX.playSound("hit");
+            player.SFX->playSound("hit");
             player.hurtTimer = player.hurtDuration;
             std::cerr << "You are shot" << "\n";
             std::cerr << "Health :" << player.health.getPercent() << "\n";
@@ -71,11 +71,11 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             if (bulletXEnemy(e, b)) {
                 b.active = false;
                 e.health.takeDamage(player.damage);
-                player.SFX.playSound("hit");
+                player.SFX->playSound("hit");
                 e.hurtTimer = e.hurtDuration;
                 if (e.health.isDead()) {
                     e.alive = false;
-                    e.SFX.playSound("explosion");
+                    e.SFX->playSound("explosion");
                 }
             }
         }
@@ -87,7 +87,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
         if (asteroidXPlayer(player, a)) {
             a.active = false;
             player.health.takeDamage(a.damage);
-            player.SFX.playSound("hit");
+            player.SFX->playSound("hit");
             player.hurtTimer = player.hurtDuration;
             a.SFX.playSound("explosion");
         }

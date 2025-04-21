@@ -2,7 +2,6 @@
 
 SDL_Texture* HealthBar::barTexture;
 SDL_Texture* HealthBar::fillTexture;
-
 // ==== Health ====
 
 Health::Health() = default;

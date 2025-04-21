@@ -19,4 +19,4 @@ struct Sprite {
     void render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, int size, float angle);
 };
 
-#endif // SPRITE_H_INCLUDED, const Sprite& sprite
+#endif // SPRITE_H_INCLUDED

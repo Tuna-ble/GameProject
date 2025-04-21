@@ -14,6 +14,7 @@ const int backgroundSize = 512;
 const int mapWidth = 1800;
 const int mapHeight = 1400;
 const int ID = 1;
+const int playTime = 60;
 const int EXPLOSION_CLIPS[][4] = {
     { 0, 32, 32, 32}, { 32, 32, 32, 32 },
     { 64, 32, 32, 32}, { 96, 32, 32, 32},

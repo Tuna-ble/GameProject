@@ -34,15 +34,6 @@ struct Game{
 
     TTF_Font* font;
     SDL_Texture* text;
-    SDL_Texture* background;
-    SDL_Texture* spaceShip;
-    SDL_Texture* cursor;
-    SDL_Texture* bullet;
-    SDL_Texture* enemy;
-    SDL_Texture* asteroid;
-    SDL_Texture* sprite;
-    SDL_Texture* healthBar;
-    SDL_Texture* health;
 
     gameState currentState;
 

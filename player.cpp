@@ -1,10 +1,11 @@
 #include "player.h"
 
-void Player::init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture, Audio& sound) {
-    bullets.init(bulletTexture);
-    thruster.init(thrusterTexture, SHIP_FRAMES, SHIP_CLIPS);
+void Player::init(Graphics& graphics, Audio& sound) {
+    playerTexture = graphics.getTexture("spaceShip");
+    bullets.init(graphics.getTexture("bullet"));
+    thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
     health = Health(4);
-    SFX = sound;
+    SFX = &sound;
 }
 
 void Player::handleInput(SDL_Event& event, Camera &camera) {
@@ -26,7 +27,7 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
             float bulletAngle = atan2(worldMouse.y - spawn.y - BULLET_SIZE / 2, worldMouse.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
             bullets.shoot(spawn, direction, damage, bullets.bulletSpeed, bulletSrcRect, bulletAngle, bulletFrom::PLAYER);
 
-            SFX.playSound("shoot");
+            SFX->playSound("shoot");
 
             break;
     }
@@ -68,7 +69,7 @@ void Player::update(float deltaTime, Camera &camera) {
     bullets.update(deltaTime);
 }
 
-void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID) {
+void Player::render(SDL_Renderer* renderer, Camera &camera, int ID) {
     Vector2D draw = position - camera.position;
 
     if (hurtTimer > 0.0f) {
@@ -79,17 +80,19 @@ void Player::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera
     SDL_Rect dest = { static_cast<int>(draw.x), static_cast<int>(draw.y), SHIP_SIZE, SHIP_SIZE };
 
     if (hurtTimer > 0.0f)
-    SDL_SetTextureColorMod(texture, 255, 100, 100);
+    SDL_SetTextureColorMod(playerTexture, 255, 100, 100);
     else
-    SDL_SetTextureColorMod(texture, 255, 255, 255);
+    SDL_SetTextureColorMod(playerTexture, 255, 255, 255);
 
     thruster.render(renderer, position, camera, SHIP_SIZE, angle);
 
-    SDL_RenderCopyEx(renderer, texture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, playerTexture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
     bullets.render(renderer, camera);
 
     healthBar.render(renderer, health, {20 , 20}, 200, 30);
+
+    std::cerr << "Player: " << position.x << ", " << position.y << "\n";
 }
 
 void Player::reset() {

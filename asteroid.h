@@ -37,13 +37,13 @@ struct AsteroidManager {
     float spawnTimer = 0.0f;
     float spawnCooldown;
 
-    void init(SDL_Texture* texture, Audio& sound);
+    void init(Graphics& graphics, Audio& sound);
 
     void resetSpawnTimer();
     bool spawnON();
 
     Vector2D spawnOutsideCamera(Camera& camera, int margin);
-    void spawn(SDL_Texture* texture, Camera& camera);
+    void spawn(Camera& camera);
     void update(float deltaTime);
     void render(SDL_Renderer* renderer, Camera &camera);
     void reset();

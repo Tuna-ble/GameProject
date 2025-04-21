@@ -9,6 +9,7 @@
 #include "health.h"
 #include "sprite.h"
 #include "audio.h"
+#include "graphics.h"
 
 struct Player;
 
@@ -24,10 +25,11 @@ struct Enemy {
     BulletManager bullets;
     Health health;
     Sprite thruster;
-    Audio SFX;
+    Audio* SFX;
     HealthBar healthBar;
     Sprite explosion;
 
+    std::pair<int, int> shipTypes[4] = { {0, 0}, {2, 0}, {0, 1}, {3, 1} };
     int speed;
 
     float shootTimer;
@@ -39,8 +41,8 @@ struct Enemy {
     SDL_Rect srcRect;
     SDL_Rect bulletSrcRect;
 
-    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio& sound);
-    void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera);
+    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio* sound);
+    void render(SDL_Renderer* renderer, Camera &camera);
     void update(float deltaTime, Player &player);
 
     void resetShootTimer();
@@ -51,7 +53,9 @@ struct Enemy {
 struct EnemyManager {
     std::vector <Enemy> enemies;
     SDL_Texture* enemyTexture;
-    Audio SFX;
+    SDL_Texture* thrusterTexture;
+    SDL_Texture* bulletTexture;
+    Audio* SFX;
 
     int deadCount = 0;
     int getScore = 0;
@@ -59,13 +63,13 @@ struct EnemyManager {
     float spawnTimer = 0.0f;
     float spawnCooldown;
 
-    void init(SDL_Texture* texture, Audio& sound);
+    void init(Graphics& graphics, Audio& sound);
 
     void resetSpawnTimer();
     bool spawnON();
 
     Vector2D spawnEnemyOutsideCamera(Camera& camera, int margin = 200);
-    void spawn(SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Camera& camera);
+    void spawn(Camera& camera);
     void update(float deltaTime, Player &player);
     void render(SDL_Renderer* renderer, Camera &camera);
     void reset();

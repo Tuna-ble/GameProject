@@ -18,9 +18,13 @@ struct UIButton {
     bool mouseHover = false;
     bool wasHovering = false;
 
+    bool isToggle = false;
+    bool isOn = true;
+
     Audio SFX;
 
     void init(Graphics& graphics, const char* textname, TTF_Font* textFont, SDL_Color color, SDL_Rect _rect);
+    void setToggle(bool toggle, bool startOn);
     void render(SDL_Renderer* renderer);
     void updateHover(int mouseX, int mouseY);
     bool isClicked(SDL_Event& e);
@@ -62,9 +66,10 @@ struct PauseMenu {
     TTF_Font* font;
     SDL_Color textColor = {255, 255, 255};
     SDL_Rect pausedRect;
+    Audio* audioPtr;
 
     PauseMenu(gameState& s);
-    void init(Graphics& graphics, TTF_Font* textFont);
+    void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(SDL_Renderer* renderer);
     void cleanUp();
@@ -82,9 +87,10 @@ struct SettingsMenu {
     TTF_Font* font;
     SDL_Color textColor = {255, 255, 255};
     SDL_Rect settingsRect;
+    Audio* audioPtr;
 
     SettingsMenu(gameState& s);
-    void init(Graphics& graphics, TTF_Font* textFont);
+    void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(SDL_Renderer* renderer);
     void cleanUp();
@@ -117,7 +123,7 @@ struct HUD {
     SDL_Texture* scoreText;
     SDL_Texture* countDownText;
 
-    int timer = 20;
+    int timer = playTime;
     float countdownTimer = 0.0f;
     bool countdownActive = true;
 
@@ -130,7 +136,7 @@ struct HUD {
     HUD(gameState& s);
     void init(TTF_Font* textFont);
     void render(Graphics& graphics, SDL_Renderer* renderer, int score);
-    void update(float deltaTime);
+    bool win(float deltaTime);
     void cleanUp();
 };
 

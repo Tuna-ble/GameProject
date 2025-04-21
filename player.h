@@ -13,14 +13,14 @@
 
 struct Camera;
 
-struct Player{
+struct Player {
     BulletManager bullets;
     Health health;
     Sprite thruster;
     Vector2D position = {startX, startY};
     Vector2D velocity;
     SDL_Texture* playerTexture;
-    Audio SFX;
+    Audio* SFX;
     HealthBar healthBar;
 
     float healTimer = 0.0f;
@@ -37,8 +37,8 @@ struct Player{
     const SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
     SDL_Rect healthBarRect = { 20, 20, 200, 30 };
 
-    void init(SDL_Texture* bulletTexture, SDL_Texture* thrusterTexture, Audio& SFX);
-    void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera, int ID);
+    void init(Graphics& graphics, Audio& SFX);
+    void render(SDL_Renderer* renderer, Camera &camera, int ID);
     void renderCursor();
     void handleInput(SDL_Event& event, Camera &camera);
     void update(float deltaTime, Camera &camera);

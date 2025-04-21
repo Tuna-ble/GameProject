@@ -3,19 +3,22 @@
 #define ID 0
 // ==== Enemy ====
 
-Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio& sound)
+Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio* sound)
     : position(position), texture(texture), dest(dest), alive(true), health(4) {
         bullets.init(bullet);
         thruster.init(thrusterTexture, SHIP_FRAMES, SHIP_CLIPS);
-        srcRect = { (ID % 4) * 128, (ID / 2) * 128, 128, 128 };
+
+        auto [x, y] = shipTypes[rand() % 4];
+        srcRect = { x * 128, y * 128, 128, 128 };
         bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
+
         SFX = sound;
         speed = rand() % 150;
         shootCooldown = (float)(1 + rand() % 3);
         shootTimer = (float)(rand() % 1000) / 1000.0f;
     }
 
-void Enemy::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera) {
+void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     if (!alive) return;
 
     float angle = atan2(velocity.y, velocity.x) * 180 / M_PI + 90;
@@ -62,7 +65,7 @@ void Enemy::update(float deltaTime, Player &player) {
 
             int bulletSpeed = 40 + rand() % bullets.bulletSpeed;
             bullets.shoot(spawn, direction, damage, bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
-            SFX.playSound("shoot");
+            SFX->playSound("shoot");
 
             resetShootTimer();
             }
@@ -86,9 +89,11 @@ void Enemy::resetShootTimer() {
 
 // ==== Enemy Manager ====
 
-void EnemyManager::init(SDL_Texture* texture, Audio& sound) {
-    enemyTexture = texture;
-    SFX = sound;
+void EnemyManager::init(Graphics& graphics, Audio& sound) {
+    enemyTexture = graphics.getTexture("spaceShip");
+    thrusterTexture = graphics.getTexture("thruster");
+    bulletTexture = graphics.getTexture("bullet");
+    SFX = &sound;
     spawnCooldown = (float)(1 + rand() % 2);
 }
 
@@ -126,12 +131,12 @@ Vector2D EnemyManager::spawnEnemyOutsideCamera(Camera& camera, int margin) {
     return Vector2D(x, y);
 }
 
-void EnemyManager::spawn(SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture* thruster, Camera& camera) {
+void EnemyManager::spawn(Camera& camera) {
     if (spawnON()) {
         Vector2D spawn = spawnEnemyOutsideCamera(camera, 200);
         SDL_Rect dest = { spawn.x, spawn.y, ENEMY_SIZE, ENEMY_SIZE };
 
-        enemies.emplace_back(spawn, texture, dest, bullet, thruster, SFX);
+        enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX);
 
         resetSpawnTimer();
     }
@@ -139,7 +144,7 @@ void EnemyManager::spawn(SDL_Texture* texture, SDL_Texture* bullet, SDL_Texture*
 
 void EnemyManager::render(SDL_Renderer* renderer, Camera &camera) {
     for (auto& e : enemies) {
-            e.render(renderer, enemyTexture, camera);
+            e.render(renderer, camera);
             e.bullets.render(renderer, camera);
     }
 }
@@ -161,4 +166,5 @@ void EnemyManager::reset() {
     enemies.clear();
     spawnTimer = 0;
     deadCount = 0;
+    getScore = 0;
 }
