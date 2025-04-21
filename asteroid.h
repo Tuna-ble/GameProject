@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "audio.h"
 #include "background.h"
+#include "explosion.h"
 
 struct Asteroid {
     Vector2D position;
@@ -15,6 +16,7 @@ struct Asteroid {
     SDL_Rect dest;
     int damage = 4;
     bool active;
+    bool exploded = false;
 
     float activeTimer = 0.0f;
     float activeDuration = 15.0f;
@@ -44,7 +46,7 @@ struct AsteroidManager {
 
     Vector2D spawnOutsideCamera(Camera& camera, int margin);
     void spawn(Camera& camera);
-    void update(float deltaTime);
+    void update(float deltaTime, ExplosionManager& explosionManager);
     void render(SDL_Renderer* renderer, Camera &camera);
     void reset();
 };

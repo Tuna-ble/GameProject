@@ -16,13 +16,22 @@ const int mapWidth = 1800;
 const int mapHeight = 1400;
 const int ID = 1;
 const int playTime = 60;
+
 const int EXPLOSION_CLIPS[][4] = {
-    { 0, 32, 32, 32}, { 32, 32, 32, 32 },
-    { 64, 32, 32, 32}, { 96, 32, 32, 32},
-    { 128, 32, 32, 32}, { 160, 32, 32, 32},
-    { 192, 32, 32, 32}, { 224, 32, 32, 32}
+    { 0, 0, 24, 24}, { 24, 0, 24, 24 },
+    { 48, 0, 24, 24}, { 72, 0, 24, 24},
+    { 96, 0, 24, 24}, { 120, 0, 24, 24},
+    { 144, 0, 24, 24}, { 168, 0, 24, 24}
     };
 const int EXPLOSION_FRAMES = sizeof(EXPLOSION_CLIPS)/sizeof(EXPLOSION_CLIPS[0]);
+
+const int ASEXPLOSION_CLIPS[][4] = {
+    { 0, 0, 96, 96}, { 96, 0, 96, 96 },
+    { 192, 0, 96, 96}, { 288, 0, 96, 96},
+    { 384, 0, 96, 96}, { 480, 0, 96, 96},
+    { 576, 0, 96, 96}, { 672, 0, 96, 96}
+    };
+const int ASEXPLOSION_FRAMES = sizeof(ASEXPLOSION_CLIPS)/sizeof(ASEXPLOSION_CLIPS[0]);
 
 const int SHIP_CLIPS[][4] = {
     { 0, 0, 36, 36}, { 36, 0, 36, 36},

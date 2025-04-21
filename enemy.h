@@ -11,6 +11,7 @@
 #include "audio.h"
 #include "graphics.h"
 #include "drop.h"
+#include "explosion.h"
 
 struct Player;
 
@@ -28,7 +29,6 @@ struct Enemy {
     Sprite thruster;
     Audio* SFX;
     HealthBar healthBar;
-    Sprite explosion;
 
     std::pair<int, int> shipTypes[4] = { {0, 0}, {2, 0}, {0, 1}, {3, 1} };
     int speed;
@@ -44,7 +44,7 @@ struct Enemy {
     SDL_Rect srcRect;
     SDL_Rect bulletSrcRect;
 
-    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, SDL_Texture* explosionTexture, Audio* sound);
+    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio* sound);
     void render(SDL_Renderer* renderer, Camera &camera);
     void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops);
 
@@ -57,7 +57,6 @@ struct EnemyManager {
     std::vector <Enemy> enemies;
     SDL_Texture* enemyTexture;
     SDL_Texture* thrusterTexture;
-    SDL_Texture* explosionTexture;
     SDL_Texture* bulletTexture;
     Audio* SFX;
 
@@ -74,7 +73,7 @@ struct EnemyManager {
 
     Vector2D spawnEnemyOutsideCamera(Camera& camera, int margin = 200);
     void spawn(Camera& camera);
-    void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops);
+    void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops, ExplosionManager& explosionManager);
     void render(SDL_Renderer* renderer, Camera &camera);
     void reset();
 };

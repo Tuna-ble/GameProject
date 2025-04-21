@@ -60,8 +60,6 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             player.health.takeDamage(e.damage);
             player.SFX->playSound("hit");
             player.hurtTimer = player.hurtDuration;
-            std::cerr << "You are shot" << "\n";
-            std::cerr << "Health :" << player.health.getPercent() << "\n";
         }
         }
     }

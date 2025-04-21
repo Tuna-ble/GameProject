@@ -79,9 +79,13 @@ void AsteroidManager::spawn(Camera& camera) {
     }
 }
 
-void AsteroidManager::update(float deltaTime) {
+void AsteroidManager::update(float deltaTime, ExplosionManager& explosionManager) {
     for (auto& a : asteroids) {
         a.update(deltaTime);
+        if (!a.active && !a.exploded) {
+            Vector2D spawnPoint = a.position - Vector2D(75, 75);
+            explosionManager.spawn(spawnPoint, explodeType::ASTEROID);
+        }
         }
     spawnTimer += deltaTime;
     asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(),

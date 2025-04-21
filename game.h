@@ -16,6 +16,7 @@
 #include "audio.h"
 #include "asteroid.h"
 #include "score.h"
+#include "explosion.h"
 
 struct Game{
     Graphics graphics;
@@ -32,6 +33,7 @@ struct Game{
     HUD hud;
     DropManager drops;
     Score highScore;
+    ExplosionManager explosionManager;
 
     Audio musicAndSFX;
 

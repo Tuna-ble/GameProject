@@ -47,4 +47,3 @@ void BulletManager::render(SDL_Renderer* renderer, Camera& camera) {
 Vector2D BulletManager::getBulletSpawnPosition(Vector2D& position) const {
     return position + Vector2D(SHIP_SIZE / 2.0f - BULLET_SIZE / 2.0f, SHIP_SIZE / 2.0f - BULLET_SIZE / 2.0f);
 }
-

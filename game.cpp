@@ -43,6 +43,8 @@ void Game::init()
 
     graphics.loadTexture("explosion", "assets/explosion.png");
 
+    graphics.loadTexture("asteroid_explode", "assets/asteroid_explode.png");
+
     HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
 
     currentState = gameState::MAIN_MENU;
@@ -61,6 +63,8 @@ void Game::init()
 
     drops.init(graphics);
 
+    explosionManager.init(graphics);
+
     /*cursor = graphics.loadTexture("cursor.png");
     SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
     SDL_RenderCopy(graphics.renderer, cursor, NULL, &cursorRect);*/
@@ -72,13 +76,14 @@ void Game::update(float deltaTime)
     camera.update(player);
 
     enemies.spawn(camera);
-    enemies.update(deltaTime, graphics, player, drops);
+    enemies.update(deltaTime, graphics, player, drops, explosionManager);
 
     asteroids.spawn(camera);
-    asteroids.update(deltaTime);
+    asteroids.update(deltaTime, explosionManager);
 
     drops.update(deltaTime);
-    drops.render(graphics.renderer, camera);
+
+    explosionManager.update(deltaTime);
 
     collision.checkAll(enemies.enemies, asteroids.asteroids, drops.drops, player);
 
@@ -117,6 +122,8 @@ void Game::render()
     hud.render(graphics, graphics.renderer, score);
 
     drops.render(graphics.renderer, camera);
+
+    explosionManager.render(graphics.renderer, camera);
 
     graphics.presentScene();
 }

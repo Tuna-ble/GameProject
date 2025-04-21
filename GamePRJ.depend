@@ -6,7 +6,7 @@
 	<ctime>
 	"game.h"
 
-1745233885 c:\users\admin\gamepr\def.h
+1745244759 c:\users\admin\gamepr\def.h
 	<bits/stdc++.h>
 
 1745210648 c:\users\admin\gamepr\graphics.h
@@ -19,7 +19,7 @@
 1745211437 source:c:\users\admin\gamepr\graphics.cpp
 	"graphics.h"
 
-1745226744 c:\users\admin\gamepr\game.h
+1745241243 c:\users\admin\gamepr\game.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -36,8 +36,9 @@
 	"audio.h"
 	"asteroid.h"
 	"score.h"
+	"explosion.h"
 
-1745237032 source:c:\users\admin\gamepr\game.cpp
+1745245249 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
 
 1745231407 source:c:\users\admin\gamepr\player.cpp
@@ -67,7 +68,7 @@
 1745237032 source:c:\users\admin\gamepr\background.cpp
 	"background.h"
 
-1745130457 source:c:\users\admin\gamepr\bullet.cpp
+1745240827 source:c:\users\admin\gamepr\bullet.cpp
 	"player.h"
 	"bullet.h"
 
@@ -78,7 +79,7 @@
 	"background.h"
 	"vector2D.h"
 
-1745228837 c:\users\admin\gamepr\enemy.h
+1745244161 c:\users\admin\gamepr\enemy.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -90,8 +91,9 @@
 	"audio.h"
 	"graphics.h"
 	"drop.h"
+	"explosion.h"
 
-1745229286 source:c:\users\admin\gamepr\enemy.cpp
+1745244161 source:c:\users\admin\gamepr\enemy.cpp
 	"enemy.h"
 
 1745230085 source:c:\users\admin\gamepr\collision.cpp
@@ -159,7 +161,7 @@
 	<string>
 	"def.h"
 
-1745211146 c:\users\admin\gamepr\asteroid.h
+1745244161 c:\users\admin\gamepr\asteroid.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -167,8 +169,9 @@
 	"sprite.h"
 	"audio.h"
 	"background.h"
+	"explosion.h"
 
-1745211146 source:c:\users\admin\gamepr\asteroid.cpp
+1745245759 source:c:\users\admin\gamepr\asteroid.cpp
 	"asteroid.h"
 
 1745225704 source:c:\users\admin\gamepr\drop.cpp
@@ -190,4 +193,14 @@
 
 1745226744 source:c:\users\admin\gamepr\score.cpp
 	"score.h"
+
+1745245290 c:\users\admin\gamepr\explosion.h
+	<SDL.h>
+	<SDL_image.h>
+	"sprite.h"
+	"vector2D.h"
+	"graphics.h"
+
+1745245428 source:c:\users\admin\gamepr\explosion.cpp
+	"explosion.h"
 
