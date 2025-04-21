@@ -58,8 +58,8 @@ void Game::update(float deltaTime)
     player.update(deltaTime, camera);
     camera.update(player);
 
-    enemies.spawn(camera);
-    enemies.update(deltaTime, player);
+//    enemies.spawn(camera);
+//    enemies.update(deltaTime, player);
 
     asteroids.spawn(camera);
     asteroids.update(deltaTime);
