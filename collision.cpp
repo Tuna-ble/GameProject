@@ -51,8 +51,6 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             e.SFX->playSound("explosion");
             player.health.takeDamage(e.damage);
             player.SFX->playSound("hit");
-            std::cerr << "You are caught in explosion" << "\n";
-            std::cerr << "Health :" << player.health.getPercent() << "\n";
         }
 
         for (auto& b : e.bullets.bullets) {

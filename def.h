@@ -11,7 +11,7 @@ const int BULLET_SIZE = 30;
 const int DROP_SIZE = 30;
 const int FPS = 60;
 const int FRAME_DELAY = 1000 / FPS;
-const int backgroundSize = 512;
+const int backgroundSize = 1500;
 const int mapWidth = 1800;
 const int mapHeight = 1400;
 const int ID = 1;
@@ -22,7 +22,7 @@ const int EXPLOSION_CLIPS[][4] = {
     { 128, 32, 32, 32}, { 160, 32, 32, 32},
     { 192, 32, 32, 32}, { 224, 32, 32, 32}
     };
-const int EXPLOSION_FRAMES = sizeof(EXPLOSION_CLIPS)/sizeof(int)/4;
+const int EXPLOSION_FRAMES = sizeof(EXPLOSION_CLIPS)/sizeof(EXPLOSION_CLIPS[0]);
 
 const int SHIP_CLIPS[][4] = {
     { 0, 0, 36, 36}, { 36, 0, 36, 36},

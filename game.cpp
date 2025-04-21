@@ -17,7 +17,13 @@ void Game::init()
     musicAndSFX.loadSound("click", "audio/click.mp3");
     musicAndSFX.loadSound("getBuff", "audio/getBuff.mp3");
 
-    graphics.loadTexture("background", "assets/background1.png");
+    graphics.loadTexture("background", "assets/background0.png");
+    graphics.loadTexture("background1", "assets/background1.png");
+    graphics.loadTexture("background2", "assets/background2.png");
+    graphics.loadTexture("background3", "assets/background3.png");
+    graphics.loadTexture("background4", "assets/background4.png");
+    graphics.loadTexture("background5", "assets/background5.png");
+    graphics.loadTexture("background6", "assets/background6.png");
 
     graphics.loadTexture("spaceShip", "assets/spaceships.png");
 
@@ -35,6 +41,8 @@ void Game::init()
 
     graphics.loadTexture("power-up", "assets/power-up.png");
 
+    graphics.loadTexture("explosion", "assets/explosion.png");
+
     HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
 
     currentState = gameState::MAIN_MENU;
@@ -42,6 +50,8 @@ void Game::init()
     pauseMenu.init(graphics, font, musicAndSFX);
     settingsMenu.init(graphics, font, musicAndSFX);
     hud.init(font);
+
+    tile.init(graphics);
 
     player.init(graphics, musicAndSFX);
 
@@ -95,7 +105,7 @@ void Game::update(float deltaTime)
 void Game::render()
 {
     SDL_RenderClear(graphics.renderer);
-    tile.render(graphics.renderer, graphics.getTexture("background"), camera);
+    tile.render(graphics.renderer, camera);
 
     //camera.getViewRect();
     player.render(graphics.renderer, camera, ID);

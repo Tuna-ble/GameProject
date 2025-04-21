@@ -5,6 +5,7 @@
 #include "def.h"
 #include "player.h"
 #include "vector2d.h"
+#include "graphics.h"
 
 struct Player;
 
@@ -19,11 +20,15 @@ struct Camera
 
 struct TiledRenderer
 {
-    float parallaxStrength = 1.0f;
+    SDL_Texture* backgroundTexture[6];
+    float parallaxStrength[6];
+    float plusVal = 0.1f;
+    float baseParallax = 0.5f;
     int tileWidth;
     int tileHeight;
 
-    void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera& camera);
+    void init(Graphics& graphics);
+    void render(SDL_Renderer* renderer, Camera& camera);
 };
 
 #endif // BACKGROUND_H_INCLUDED

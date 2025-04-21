@@ -56,7 +56,6 @@ void Player::update(float deltaTime, Camera &camera) {
     if (health.getPercent() < 1.0f) healTimer += deltaTime;
     if (healTimer >= healCooldown) {
         health.heal(2);
-        std::cerr << "Health :" << health.getPercent() << "\n";
         healTimer = 0.0f;
     }
 
@@ -96,7 +95,8 @@ void Player::render(SDL_Renderer* renderer, Camera &camera, int ID) {
 void Player::getBuff(int value, dropType type) {
     switch (type) {
     case dropType::HEALTH:
-        health.current += value;
+        if (health.current + value > health.cap) health.current = health.cap;
+        else health.current += value;
         break;
     case dropType::DAMAGE:
         damage += value;

@@ -32,6 +32,8 @@ struct Enemy {
 
     std::pair<int, int> shipTypes[4] = { {0, 0}, {2, 0}, {0, 1}, {3, 1} };
     int speed;
+    bool dropped = false;
+    bool exploded = false;
 
     float shootTimer;
     float shootCooldown;
@@ -42,7 +44,7 @@ struct Enemy {
     SDL_Rect srcRect;
     SDL_Rect bulletSrcRect;
 
-    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio* sound);
+    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, SDL_Texture* explosionTexture, Audio* sound);
     void render(SDL_Renderer* renderer, Camera &camera);
     void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops);
 
@@ -55,6 +57,7 @@ struct EnemyManager {
     std::vector <Enemy> enemies;
     SDL_Texture* enemyTexture;
     SDL_Texture* thrusterTexture;
+    SDL_Texture* explosionTexture;
     SDL_Texture* bulletTexture;
     Audio* SFX;
 

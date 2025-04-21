@@ -28,3 +28,26 @@ void Sprite::render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, 
     SDL_Rect dest = { (int)drawPos.x, (int)drawPos.y, size, size };
     SDL_RenderCopyEx(renderer, texture, clip, &dest, angle, NULL, SDL_FLIP_NONE);
 }
+
+void Sprite::animate(float deltaTime) {
+    if (finished) return;
+
+    elapsedTime += deltaTime;
+    if (elapsedTime >= frameTime) {
+        elapsedTime = 0.0f;
+        currentFrame++;
+
+        if (currentFrame >= clips.size()) {
+            if (loop) {
+                currentFrame = 0;
+            } else {
+                currentFrame = clips.size() - 1;
+                finished = true;
+            }
+        }
+    }
+}
+
+bool Sprite::isFinished() const {
+    return finished;
+}

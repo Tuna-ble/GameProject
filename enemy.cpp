@@ -3,10 +3,11 @@
 #define ID 0
 // ==== Enemy ====
 
-Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio* sound)
+Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, SDL_Texture* explosionTexture, Audio* sound)
     : position(position), texture(texture), dest(dest), alive(true), health(4) {
         bullets.init(bullet);
         thruster.init(thrusterTexture, SHIP_FRAMES, SHIP_CLIPS);
+        explosion.init(explosionTexture, EXPLOSION_FRAMES, EXPLOSION_CLIPS);
 
         auto [x, y] = shipTypes[rand() % 4];
         srcRect = { x * 128, y * 128, 128, 128 };
@@ -19,7 +20,7 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
     }
 
 void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
-    if (!alive) return;
+    if (!alive && !dropped) return;
 
     float angle = atan2(velocity.y, velocity.x) * 180 / M_PI + 90;
     Vector2D draw = position - camera.position;
@@ -40,11 +41,17 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
 
+    if (health.current > 0) {
     thruster.render(renderer, position, camera, ENEMY_SIZE, angle);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
     healthBar.render(renderer, health, position - camera.position, 75, 20);
+    }
+    else if (exploded && !explosion.isFinished()) {
+    explosion.render(renderer, position, camera, ENEMY_SIZE, 0);
+    std::cerr << "Exploded" << "\n";
+    }
 }
 
 void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops) {
@@ -74,9 +81,21 @@ void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropMana
         hurtTimer -= deltaTime;
     }
 
-    if (health.current <= 0) {
-        if (rand() % 100 > 70)
-        drops.spawn(position);
+    if (health.current <= 0 && !dropped) {
+        if (rand() % 100 > 70) drops.spawn(position);
+        dropped = true;
+
+        if (!exploded) {
+        explosion.currentFrame = 0;
+        explosion.elapsedTime = 0;
+        explosion.finished = false;
+        explosion.loop = false;
+        exploded = true;
+        }
+        explosion.animate(deltaTime);
+        if (explosion.isFinished()) {
+        alive = false;
+    }
     }
 
     thruster.update();
@@ -98,6 +117,7 @@ void Enemy::resetShootTimer() {
 void EnemyManager::init(Graphics& graphics, Audio& sound) {
     enemyTexture = graphics.getTexture("spaceShip");
     thrusterTexture = graphics.getTexture("thruster");
+    explosionTexture = graphics.getTexture("explosion");
     bulletTexture = graphics.getTexture("bullet");
     SFX = &sound;
     spawnCooldown = (float)(1 + rand() % 2);
@@ -142,7 +162,7 @@ void EnemyManager::spawn(Camera& camera) {
         Vector2D spawn = spawnEnemyOutsideCamera(camera, 200);
         SDL_Rect dest = { spawn.x, spawn.y, ENEMY_SIZE, ENEMY_SIZE };
 
-        enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX);
+        enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, explosionTexture, SFX);
 
         resetSpawnTimer();
     }

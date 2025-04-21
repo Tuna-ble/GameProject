@@ -12,9 +12,19 @@ void Camera::update(Player &player)
 
 // ==== Map ====
 
-void TiledRenderer::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera& camera)
+void TiledRenderer::init(Graphics& graphics) {
+    for (int i = 0; i < 6; i++) {
+        std::string name = "background" + std::to_string(i+1);
+        backgroundTexture[i] = graphics.getTexture(name.c_str());
+        parallaxStrength[i] = baseParallax;
+        baseParallax += plusVal;
+    }
+}
+
+void TiledRenderer::render(SDL_Renderer* renderer, Camera& camera)
 {
-    Vector2D scrollPos = camera.position * parallaxStrength;
+    for (int i = 0; i < 6; i++) {
+    Vector2D scrollPos = camera.position * parallaxStrength[i];
 
     int tileXStart = (int)std::floor(scrollPos.x / backgroundSize);
     int tileYStart = (int)std::floor(scrollPos.y / backgroundSize);
@@ -28,7 +38,8 @@ void TiledRenderer::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera&
             int posY = (tileYStart + y) * backgroundSize - (int)scrollPos.y;
 
             SDL_Rect dst = { posX, posY, backgroundSize, backgroundSize };
-            SDL_RenderCopy(renderer, texture, NULL, &dst);
+            SDL_RenderCopy(renderer, backgroundTexture[i], NULL, &dst);
         }
+    }
     }
 }
