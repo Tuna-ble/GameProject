@@ -37,7 +37,13 @@ bool Collision::asteroidXPlayer(Player& player, Asteroid& asteroid) {
     return false;
 }
 
-void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& asteroids, Player& player) {
+bool Collision::dropXPlayer(Player& player, Drop& drop) {
+    if (checkCollision(drop.position, {DROP_SIZE, DROP_SIZE}, player.position, {SHIP_SIZE, SHIP_SIZE}))
+        return true;
+    return false;
+}
+
+void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& asteroids, std::vector<Drop>& drops, Player& player) {
     for (auto& e : enemies) {
         if (!e.alive) continue;
         if (enemyXPlayer(player, e)) {
@@ -90,6 +96,16 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             player.SFX->playSound("hit");
             player.hurtTimer = player.hurtDuration;
             a.SFX.playSound("explosion");
+        }
+    }
+
+    for (auto& d : drops) {
+        if (!d.active) continue;
+
+        if (dropXPlayer(player, d)) {
+            d.active = false;
+            player.SFX->playSound("getBuff");
+            player.getBuff(d.buffValue, d.type);
         }
     }
 }

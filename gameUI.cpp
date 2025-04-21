@@ -243,15 +243,20 @@ GameOver::GameOver(gameState& s) : state(s) {}
 
 void GameOver::init(Graphics& graphics, TTF_Font* textFont, int score) {
     font = textFont;
+    highScore = highestScore.loadHighScore();
 
     const char* result;
     std::string currentScore = "Score: " + std::to_string(score);
+    std::string bestScore = "Best: " + std::to_string(highScore);
+
     if (state == gameState::GAME_OVER_WIN)
         result = "YOU WIN";
     else if (state == gameState::GAME_OVER_LOSE)
         result = "YOU LOSE";
+
     resultText = graphics.renderText(result, font, textColor);
     scoreText = graphics.renderText(currentScore.c_str(), font, textColor);
+    highScoreText = graphics.renderText(bestScore.c_str(), font, textColor);
     retryButton.init(graphics, "Retry", font, textColor, { 360, 320, 180, 50 });
     mainMenuButton.init(graphics, "Main Menu", font, textColor, { 360, 375, 180, 50 });
     quitButton.init(graphics, "Quit", font, textColor, { 360, 430, 180, 50 });
@@ -259,7 +264,8 @@ void GameOver::init(Graphics& graphics, TTF_Font* textFont, int score) {
     backgroundTexture = graphics.getTexture("background");
 
     resultRect = { 300, 150, 300, 75 };
-    scoreRect = { 350, 250, 200, 50 };
+    scoreRect = { 200, 250, 200, 50 };
+    highScoreRect = { 500, 250, 200, 50 };
 }
 
 void GameOver::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
@@ -283,6 +289,7 @@ void GameOver::render(SDL_Renderer* renderer) {
 
     SDL_RenderCopy(renderer, resultText, NULL, &resultRect);
     SDL_RenderCopy(renderer, scoreText, NULL, &scoreRect);
+    SDL_RenderCopy(renderer, highScoreText, NULL, &highScoreRect);
     retryButton.render(renderer);
     mainMenuButton.render(renderer);
     quitButton.render(renderer);

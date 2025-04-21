@@ -15,6 +15,7 @@ void Game::init()
     musicAndSFX.loadSound("explosion", "audio/explosion.mp3");
     musicAndSFX.loadSound("hover", "audio/hover.mp3");
     musicAndSFX.loadSound("click", "audio/click.mp3");
+    musicAndSFX.loadSound("getBuff", "audio/getBuff.mp3");
 
     graphics.loadTexture("background", "assets/background1.png");
 
@@ -48,6 +49,8 @@ void Game::init()
 
     asteroids.init(graphics, musicAndSFX);
 
+    drops.init(graphics);
+
     /*cursor = graphics.loadTexture("cursor.png");
     SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
     SDL_RenderCopy(graphics.renderer, cursor, NULL, &cursorRect);*/
@@ -58,18 +61,24 @@ void Game::update(float deltaTime)
     player.update(deltaTime, camera);
     camera.update(player);
 
-//    enemies.spawn(camera);
-//    enemies.update(deltaTime, player);
+    enemies.spawn(camera);
+    enemies.update(deltaTime, graphics, player, drops);
 
     asteroids.spawn(camera);
     asteroids.update(deltaTime);
 
-    collision.checkAll(enemies.enemies, asteroids.asteroids, player);
+    drops.update(deltaTime);
+    drops.render(graphics.renderer, camera);
+
+    collision.checkAll(enemies.enemies, asteroids.asteroids, drops.drops, player);
 
     score = enemies.getScore;
 
     if (hud.win(deltaTime)) {
         currentState = gameState::GAME_OVER_WIN;
+        if (score > highScore.loadHighScore()) {
+        highScore.saveHighScore(score);
+        }
         gameOver.init(graphics, font, score);
         hud.cleanUp();
         return;
@@ -96,6 +105,8 @@ void Game::render()
     asteroids.render(graphics.renderer, camera);
 
     hud.render(graphics, graphics.renderer, score);
+
+    drops.render(graphics.renderer, camera);
 
     graphics.presentScene();
 }
@@ -187,6 +198,7 @@ void Game::run() {
 }
 
 void Game::restart() {
+    drops.drops.clear();
     player.reset();
     camera.position = {0, 0};
     enemies.reset();

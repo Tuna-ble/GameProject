@@ -8,6 +8,7 @@ const int SHIP_SIZE = 75;
 const int ENEMY_SIZE = 60;
 const int ASTEROID_SIZE = 100;
 const int BULLET_SIZE = 30;
+const int DROP_SIZE = 30;
 const int FPS = 60;
 const int FRAME_DELAY = 1000 / FPS;
 const int backgroundSize = 512;

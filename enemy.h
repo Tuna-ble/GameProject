@@ -10,6 +10,7 @@
 #include "sprite.h"
 #include "audio.h"
 #include "graphics.h"
+#include "drop.h"
 
 struct Player;
 
@@ -43,7 +44,7 @@ struct Enemy {
 
     Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio* sound);
     void render(SDL_Renderer* renderer, Camera &camera);
-    void update(float deltaTime, Player &player);
+    void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops);
 
     void resetShootTimer();
     bool shootON();
@@ -70,7 +71,7 @@ struct EnemyManager {
 
     Vector2D spawnEnemyOutsideCamera(Camera& camera, int margin = 200);
     void spawn(Camera& camera);
-    void update(float deltaTime, Player &player);
+    void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops);
     void render(SDL_Renderer* renderer, Camera &camera);
     void reset();
 };

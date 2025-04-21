@@ -47,7 +47,7 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     healthBar.render(renderer, health, position - camera.position, 75, 20);
 }
 
-void Enemy::update(float deltaTime, Player &player) {
+void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops) {
     Vector2D direction = player.position - position;
 
     direction = direction.normalize();
@@ -74,9 +74,15 @@ void Enemy::update(float deltaTime, Player &player) {
         hurtTimer -= deltaTime;
     }
 
+    if (health.current <= 0) {
+        if (rand() % 100 > 70)
+        drops.spawn(position);
+    }
+
     thruster.update();
 
     bullets.update(deltaTime);
+    drops.update(deltaTime);
 }
 
 bool Enemy::shootON() {
@@ -149,9 +155,9 @@ void EnemyManager::render(SDL_Renderer* renderer, Camera &camera) {
     }
 }
 
-void EnemyManager::update(float deltaTime, Player &player) {
+void EnemyManager::update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops) {
     for (auto& e : enemies) {
-        e.update(deltaTime, player);
+        e.update(deltaTime, graphics, player, drops);
         if (e.health.isDead()) {
             deadCount++;
             getScore+=10;

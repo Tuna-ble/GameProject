@@ -4,7 +4,7 @@ void Player::init(Graphics& graphics, Audio& sound) {
     playerTexture = graphics.getTexture("spaceShip");
     bullets.init(graphics.getTexture("bullet"));
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
-    health = Health(4);
+    health = Health(10);
     SFX = &sound;
 }
 
@@ -91,14 +91,28 @@ void Player::render(SDL_Renderer* renderer, Camera &camera, int ID) {
     bullets.render(renderer, camera);
 
     healthBar.render(renderer, health, {20 , 20}, 200, 30);
+}
 
-    std::cerr << "Player: " << position.x << ", " << position.y << "\n";
+void Player::getBuff(int value, dropType type) {
+    switch (type) {
+    case dropType::HEALTH:
+        health.current += value;
+        break;
+    case dropType::DAMAGE:
+        damage += value;
+        break;
+    case dropType::SPEED:
+        if (speed + value > 400) speed = 400;
+        else speed += value;
+        break;
+    }
 }
 
 void Player::reset() {
     position = {startX, startY};
     velocity = Vector2D(0, 0);
-    health = Health(4);
+    health = Health(10);
     bullets.bullets.clear();
+    speed = 200;
     gameRunning = true;
 }

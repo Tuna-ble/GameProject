@@ -15,7 +15,8 @@ struct Collision {
     bool bulletXPlayer(Player& player, Bullet& bullet);
     bool enemyXPlayer(Player& player, Enemy& enemy);
     bool asteroidXPlayer(Player& player, Asteroid& asteroid);
-    void checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& asteroids, Player& player);
+    bool dropXPlayer(Player& player, Drop& drop);
+    void checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& asteroids, std::vector<Drop>& drops, Player& player);
 };
 
 #endif // COLLISION_H_INCLUDED

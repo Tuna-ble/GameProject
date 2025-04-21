@@ -10,6 +10,7 @@
 #include "sprite.h"
 #include "audio.h"
 #include "gameUI.h"
+#include "dropType.h"
 
 struct Camera;
 
@@ -42,6 +43,7 @@ struct Player {
     void renderCursor();
     void handleInput(SDL_Event& event, Camera &camera);
     void update(float deltaTime, Camera &camera);
+    void getBuff(int value, dropType type);
     void reset();
 };
 

@@ -19,10 +19,9 @@ void Audio::loadMusic(const char* path)
 void Audio::playMusic()
 {
     if (!musicEnabled) {
-        std::cerr << "Music is disabled.\n";
+
         return;
     }
-    std::cerr << "[Music] Playing" << "\n";
     if (music == nullptr) return;
 
     if (Mix_PlayingMusic() == 0) {
@@ -47,10 +46,8 @@ void Audio::loadSound(const char* name, const char* path) {
 
 void Audio::playSound(const char* name) {
     if (!sfxEnabled) {
-        std::cerr << "[SFX] Sound is disabled.\n";
         return;
     }
-    std::cerr << "[SFX] Playing: " << name << "\n";
     auto it = SFX.find(name);
     if (it != SFX.end()) {
         Mix_PlayChannel(-1, it->second, 0);

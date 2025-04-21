@@ -8,6 +8,7 @@
 #include "audio.h"
 #include "health.h"
 #include "def.h"
+#include "score.h"
 
 struct UIButton {
     SDL_Rect rect;
@@ -101,6 +102,7 @@ struct GameOver {
     SDL_Texture* backgroundTexture;
     SDL_Texture* resultText;
     SDL_Texture* scoreText;
+    SDL_Texture* highScoreText;
 
     UIButton retryButton;
     UIButton mainMenuButton;
@@ -110,6 +112,10 @@ struct GameOver {
     SDL_Color textColor = {255, 255, 255};
     SDL_Rect resultRect;
     SDL_Rect scoreRect;
+    SDL_Rect highScoreRect;
+
+    Score highestScore;
+    int highScore;
 
     GameOver(gameState& s);
     void init(Graphics& graphics, TTF_Font* textFont, int score);
