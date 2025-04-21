@@ -306,8 +306,9 @@ void GameOver::cleanUp() {
 
 HUD::HUD(gameState& s) : state(s) {}
 
-void HUD::init(TTF_Font* textFont) {
+void HUD::init(TTF_Font* textFont, Audio& audio) {
     font = textFont;
+    SFX = &audio;
     countdownActive = true;
 }
 
@@ -317,6 +318,9 @@ bool HUD::win(float deltaTime) {
 
     if (countdownTimer >= 1.0f) {
         countdownTimer -= 1.0f; // reset lại, không phải = 0 để giữ chính xác
+
+        if (timer == 5) SFX->playSound("time");
+
         timer--;
 
         if (timer <= 0) {

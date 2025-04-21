@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="asteroid.cpp" />
+		<Unit filename="asteroid.h" />
 		<Unit filename="audio.cpp" />
 		<Unit filename="audio.h" />
 		<Unit filename="background.cpp" />
@@ -43,8 +45,13 @@
 		<Unit filename="def.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="drop.cpp" />
+		<Unit filename="drop.h" />
+		<Unit filename="dropType.h" />
 		<Unit filename="enemy.cpp" />
 		<Unit filename="enemy.h" />
+		<Unit filename="explosion.cpp" />
+		<Unit filename="explosion.h" />
 		<Unit filename="game.cpp" />
 		<Unit filename="game.h" />
 		<Unit filename="gameState.h" />
@@ -57,6 +64,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="player.cpp" />
 		<Unit filename="player.h" />
+		<Unit filename="score.cpp" />
+		<Unit filename="score.h" />
 		<Unit filename="sprite.cpp" />
 		<Unit filename="sprite.h" />
 		<Unit filename="vector2D.cpp" />

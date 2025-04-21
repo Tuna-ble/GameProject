@@ -16,6 +16,9 @@ void Game::init()
     musicAndSFX.loadSound("hover", "audio/hover.mp3");
     musicAndSFX.loadSound("click", "audio/click.mp3");
     musicAndSFX.loadSound("getBuff", "audio/getBuff.mp3");
+    musicAndSFX.loadSound("time", "audio/timeRunning.mp3");
+    musicAndSFX.loadSound("victory", "audio/victory.mp3");
+    musicAndSFX.loadSound("failure", "audio/failed.mp3");
 
     graphics.loadTexture("background", "assets/background0.png");
     graphics.loadTexture("background1", "assets/background1.png");
@@ -51,7 +54,7 @@ void Game::init()
     mainMenu.init(graphics, font);
     pauseMenu.init(graphics, font, musicAndSFX);
     settingsMenu.init(graphics, font, musicAndSFX);
-    hud.init(font);
+    hud.init(font, musicAndSFX);
 
     tile.init(graphics);
 
@@ -95,6 +98,7 @@ void Game::update(float deltaTime)
         highScore.saveHighScore(score);
         }
         gameOver.init(graphics, font, score);
+        musicAndSFX.playSound("victory");
         hud.cleanUp();
         return;
     }
@@ -102,6 +106,7 @@ void Game::update(float deltaTime)
     else if (player.health.current <= 0) {
         currentState = gameState::GAME_OVER_LOSE;
         gameOver.init(graphics, font, score);
+        musicAndSFX.playSound("failure");
         hud.cleanUp();
         return;
     }
@@ -195,6 +200,7 @@ void Game::run() {
             case gameState::GAME_OVER_WIN:
             case gameState::GAME_OVER_LOSE:
                 restart();
+                musicAndSFX.stopMusic();
                 gameOver.render(graphics.renderer);
                 break;
 

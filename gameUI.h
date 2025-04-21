@@ -128,6 +128,7 @@ struct HUD {
     gameState& state;
     SDL_Texture* scoreText;
     SDL_Texture* countDownText;
+    Audio* SFX;
 
     int timer = playTime;
     float countdownTimer = 0.0f;
@@ -140,7 +141,7 @@ struct HUD {
     SDL_Color textColor = {255, 255, 255, 255};
 
     HUD(gameState& s);
-    void init(TTF_Font* textFont);
+    void init(TTF_Font* textFont, Audio& audio);
     void render(Graphics& graphics, SDL_Renderer* renderer, int score);
     bool win(float deltaTime);
     void cleanUp();

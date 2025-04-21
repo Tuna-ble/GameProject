@@ -16,6 +16,7 @@ const int mapWidth = 1800;
 const int mapHeight = 1400;
 const int ID = 1;
 const int playTime = 60;
+const int playerHealth = 4;
 
 const int EXPLOSION_CLIPS[][4] = {
     { 0, 0, 24, 24}, { 24, 0, 24, 24 },

@@ -4,7 +4,7 @@ void Player::init(Graphics& graphics, Audio& sound) {
     playerTexture = graphics.getTexture("spaceShip");
     bullets.init(graphics.getTexture("bullet"));
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
-    health = Health(10);
+    health = Health(playerHealth);
     SFX = &sound;
 }
 
@@ -111,7 +111,7 @@ void Player::getBuff(int value, dropType type) {
 void Player::reset() {
     position = {startX, startY};
     velocity = Vector2D(0, 0);
-    health = Health(10);
+    health = Health(playerHealth);
     bullets.bullets.clear();
     speed = 200;
     gameRunning = true;
