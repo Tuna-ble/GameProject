@@ -16,7 +16,7 @@ const int MAP_WIDTH = 1800;
 const int MAP_HEIGHT = 1400;
 const int ID = 1;
 const int PLAY_TIME = 60;
-const int PLAYER_HEALTH = 4;
+const int PLAYER_HEALTH = 10;
 const int ENEMY_HEALTH = 4;
 const int BASE_SPEED = 200;
 

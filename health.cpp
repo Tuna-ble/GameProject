@@ -34,6 +34,8 @@ void HealthBar::render(SDL_Renderer* renderer, Health& health, Vector2D position
 
     SDL_RenderCopy(renderer, barTexture, nullptr, &healthBarRect);
 
+    float percent = health.getPercent();
+    SDL_SetTextureColorMod(fillTexture, 255 * (1.0f - percent), 255 * percent, 0);
     SDL_RenderCopy(renderer, fillTexture, nullptr, &healthFillRect);
 }
 

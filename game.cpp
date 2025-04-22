@@ -7,7 +7,7 @@ void Game::init()
     graphics.init();
     musicAndSFX.init();
 
-    font = graphics.loadFont("assets/font.ttf", 300);
+    font = graphics.loadFont("assets/oldfont.ttf", 25);
 
     musicAndSFX.loadMusic("audio/OST.mp3");
     musicAndSFX.loadSound("shoot", "audio/shoot.flac");
@@ -47,6 +47,18 @@ void Game::init()
     graphics.loadTexture("explosion", "assets/explosion.png");
 
     graphics.loadTexture("asteroid_explode", "assets/asteroid_explode.png");
+
+    graphics.loadTexture("button", "assets/button.png");
+
+    graphics.loadTexture("musicButton", "assets/music.png");
+
+    graphics.loadTexture("soundButton", "assets/sound.png");
+
+    graphics.loadTexture("pauseWindow", "assets/wdpopup.png");
+
+    graphics.loadTexture("settingWindow", "assets/table.png");
+
+    graphics.loadTexture("pauseHUD", "assets/pause.png");
 
     HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
 
@@ -124,11 +136,11 @@ void Game::render()
 
     asteroids.render(graphics.renderer, camera);
 
-    hud.render(graphics, graphics.renderer, score);
-
     drops.render(graphics.renderer, camera);
 
     explosionManager.render(graphics.renderer, camera);
+
+    hud.render(graphics, graphics.renderer, score);
 
     graphics.presentScene();
 }
@@ -211,7 +223,6 @@ void Game::run() {
 
         graphics.presentScene();
 
-        // optional: cap FPS
         int frameTime = SDL_GetTicks() - currentTime;
         if (frameTime < FRAME_DELAY)
             SDL_Delay(FRAME_DELAY - frameTime);
