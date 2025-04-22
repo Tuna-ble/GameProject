@@ -8,6 +8,7 @@ void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont
     buttonTexture = graphics.getTexture("button");
     musicButtonTexture = graphics.getTexture("musicButton");
     soundButtonTexture = graphics.getTexture("soundButton");
+    pauseButtonTexture = graphics.getTexture("pauseHUD");
     rect = _rect;
 
     int textW, textH;
@@ -65,6 +66,7 @@ void UIButton::render(SDL_Renderer* renderer) {
         SDL_RenderCopy(renderer, button, nullptr, &rect);
     }
     else {
+        if (type == buttonType::PAUSE) button = pauseButtonTexture;
         SDL_SetTextureColorMod(button, mouseHover ? 200 : 255, mouseHover ? 200 : 255, 255);
         SDL_RenderCopy(renderer, button, nullptr, &rect);
     }
@@ -337,20 +339,33 @@ void GameOver::cleanUp() {
 
 HUD::HUD(gameState& s) : state(s) {}
 
-void HUD::init(TTF_Font* textFont, Audio& audio) {
+void HUD::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
     SFX = &audio;
     countdownActive = true;
+
+    pauseButton.setType(buttonType::PAUSE);
+    pauseButton.init(graphics, "", font, textColor, { SCREEN_WIDTH - 60, 20, 40, 40 });
 }
 
-bool HUD::win(float deltaTime) {
+void HUD::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
+    pauseButton.updateHover(mouseX, mouseY);
+
+    if (pauseButton.isClicked(e)) {
+        state = gameState::PAUSED;
+    }
+}
+
+bool HUD::update(float deltaTime) {
     if (countdownActive) {
     countdownTimer += deltaTime;
 
     if (countdownTimer >= 1.0f) {
         countdownTimer -= 1.0f; // reset lại, không phải = 0 để giữ chính xác
 
-        if (timer == 5) SFX->playSound("time");
+        if (timer == 5) {
+            SFX->playSound("time");
+        }
 
         timer--;
 
@@ -366,7 +381,7 @@ bool HUD::win(float deltaTime) {
 
 void HUD::render(Graphics& graphics, SDL_Renderer* renderer, int score) {
     std::string scoreStr = "Score: " + std::to_string(score);
-    std::string countStr = "Time left: " + std::to_string(timer);
+    std::string countStr = "Time: " + std::to_string(timer);
 
     if (scoreText) SDL_DestroyTexture(scoreText);
     if (countDownText) SDL_DestroyTexture(countDownText);
@@ -376,11 +391,15 @@ void HUD::render(Graphics& graphics, SDL_Renderer* renderer, int score) {
 
     SDL_RenderCopy(renderer, scoreText, nullptr, &scoreRect);
     SDL_RenderCopy(renderer, countDownText, nullptr, &countDownRect);
+
+    pauseButton.render(renderer);
 }
 
 void HUD::cleanUp() {
     SDL_DestroyTexture(scoreText);
     SDL_DestroyTexture(countDownText);
+    scoreText = nullptr;
+    countDownText = nullptr;
     timer = PLAY_TIME;
     countdownActive = true;
 }

@@ -12,7 +12,8 @@
 
 enum class buttonType {
     MUSIC,
-    SOUND
+    SOUND,
+    PAUSE
 };
 
 struct UIButton {
@@ -22,6 +23,7 @@ struct UIButton {
     SDL_Texture* buttonTexture;
     SDL_Texture* musicButtonTexture;
     SDL_Texture* soundButtonTexture;
+    SDL_Texture* pauseButtonTexture;
     TTF_Font* font;
     Mix_Chunk* chunk;
     buttonType type;
@@ -141,24 +143,27 @@ struct GameOver {
 
 struct HUD {
     gameState& state;
-    SDL_Texture* scoreText;
-    SDL_Texture* countDownText;
+    SDL_Texture* scoreText = nullptr;
+    SDL_Texture* countDownText = nullptr;
     Audio* SFX;
+
+    UIButton pauseButton;
 
     int timer = PLAY_TIME;
     float countdownTimer = 0.0f;
     bool countdownActive = true;
 
-    SDL_Rect scoreRect = {20, 60, 150, 30};
-    SDL_Rect countDownRect = {20, 95, 150, 30};
+    SDL_Rect scoreRect = {20, 20, 150, 30};
+    SDL_Rect countDownRect = {20, 55, 150, 30};
 
     TTF_Font* font;
     SDL_Color textColor = {255, 255, 255, 255};
 
     HUD(gameState& s);
-    void init(TTF_Font* textFont, Audio& audio);
+    void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
+    void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(Graphics& graphics, SDL_Renderer* renderer, int score);
-    bool win(float deltaTime);
+    bool update(float deltaTime);
     void cleanUp();
 };
 

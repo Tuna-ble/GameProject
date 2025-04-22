@@ -49,7 +49,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
         if (enemyXPlayer(player, e)) {
             e.alive = false;
             e.SFX->playSound("explosion");
-            player.health.takeDamage(e.damage);
+            player.health.takeDamage(e.explosionDamage);
             player.SFX->playSound("hit");
         }
 

@@ -48,23 +48,3 @@ void HealthBar::cleanUp() {
     SDL_DestroyTexture(barTexture);
     SDL_DestroyTexture(fillTexture);
 }
-
-//void Health::renderHealthBar(SDL_Renderer* renderer, SDL_Texture* barTexture, SDL_Texture* fillTexture, SDL_Rect barRect) {
-//    SDL_RenderCopy(renderer, barTexture, nullptr, &barRect);
-//
-//    SDL_Rect fillRect = {
-//        barRect.x,
-//        barRect.y,
-//        static_cast<int>(barRect.w * getPercent()),
-//        barRect.h
-//    };
-//    SDL_RenderCopy(renderer, fillTexture, nullptr, &fillRect);
-//
-////    SDL_Rect border = { (int)position.x, (int)position.y, width, height };
-////    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-////    SDL_RenderDrawRect(renderer, &border);
-////
-////    SDL_Rect fill = { (int)position.x + 1, (int)position.y + 1, (int)((width - 2) * percent), height - 2 };
-////    SDL_SetRenderDrawColor(renderer, 255 * (1.0f - percent), 255 * percent, 0, 255);
-////    SDL_RenderFillRect(renderer, &fill);
-//}

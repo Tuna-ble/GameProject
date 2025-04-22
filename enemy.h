@@ -22,6 +22,7 @@ struct Enemy {
     SDL_Rect dest;
     SDL_Rect healthBarDest;
     int damage = 2;
+    int explosionDamage = 4;
     bool alive;
 
     BulletManager bullets;

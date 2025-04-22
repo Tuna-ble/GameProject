@@ -43,7 +43,6 @@ struct Player {
 
     void init(Graphics& graphics, Audio& SFX);
     void render(SDL_Renderer* renderer, Camera &camera, int ID);
-    void renderCursor();
     void handleInput(SDL_Event& event, Camera &camera);
     void update(float deltaTime, Camera &camera);
     void getBuff(int value, dropType type);

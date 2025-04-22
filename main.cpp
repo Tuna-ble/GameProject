@@ -23,17 +23,6 @@ int main(int argc, char *argv[])
     srand(time(0));
     Game game;
     game.init();
-    //SDL_ShowCursor(0);
-
-    /*SDL_Rect rect;
-    rect.x=100;
-    rect.y=100;
-    rect.h=100;
-    rect.w=100;
-    SDL_SetRenderDrawColor(game.renderer, 255, 255, 255, 0 );
-    SDL_RenderFillRect(game.renderer, &rect);
-    SDL_RenderPresent(game.renderer);*/
-
     game.run();
     return 0;
 }

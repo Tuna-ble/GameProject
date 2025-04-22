@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1745290716 source:c:\users\admin\gamepr\main.cpp
+1745327299 source:c:\users\admin\gamepr\main.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
 	<ctime>
 	"game.h"
 
-1745308751 c:\users\admin\gamepr\def.h
+1745327625 c:\users\admin\gamepr\def.h
 	<bits/stdc++.h>
 
 1745210648 c:\users\admin\gamepr\graphics.h
@@ -38,13 +38,13 @@
 	"score.h"
 	"explosion.h"
 
-1745322199 source:c:\users\admin\gamepr\game.cpp
+1745327542 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
 
-1745290770 source:c:\users\admin\gamepr\player.cpp
+1745327566 source:c:\users\admin\gamepr\player.cpp
 	"player.h"
 
-1745290741 c:\users\admin\gamepr\player.h
+1745327566 c:\users\admin\gamepr\player.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -79,7 +79,7 @@
 	"background.h"
 	"vector2D.h"
 
-1745244161 c:\users\admin\gamepr\enemy.h
+1745325656 c:\users\admin\gamepr\enemy.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -96,7 +96,7 @@
 1745289160 source:c:\users\admin\gamepr\enemy.cpp
 	"enemy.h"
 
-1745245972 source:c:\users\admin\gamepr\collision.cpp
+1745325656 source:c:\users\admin\gamepr\collision.cpp
 	"collision.h"
 
 1744537513 c:\users\admin\gamepr\vector2d.h
@@ -121,7 +121,7 @@
 	"vector2D.h"
 	"audio.h"
 
-1745308713 source:c:\users\admin\gamepr\health.cpp
+1745327542 source:c:\users\admin\gamepr\health.cpp
 	"health.h"
 
 1745228560 c:\users\admin\gamepr\sprite.h
@@ -134,7 +134,7 @@
 	"sprite.h"
 	"background.h"
 
-1745322539 c:\users\admin\gamepr\gameui.h
+1745324289 c:\users\admin\gamepr\gameui.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -145,15 +145,15 @@
 	"def.h"
 	"score.h"
 
-1745322566 source:c:\users\admin\gamepr\gameui.cpp
+1745326802 source:c:\users\admin\gamepr\gameui.cpp
 	"gameUI.h"
 
 1745116080 c:\users\admin\gamepr\gamestate.h
 
-1745222795 source:c:\users\admin\gamepr\audio.cpp
+1745326793 source:c:\users\admin\gamepr\audio.cpp
 	"audio.h"
 
-1745128251 c:\users\admin\gamepr\audio.h
+1745326793 c:\users\admin\gamepr\audio.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>

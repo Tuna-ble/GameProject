@@ -66,7 +66,7 @@ void Game::init()
     mainMenu.init(graphics, font);
     pauseMenu.init(graphics, font, musicAndSFX);
     settingsMenu.init(graphics, font, musicAndSFX);
-    hud.init(font, musicAndSFX);
+    hud.init(graphics, font, musicAndSFX);
 
     tile.init(graphics);
 
@@ -79,10 +79,6 @@ void Game::init()
     drops.init(graphics);
 
     explosionManager.init(graphics);
-
-    /*cursor = graphics.loadTexture("cursor.png");
-    SDL_Rect cursorRect = { x-16, y-16, 32, 32 };
-    SDL_RenderCopy(graphics.renderer, cursor, NULL, &cursorRect);*/
 }
 
 void Game::update(float deltaTime)
@@ -104,7 +100,7 @@ void Game::update(float deltaTime)
 
     score = enemies.getScore;
 
-    if (hud.win(deltaTime)) {
+    if (hud.update(deltaTime)) {
         currentState = gameState::GAME_OVER_WIN;
         if (score > highScore.loadHighScore()) {
         highScore.saveHighScore(score);
@@ -177,6 +173,7 @@ void Game::run() {
                         currentState = gameState::PAUSED;
                         break;
                     }
+                    hud.handleEvent(event, mouseX, mouseY, musicAndSFX);
                     player.handleInput(event, camera);
                     break;
             }

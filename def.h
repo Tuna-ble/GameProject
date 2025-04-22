@@ -15,10 +15,12 @@ const int BACKGROUND_SIZE = 1500;
 const int MAP_WIDTH = 1800;
 const int MAP_HEIGHT = 1400;
 const int ID = 1;
-const int PLAY_TIME = 60;
+const int PLAY_TIME = 120;
 const int PLAYER_HEALTH = 10;
-const int ENEMY_HEALTH = 4;
+const int ENEMY_HEALTH = 6;
 const int BASE_SPEED = 200;
+const int SPEED_CAP = 400;
+const int DAMAGE_CAP = 10;
 
 const int EXPLOSION_CLIPS[][4] = {
     { 0, 0, 24, 24}, { 24, 0, 24, 24 },

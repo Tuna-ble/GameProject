@@ -93,7 +93,7 @@ void Player::render(SDL_Renderer* renderer, Camera &camera, int ID) {
 
     bullets.render(renderer, camera);
 
-    healthBar.render(renderer, health, {20 , 20}, 200, 30);
+    healthBar.render(renderer, health, {250 , 20}, 400, 30);
 }
 
 void Player::getBuff(int value, dropType type) {
@@ -103,10 +103,11 @@ void Player::getBuff(int value, dropType type) {
         else health.current += value;
         break;
     case dropType::DAMAGE:
+        if (damage + value > DAMAGE_CAP) damage = DAMAGE_CAP;
         damage += value;
         break;
     case dropType::SPEED:
-        if (speed + value > 400) speed = 400;
+        if (speed + value > SPEED_CAP) speed = SPEED_CAP;
         else speed += value;
         break;
     }
