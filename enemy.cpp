@@ -4,7 +4,7 @@
 // ==== Enemy ====
 
 Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio* sound)
-    : position(position), texture(texture), dest(dest), alive(true), health(4) {
+    : position(position), texture(texture), dest(dest), alive(true), health(ENEMY_HEALTH) {
         bullets.init(bullet);
         thruster.init(thrusterTexture, SHIP_FRAMES, SHIP_CLIPS);
 

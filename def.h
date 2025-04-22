@@ -11,12 +11,14 @@ const int BULLET_SIZE = 30;
 const int DROP_SIZE = 30;
 const int FPS = 60;
 const int FRAME_DELAY = 1000 / FPS;
-const int backgroundSize = 1500;
-const int mapWidth = 1800;
-const int mapHeight = 1400;
+const int BACKGROUND_SIZE = 1500;
+const int MAP_WIDTH = 1800;
+const int MAP_HEIGHT = 1400;
 const int ID = 1;
-const int playTime = 60;
-const int playerHealth = 4;
+const int PLAY_TIME = 60;
+const int PLAYER_HEALTH = 4;
+const int ENEMY_HEALTH = 4;
+const int BASE_SPEED = 200;
 
 const int EXPLOSION_CLIPS[][4] = {
     { 0, 0, 24, 24}, { 24, 0, 24, 24 },
@@ -41,8 +43,6 @@ const int SHIP_CLIPS[][4] = {
     { 72, 36, 36, 36}, { 108, 36, 36, 36}
     };
 const int SHIP_FRAMES = sizeof(SHIP_CLIPS)/sizeof(SHIP_CLIPS[0]);
-
-const int startX = 100, startY = 100;
 
 #define WINDOW_TITLE "Space War"
 

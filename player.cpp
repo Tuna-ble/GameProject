@@ -4,8 +4,12 @@ void Player::init(Graphics& graphics, Audio& sound) {
     playerTexture = graphics.getTexture("spaceShip");
     bullets.init(graphics.getTexture("bullet"));
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
-    health = Health(playerHealth);
+    health = Health(PLAYER_HEALTH);
     SFX = &sound;
+
+    startX = rand() % MAP_WIDTH;
+    startY = rand() % MAP_HEIGHT;
+    position = {startX, startY};
 }
 
 void Player::handleInput(SDL_Event& event, Camera &camera) {
@@ -44,8 +48,8 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
 void Player::update(float deltaTime, Camera &camera) {
     position += velocity * deltaTime;
 
-    position.x = std::max(0.f, std::min(position.x, (float)mapWidth - (float)SHIP_SIZE));
-    position.y = std::max(0.f, std::min(position.y, (float)mapHeight - (float)SHIP_SIZE));
+    position.x = std::max(0.f, std::min(position.x, (float)MAP_WIDTH - (float)SHIP_SIZE));
+    position.y = std::max(0.f, std::min(position.y, (float)MAP_HEIGHT - (float)SHIP_SIZE));
 
     int mousex, mousey;
     SDL_GetMouseState(&mousex, &mousey);
@@ -109,10 +113,12 @@ void Player::getBuff(int value, dropType type) {
 }
 
 void Player::reset() {
+    startX = rand() % MAP_WIDTH;
+    startY = rand() % MAP_HEIGHT;
     position = {startX, startY};
     velocity = Vector2D(0, 0);
-    health = Health(playerHealth);
+    health = Health(PLAYER_HEALTH);
     bullets.bullets.clear();
-    speed = 200;
+    speed = BASE_SPEED;
     gameRunning = true;
 }

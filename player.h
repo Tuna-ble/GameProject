@@ -18,7 +18,7 @@ struct Player {
     BulletManager bullets;
     Health health;
     Sprite thruster;
-    Vector2D position = {startX, startY};
+    Vector2D position;
     Vector2D velocity;
     SDL_Texture* playerTexture;
     Audio* SFX;
@@ -31,9 +31,12 @@ struct Player {
     float hurtDuration = 0.15f;
 
     float angle;
-    int speed = 200;
+    int speed = BASE_SPEED;
     int damage = 2;
     bool gameRunning = true;
+
+    int startX, startY;
+
     const SDL_Rect srcRect = { (ID % 4) * 128, (ID / 2) * 128, 128, 128 };
     const SDL_Rect bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
     SDL_Rect healthBarRect = { 20, 20, 200, 30 };

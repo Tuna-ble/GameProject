@@ -130,7 +130,7 @@ struct HUD {
     SDL_Texture* countDownText;
     Audio* SFX;
 
-    int timer = playTime;
+    int timer = PLAY_TIME;
     float countdownTimer = 0.0f;
     bool countdownActive = true;
 

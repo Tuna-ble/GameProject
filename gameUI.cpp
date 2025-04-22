@@ -350,6 +350,6 @@ void HUD::render(Graphics& graphics, SDL_Renderer* renderer, int score) {
 void HUD::cleanUp() {
     SDL_DestroyTexture(scoreText);
     SDL_DestroyTexture(countDownText);
-    timer = playTime;
+    timer = PLAY_TIME;
     countdownActive = true;
 }

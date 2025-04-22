@@ -8,15 +8,15 @@ Drop::Drop(Vector2D position, SDL_Texture* texture, SDL_Rect dest, int ID) :
         type = static_cast<dropType>(ID);
 
         switch (type) {
-        case dropType::HEALTH:
-            buffValue = 4;
-            break;
-        case dropType::DAMAGE:
-            buffValue = 2;
-            break;
-        case dropType::SPEED:
-            buffValue = 20;
-            break;
+            case dropType::HEALTH:
+                buffValue = 4;
+                break;
+            case dropType::DAMAGE:
+                buffValue = 2;
+                break;
+            case dropType::SPEED:
+                buffValue = 20;
+                break;
         }
     }
 
