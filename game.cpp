@@ -7,7 +7,7 @@ void Game::init()
     graphics.init();
     musicAndSFX.init();
 
-    font = graphics.loadFont("assets/oldfont.ttf", 25);
+    font = graphics.loadFont("assets/font.ttf", 25);
 
     musicAndSFX.loadMusic("audio/OST.mp3");
     musicAndSFX.loadSound("shoot", "audio/shoot.flac");

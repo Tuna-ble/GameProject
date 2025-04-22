@@ -5,9 +5,27 @@
 void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont, SDL_Color color, SDL_Rect _rect) {
     font = textFont;
     text = graphics.renderText(textname, font, color);
+    buttonTexture = graphics.getTexture("button");
+    musicButtonTexture = graphics.getTexture("musicButton");
+    soundButtonTexture = graphics.getTexture("soundButton");
     rect = _rect;
+
+    int textW, textH;
+    SDL_QueryTexture(text, nullptr, nullptr, &textW, &textH);
+
+    textRect = {
+        rect.x + (rect.w - textW) / 2,
+        rect.y + (rect.h - textH) / 2,
+        textW,
+        textH
+    };
+
     SFX.loadSound("hover", "audio/hover.mp3");
     SFX.loadSound("click", "audio/click.mp3");
+}
+
+void UIButton::setType(buttonType _type) {
+    type = _type;
 }
 
 void UIButton::setToggle(bool toggle, bool startOn) {
@@ -34,23 +52,24 @@ bool UIButton::isClicked(SDL_Event& e) {
 }
 
 void UIButton::render(SDL_Renderer* renderer) {
-
+    SDL_Texture* button = buttonTexture;
     if (isToggle) {
-        if (isOn)
-            SDL_SetRenderDrawColor(renderer, 0, 200, 0, 255);
+        if (type == buttonType::MUSIC) button = musicButtonTexture;
+        else if (type == buttonType::SOUND) button = soundButtonTexture;
+
+        if (!isOn)
+            SDL_SetTextureColorMod(button, 120, 120, 120);
         else
-            SDL_SetRenderDrawColor(renderer, 200, 0, 0, 255);
+            SDL_SetTextureColorMod(button, mouseHover ? 200 : 255, mouseHover ? 200 : 255, 255);
+
+        SDL_RenderCopy(renderer, button, nullptr, &rect);
     }
     else {
-        SDL_SetRenderDrawColor(renderer, mouseHover ? 70 : 50, mouseHover ? 170 : 130, mouseHover ? 255 : 200, 255);
+        SDL_SetTextureColorMod(button, mouseHover ? 200 : 255, mouseHover ? 200 : 255, 255);
+        SDL_RenderCopy(renderer, button, nullptr, &rect);
     }
 
-    SDL_RenderFillRect(renderer, &rect);
-
-    SDL_SetRenderDrawColor(renderer, 30, 90, 150, 255);
-    SDL_RenderDrawRect(renderer, &rect);
-
-    SDL_RenderCopy(renderer, text, nullptr, &rect);
+    SDL_RenderCopy(renderer, text, nullptr, &textRect);
 }
 
 // ==== Main Menu ====
@@ -110,15 +129,20 @@ void PauseMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
     audioPtr = &audio;
 
+    musicButton.setType(buttonType::MUSIC);
+    soundButton.setType(buttonType::SOUND);
+
     pausedText = graphics.renderText("PAUSED", font, textColor);
     resumeButton.init(graphics, "Resume", font, textColor, { 360, 250, 180, 50 });
-    musicButton.init(graphics, "Music", font, textColor, { 348, 305, 100, 50 });
-    soundButton.init(graphics, "Sound", font, textColor, { 452, 305, 100, 50 });
-    mainMenuButton.init(graphics, "Main Menu", font, textColor, { 360, 360, 180, 50 });
-    quitButton.init(graphics, "Quit", font, textColor, { 360, 415, 180, 50 });
+    musicButton.init(graphics, "", font, textColor, { 360, 305, 88, 88 });
+    soundButton.init(graphics, "", font, textColor, { 452, 305, 88, 88 });
+    mainMenuButton.init(graphics, "Main Menu", font, textColor, { 360, 398, 180, 50 });
+    quitButton.init(graphics, "Quit", font, textColor, { 360, 453, 180, 50 });
 
     backgroundTexture = graphics.getTexture("background");
+    windowTexture = graphics.getTexture("pauseWindow");
 
+    windowRect = {310, 215, 280, 320};
     pausedRect = { 300, 150, 300, 75 };
 }
 
@@ -157,6 +181,7 @@ void PauseMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) 
 
 void PauseMenu::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+    SDL_RenderCopy(renderer, windowTexture, NULL, &windowRect);
 
     musicButton.setToggle(true, audioPtr->musicEnabled);
     soundButton.setToggle(true, audioPtr->sfxEnabled);
@@ -186,13 +211,18 @@ void SettingsMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
     audioPtr = &audio;
 
+    musicButton.setType(buttonType::MUSIC);
+    soundButton.setType(buttonType::SOUND);
+
     settingsText = graphics.renderText("Settings", font, textColor);
-    musicButton.init(graphics, "Music", font, textColor, { 360, 270, 180, 50 });
-    soundButton.init(graphics, "Sound", font, textColor, { 360, 325, 180, 50 });
-    backButton.init(graphics, "Back", font, textColor, { 360, 380, 180, 50 });
+    musicButton.init(graphics, "", font, textColor, { 338, 265, 110, 110 });
+    soundButton.init(graphics, "", font, textColor, { 452, 265, 110, 110 });
+    backButton.init(graphics, "Back", font, textColor, { 338, 380, 224, 62 });
 
     backgroundTexture = graphics.getTexture("background");
+    windowTexture = graphics.getTexture("settingWindow");
 
+    windowRect = { 285, 220, 330, 260 };
     settingsRect = { 300, 150, 300, 75 };
 }
 void SettingsMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
@@ -221,6 +251,7 @@ void SettingsMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audi
 }
 void SettingsMenu::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+    SDL_RenderCopy(renderer, windowTexture, NULL, &windowRect);
 
     musicButton.setToggle(true, audioPtr->musicEnabled);
     soundButton.setToggle(true, audioPtr->sfxEnabled);

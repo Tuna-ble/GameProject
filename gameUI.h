@@ -10,11 +10,21 @@
 #include "def.h"
 #include "score.h"
 
+enum class buttonType {
+    MUSIC,
+    SOUND
+};
+
 struct UIButton {
     SDL_Rect rect;
+    SDL_Rect textRect;
     SDL_Texture* text;
+    SDL_Texture* buttonTexture;
+    SDL_Texture* musicButtonTexture;
+    SDL_Texture* soundButtonTexture;
     TTF_Font* font;
     Mix_Chunk* chunk;
+    buttonType type;
 
     bool mouseHover = false;
     bool wasHovering = false;
@@ -25,6 +35,7 @@ struct UIButton {
     Audio SFX;
 
     void init(Graphics& graphics, const char* textname, TTF_Font* textFont, SDL_Color color, SDL_Rect _rect);
+    void setType(buttonType _type);
     void setToggle(bool toggle, bool startOn);
     void render(SDL_Renderer* renderer);
     void updateHover(int mouseX, int mouseY);
@@ -55,6 +66,7 @@ struct MainMenu {
 struct PauseMenu {
     gameState& state;
     SDL_Texture* backgroundTexture;
+    SDL_Texture* windowTexture;
     SDL_Texture* pausedText;
 
     UIButton resumeButton;
@@ -67,6 +79,7 @@ struct PauseMenu {
     TTF_Font* font;
     SDL_Color textColor = {255, 255, 255};
     SDL_Rect pausedRect;
+    SDL_Rect windowRect;
     Audio* audioPtr;
 
     PauseMenu(gameState& s);
@@ -79,6 +92,7 @@ struct PauseMenu {
 struct SettingsMenu {
     gameState& state;
     SDL_Texture* backgroundTexture;
+    SDL_Texture* windowTexture;
     SDL_Texture* settingsText;
 
     UIButton musicButton;
@@ -88,6 +102,7 @@ struct SettingsMenu {
     TTF_Font* font;
     SDL_Color textColor = {255, 255, 255};
     SDL_Rect settingsRect;
+    SDL_Rect windowRect;
     Audio* audioPtr;
 
     SettingsMenu(gameState& s);
