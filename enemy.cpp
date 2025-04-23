@@ -1,6 +1,5 @@
 #include "enemy.h"
 
-#define ID 0
 // ==== Enemy ====
 
 Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio* sound)
@@ -10,7 +9,7 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
 
         auto [x, y] = shipTypes[rand() % 4];
         srcRect = { x * 128, y * 128, 128, 128 };
-        bulletSrcRect = { (ID % 3) * 500, (ID / 2) * 500, 500, 500 };
+        bulletSrcRect = { (enemyBulletID % 3) * 500, (enemyBulletID / 2) * 500, 500, 500 };
 
         SFX = sound;
         speed = rand() % 150;

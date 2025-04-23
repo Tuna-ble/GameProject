@@ -123,10 +123,10 @@ void Game::update(float deltaTime)
 void Game::render()
 {
     SDL_RenderClear(graphics.renderer);
+
     tile.render(graphics.renderer, camera);
 
-    //camera.getViewRect();
-    player.render(graphics.renderer, camera, ID);
+    player.render(graphics.renderer, camera);
 
     enemies.render(graphics.renderer, camera);
 

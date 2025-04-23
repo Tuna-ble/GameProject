@@ -169,7 +169,6 @@ void PauseMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) 
     }
     else if (soundButton.isClicked(e)) {
         audio.sfxEnabled = soundButton.isOn;
-        std::cout << "SFX toggle: " << audio.sfxEnabled << "\n";
 
         soundButton.setToggle(true, audio.sfxEnabled);
     }
@@ -243,7 +242,6 @@ void SettingsMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audi
     }
     else if (soundButton.isClicked(e)) {
         audio.sfxEnabled = soundButton.isOn;
-        std::cout << "SFX toggle: " << audio.sfxEnabled << "\n";
 
         soundButton.setToggle(true, audio.sfxEnabled);
     }
@@ -361,7 +359,7 @@ bool HUD::update(float deltaTime) {
     countdownTimer += deltaTime;
 
     if (countdownTimer >= 1.0f) {
-        countdownTimer -= 1.0f; // reset lại, không phải = 0 để giữ chính xác
+        countdownTimer -= 1.0f;
 
         if (timer == 5) {
             SFX->playSound("time");

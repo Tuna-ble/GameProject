@@ -12,7 +12,7 @@ struct Sprite {
     std::vector<SDL_Rect> clips;
     int currentFrame = 0;
     int totalFrames = 1;
-    float frameTime = 0.1f; // thời gian mỗi frame (giây)
+    float frameTime = 0.1f;
     float elapsedTime = 0.0f;
     bool loop = true;
     bool finished = false;

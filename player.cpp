@@ -72,7 +72,7 @@ void Player::update(float deltaTime, Camera &camera) {
     bullets.update(deltaTime);
 }
 
-void Player::render(SDL_Renderer* renderer, Camera &camera, int ID) {
+void Player::render(SDL_Renderer* renderer, Camera &camera) {
     Vector2D draw = position - camera.position;
 
     if (hurtTimer > 0.0f) {
