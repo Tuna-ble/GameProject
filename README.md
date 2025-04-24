@@ -79,3 +79,5 @@ Các điểm nổi bật khác:
 - Camera scrolling
 
 - Button hovering
+
+- Bộ sinh số ngẫu nhiên
