@@ -1,12 +1,42 @@
-SPACE WAR: Nguyễn Đình Thắng - 24021622
+# SPACE WAR
+Đây là dự án lập trình game đầu tiên của em, sử dụng ngôn ngữ C++ kết hợp thư viện đồ họa SDL2
+Game lấy chủ đề về chiến tranh giữa tàu không gian trong vũ trụ
 
-Checklisk khi chấm bài
-(danh sách dưới đây liệt kê tính năng để giáo viên dễ chấm bài chứ không có nghĩa các bạn cần làm hết mới được 10 nhé)
+## Thông tin tác giả
+Nguyễn Đình Thắng - K69I-CS2 - 24021622
 
-Tự làm những phần nào, phần nào lấy từ các kiểu tutorial/code mẫu
+### Luật chơi
+Người chơi cần sống sót trong một khoảng thời gian nhất định, trong khi bảo vệ bản thân trước các tàu không gian của địch. Khi người chơi hết máu, sẽ xem như là thua cuộc, và điểm không được lưu.
+Khi bị đánh bại địch có thể rơi ra đồ vật để người chơi có thể power-up
 
-Liệt kê các nguồn tham khảo (code, hình ảnh, âm thanh...)
+### Ngưỡng điểm tự đánh giá
+Hopefully nằm trong khoảng 9 - 10
 
+### Nguồn tham khảo
+Code, ý tưởng:
+
+https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh
+
+https://www.youtube.com/watch?v=XOs2qynEmNE&list=LL&index=2
+
+https://www.youtube.com/@CarlBirch
+
+https://www.1001fonts.com
+
+https://free-game-assets.itch.io/free-space-shooter-game-user-interface
+
+Assets:
+
+https://lowich.itch.io/free-spaceship-sprites
+
+https://deep-fold.itch.io/space-background-generator
+
+Audio:
+https://pixabay.com
+
+Mức độ sử dụng AI: 40% (?) bao gồm debug, gợi ý và lên kế hoạch, cho ý tưởng
+
+### Checklist
 Dùng các lệnh vẽ hình
 
 Texture
@@ -39,8 +69,12 @@ Pause/Resume
 
 Status bar / lives (mạng/máu...)
 
-Các điểm nổi bật khác
+Các điểm nổi bật khác:
 
-Code viết dễ đọc (gv đánh giá)
+- Quản lí các đối tượng bằng vector
 
-Hiểu rõ code (gv đánh giá)
+- Hiệu ứng trúng đạn
+
+- Camera scrolling
+
+- Button hovering
