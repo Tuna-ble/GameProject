@@ -9,7 +9,7 @@ void Player::init(Graphics& graphics, Audio& sound) {
 
     startX = rand() % MAP_WIDTH;
     startY = rand() % MAP_HEIGHT;
-    position = {startX, startY};
+    position = {(float)startX, (float)startY};
 }
 
 void Player::handleInput(SDL_Event& event, Camera &camera) {
@@ -99,8 +99,7 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
 void Player::getBuff(int value, dropType type) {
     switch (type) {
     case dropType::HEALTH:
-        if (health.current + value > health.cap) health.current = health.cap;
-        else health.current += value;
+        health.heal(value);
         break;
     case dropType::DAMAGE:
         if (damage + value > DAMAGE_CAP) damage = DAMAGE_CAP;
@@ -116,7 +115,7 @@ void Player::getBuff(int value, dropType type) {
 void Player::reset() {
     startX = rand() % MAP_WIDTH;
     startY = rand() % MAP_HEIGHT;
-    position = {startX, startY};
+    position = {(float)startX, (float)startY};
     velocity = Vector2D(0, 0);
     health = Health(PLAYER_HEALTH);
     bullets.bullets.clear();

@@ -29,11 +29,11 @@ void TiledRenderer::render(SDL_Renderer* renderer, Camera& camera)
     int tileXStart = (int)std::floor(scrollPos.x / BACKGROUND_SIZE);
     int tileYStart = (int)std::floor(scrollPos.y / BACKGROUND_SIZE);
 
-    int tilesX = SCREEN_WIDTH / BACKGROUND_SIZE + 4;
-    int tilesY = SCREEN_HEIGHT / BACKGROUND_SIZE + 4;
+    int tilesX = SCREEN_WIDTH / BACKGROUND_SIZE + 2;
+    int tilesY = SCREEN_HEIGHT / BACKGROUND_SIZE + 2;
 
-    for (int y = -1; y < tilesY - 1; y++) {
-        for (int x = -1; x < tilesX - 1; x++) {
+    for (int y = -1; y < tilesY; y++) {
+        for (int x = -1; x < tilesX; x++) {
             int posX = (tileXStart + x) * BACKGROUND_SIZE - (int)scrollPos.x;
             int posY = (tileYStart + y) * BACKGROUND_SIZE - (int)scrollPos.y;
 

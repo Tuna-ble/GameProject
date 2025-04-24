@@ -188,6 +188,7 @@ void Game::run() {
         switch (currentState) {
             case gameState::MAIN_MENU:
                 restart();
+                hud.cleanUp();
                 musicAndSFX.playMusic();
                 mainMenu.render(graphics.renderer);
                 break;
