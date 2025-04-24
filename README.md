@@ -15,21 +15,22 @@ Hopefully nằm trong khoảng 9 - 10
 ### Nguồn tham khảo
 Code, ý tưởng:
 
-https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh
+https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh 
+(code mẫu graphics, sprite và audio, có chỉnh sửa thêm)
 
 https://www.youtube.com/watch?v=XOs2qynEmNE&list=LL&index=2
 
 https://www.youtube.com/@CarlBirch
-
-https://www.1001fonts.com
-
-https://free-game-assets.itch.io/free-space-shooter-game-user-interface
 
 Assets:
 
 https://lowich.itch.io/free-spaceship-sprites
 
 https://deep-fold.itch.io/space-background-generator
+
+https://www.1001fonts.com
+
+https://free-game-assets.itch.io/free-space-shooter-game-user-interface
 
 Audio:
 https://pixabay.com
