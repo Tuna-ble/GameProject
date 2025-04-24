@@ -36,6 +36,7 @@ struct DropManager {
     void spawn(Vector2D position);
     void update(float deltaTime);
     void render(SDL_Renderer* renderer, const Camera& camera);
+    void reset();
 };
 
 #endif // DROP_H_INCLUDED

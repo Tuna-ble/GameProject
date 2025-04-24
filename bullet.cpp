@@ -20,7 +20,7 @@ void Bullet::update(float deltaTime) {
 void Bullet::render(SDL_Renderer* renderer, Camera& camera) {
     if (!active) return;
     SDL_Rect dst = {(int)(position.x - camera.position.x), (int)(position.y - camera.position.y), width, height};
-    SDL_RenderCopyEx(renderer, this->texture, &this->srcRect, &dst, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture, &srcRect, &dst, angle, NULL, SDL_FLIP_NONE);
 }
 
 // ==== Bullet Manager ====

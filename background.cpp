@@ -4,7 +4,7 @@
 
 void Camera::update(Player &player)
 {
-    position = player.position + Vector2D(SHIP_SIZE/2, SHIP_SIZE/2) - Vector2D(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+    position = player.position + Vector2D(SHIP_SIZE / 2, SHIP_SIZE / 2) - Vector2D(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
     position.x = std::max(0, std::min((int)position.x, MAP_WIDTH - w));
     position.y = std::max(0, std::min((int)position.y, MAP_HEIGHT - h));
@@ -29,8 +29,8 @@ void TiledRenderer::render(SDL_Renderer* renderer, Camera& camera)
     int tileXStart = (int)std::floor(scrollPos.x / BACKGROUND_SIZE);
     int tileYStart = (int)std::floor(scrollPos.y / BACKGROUND_SIZE);
 
-    int tilesX = SCREEN_WIDTH / BACKGROUND_SIZE + 3;
-    int tilesY = SCREEN_HEIGHT / BACKGROUND_SIZE + 3;
+    int tilesX = SCREEN_WIDTH / BACKGROUND_SIZE + 4;
+    int tilesY = SCREEN_HEIGHT / BACKGROUND_SIZE + 4;
 
     for (int y = -1; y < tilesY - 1; y++) {
         for (int x = -1; x < tilesX - 1; x++) {

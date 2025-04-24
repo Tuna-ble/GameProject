@@ -73,7 +73,7 @@ void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropMana
         hurtTimer -= deltaTime;
     }
 
-    if (health.current <= 0 && !dropped) {
+    if (health.isDead() && !dropped) {
         if (rand() % 100 > 70) drops.spawn(position);
         dropped = true;
     }

@@ -111,7 +111,7 @@ void Game::update(float deltaTime)
         return;
     }
 
-    else if (player.health.current <= 0) {
+    else if (player.health.isDead()) {
         currentState = gameState::GAME_OVER_LOSE;
         gameOver.init(graphics, font, score);
         musicAndSFX.playSound("failure");
@@ -229,10 +229,10 @@ void Game::run() {
 }
 
 void Game::restart() {
-    drops.drops.clear();
     player.reset();
     camera.position = {0, 0};
     enemies.reset();
+    drops.reset();
     asteroids.reset();
 }
 

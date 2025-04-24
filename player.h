@@ -39,7 +39,7 @@ struct Player {
 
     const SDL_Rect srcRect = { (playerID % 4) * 128, (playerID / 2) * 128, 128, 128 };
     const SDL_Rect bulletSrcRect = { (playerID % 3) * 500, (playerID / 2) * 500, 500, 500 };
-    SDL_Rect healthBarRect = { 20, 20, 200, 30 };
+    const SDL_Rect healthBarRect = { 20, 20, 200, 30 };
 
     void init(Graphics& graphics, Audio& SFX);
     void render(SDL_Renderer* renderer, Camera &camera);

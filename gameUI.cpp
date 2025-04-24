@@ -361,7 +361,7 @@ bool HUD::update(float deltaTime) {
     if (countdownTimer >= 1.0f) {
         countdownTimer -= 1.0f;
 
-        if (timer == 5) {
+        if (timer == 6) {
             SFX->playSound("time");
         }
 

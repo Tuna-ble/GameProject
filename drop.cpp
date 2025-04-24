@@ -63,3 +63,7 @@ void DropManager::render(SDL_Renderer* renderer, const Camera& camera) {
         d.render(renderer, camera);
     }
 }
+
+void DropManager::reset() {
+    drops.clear();
+}
