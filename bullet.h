@@ -41,7 +41,7 @@ struct BulletManager{
 
     void init(SDL_Texture* texture);
 
-    void shoot(Vector2D position, Vector2D direction, int damage, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter);
+    void shoot(Vector2D position, Vector2D direction, int enemyDamage, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter);
 
     void update(float dt);
 

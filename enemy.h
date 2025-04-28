@@ -5,6 +5,7 @@
 #include "def.h"
 #include "player.h"
 #include "bullet.h"
+#include "beam.h"
 #include "vector2D.h"
 #include "health.h"
 #include "sprite.h"
@@ -13,9 +14,15 @@
 #include "drop.h"
 #include "explosion.h"
 
+enum class enemyType {
+    BULLET,
+    BEAM
+};
+
 struct Player;
 
 struct Enemy {
+    enemyType type;
     Vector2D position;
     Vector2D velocity;
     SDL_Texture* texture;
@@ -26,12 +33,14 @@ struct Enemy {
     bool alive;
 
     BulletManager bullets;
+    BeamManager beams;
     Health health;
     Sprite thruster;
     Audio* SFX;
     HealthBar healthBar;
 
-    std::pair<int, int> shipTypes[4] = { {0, 0}, {2, 0}, {0, 1}, {3, 1} };
+    std::pair<int, int> bulletShipTypes[4] = { {0, 0}, {2, 0}, {0, 1}, {3, 1} };
+    std::pair<int, int> beamShipTypes[2] = { {4, 0}, {2, 1} };
     int speed;
     bool dropped = false;
     bool exploded = false;
@@ -44,8 +53,9 @@ struct Enemy {
 
     SDL_Rect srcRect;
     SDL_Rect bulletSrcRect;
+    SDL_Rect beamSrcRect;
 
-    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio* sound);
+    Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thruster, Audio* sound, enemyType eType);
     void render(SDL_Renderer* renderer, Camera &camera);
     void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops);
 
@@ -60,7 +70,9 @@ struct EnemyManager {
     SDL_Texture* thrusterTexture;
     SDL_Texture* bulletTexture;
     Audio* SFX;
+    enemyType type;
 
+    int count = 0;
     int deadCount = 0;
     int getScore = 0;
 
@@ -72,7 +84,7 @@ struct EnemyManager {
     void resetSpawnTimer();
     bool spawnON();
 
-    Vector2D spawnEnemyOutsideCamera(Camera& camera, int margin = 200);
+    Vector2D spawnEnemyOutsideCamera(Camera& camera, int margin);
     void spawn(Camera& camera);
     void update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops, ExplosionManager& explosionManager);
     void render(SDL_Renderer* renderer, Camera &camera);

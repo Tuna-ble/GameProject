@@ -27,18 +27,17 @@ void Bullet::render(SDL_Renderer* renderer, Camera& camera) {
 
 void BulletManager::init(SDL_Texture* texture) {
     bulletTexture = texture;
-    }
+}
 
 void BulletManager::shoot(Vector2D position, Vector2D direction, int enemyDamage, float speed, const SDL_Rect& srcRect, float angle, bulletFrom shooter) {
-
-        bullets.emplace_back(position, direction * speed, enemyDamage, bulletTexture, srcRect, angle, shooter);
-    }
+    bullets.emplace_back(position, direction * speed, enemyDamage, bulletTexture, srcRect, angle, shooter);
+}
 
 void BulletManager::update(float deltaTime) {
-        for (auto& b : bullets) b.update(deltaTime);
-        bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
-                                     [](const Bullet& b) { return !b.active; }), bullets.end());
-    }
+    for (auto& b : bullets) b.update(deltaTime);
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
+                                 [](const Bullet& b) { return !b.active; }), bullets.end());
+}
 
 void BulletManager::render(SDL_Renderer* renderer, Camera& camera) {
     for (auto& b : bullets) b.render(renderer, camera);

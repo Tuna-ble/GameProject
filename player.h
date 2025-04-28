@@ -5,6 +5,7 @@
 #include "def.h"
 #include "graphics.h"
 #include "bullet.h"
+//#include "beam.h"
 #include "vector2D.h"
 #include "health.h"
 #include "sprite.h"
@@ -16,6 +17,7 @@ struct Camera;
 
 struct Player {
     BulletManager bullets;
+    //BeamManager beams;
     Health health;
     Sprite thruster;
     Vector2D position;
@@ -30,6 +32,9 @@ struct Player {
     float hurtTimer = 0.0f;
     float hurtDuration = 0.15f;
 
+    float beamDamageInterval = 1.0f;
+    float beamDamageTimer = 0.0f;
+
     float angle;
     int speed = BASE_SPEED;
     int damage = 2;
@@ -40,6 +45,7 @@ struct Player {
     const SDL_Rect srcRect = { (playerID % 4) * 128, (playerID / 2) * 128, 128, 128 };
     const SDL_Rect bulletSrcRect = { (playerID % 3) * 500, (playerID / 2) * 500, 500, 500 };
     const SDL_Rect healthBarRect = { 20, 20, 200, 30 };
+    //const SDL_Rect beamRect = { 2 * 500, 1 * 500, 500, 500};
 
     void init(Graphics& graphics, Audio& SFX);
     void render(SDL_Renderer* renderer, Camera &camera);

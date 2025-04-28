@@ -235,6 +235,7 @@ void Game::restart() {
     enemies.reset();
     drops.reset();
     asteroids.reset();
+    explosionManager.explosions.clear();
 }
 
 void Game::quit()

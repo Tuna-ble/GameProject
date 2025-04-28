@@ -3,7 +3,9 @@
 // ==== Asteroid ====
 
 Asteroid::Asteroid(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect dest, Audio& sound) :
-    position(position), velocity(velocity), texture(texture), dest(dest), SFX(sound), active(true) {}
+    position(position), velocity(velocity), texture(texture), dest(dest), active(true) {
+        SFX = &sound;
+    }
 
 void Asteroid::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera) {
     Vector2D draw = position - camera.position;

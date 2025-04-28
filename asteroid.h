@@ -21,7 +21,7 @@ struct Asteroid {
     float activeTimer = 0.0f;
     float activeDuration = 15.0f;
 
-    Audio SFX;
+    Audio* SFX;
     Sprite explosion;
 
     Asteroid(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect dest, Audio& sound);

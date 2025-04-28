@@ -3,6 +3,7 @@
 void Player::init(Graphics& graphics, Audio& sound) {
     playerTexture = graphics.getTexture("spaceShip");
     bullets.init(graphics.getTexture("bullet"));
+    //beams.init(graphics.getTexture("bullet"));
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
     health = Health(PLAYER_HEALTH);
     SFX = &sound;
@@ -43,6 +44,15 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
     if (currentKeyStates[SDL_SCANCODE_S]) velocity.y = speed;
     if (currentKeyStates[SDL_SCANCODE_A]) velocity.x = -speed;
     if (currentKeyStates[SDL_SCANCODE_D]) velocity.x = speed;
+
+//    if (currentKeyStates[SDL_SCANCODE_Q]) {
+//        Vector2D worldMouse = mouse + camera.position;
+//        Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
+//        Vector2D direction = worldMouse - playerCenter;
+//        direction = direction.normalize();
+//        float angle = atan2(worldMouse.y - position.y, worldMouse.x - position.x) * 180 / M_PI + 90;
+//        beams.shoot(position, direction, damage, beamSrcRect, angle, bulletFrom::PLAYER);
+//    }
 }
 
 void Player::update(float deltaTime, Camera &camera) {
@@ -67,9 +77,14 @@ void Player::update(float deltaTime, Camera &camera) {
         hurtTimer -= deltaTime;
     }
 
+    if (beamDamageTimer > 0.0f) {
+    beamDamageTimer -= deltaTime;
+    }
+
     thruster.update();
 
     bullets.update(deltaTime);
+    //beams.update(deltaTime);
 }
 
 void Player::render(SDL_Renderer* renderer, Camera &camera) {
@@ -92,6 +107,7 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
     SDL_RenderCopyEx(renderer, playerTexture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
     bullets.render(renderer, camera);
+    //beams.render(renderer, camera);
 
     healthBar.render(renderer, health, {250 , 20}, 400, 30);
 }

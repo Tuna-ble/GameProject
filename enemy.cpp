@@ -2,14 +2,28 @@
 
 // ==== Enemy ====
 
-Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio* sound)
-    : position(position), texture(texture), dest(dest), alive(true), health(ENEMY_HEALTH) {
-        bullets.init(bullet);
+Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Texture* bullet, SDL_Texture* thrusterTexture, Audio* sound, enemyType eType)
+    : position(position), texture(texture), dest(dest), alive(true), health(ENEMY_HEALTH), type(eType) {
         thruster.init(thrusterTexture, SHIP_FRAMES, SHIP_CLIPS);
 
-        auto [x, y] = shipTypes[rand() % 4];
-        srcRect = { x * 128, y * 128, 128, 128 };
-        bulletSrcRect = { (enemyBulletID % 3) * 500, (enemyBulletID / 2) * 500, 500, 500 };
+        switch (type) {
+            case enemyType::BEAM: {
+                beams.init(bullet);
+
+                auto [x, y] = beamShipTypes[rand() % 2];
+                srcRect = { x * 128, y * 128, 128, 128 };
+                beamSrcRect = { 2 * 500, 0 * 500, 500, 500 };
+                break;
+            }
+            case enemyType::BULLET: {
+                bullets.init(bullet);
+
+                auto [x, y] = bulletShipTypes[rand() % 4];
+                srcRect = { x * 128, y * 128, 128, 128 };
+                bulletSrcRect = { (enemyBulletID % 3) * 500, (enemyBulletID / 2) * 500, 500, 500 };
+                break;
+            }
+        }
 
         SFX = sound;
         speed = rand() % 150;
@@ -58,13 +72,24 @@ void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropMana
     shootTimer += deltaTime;
 
     if (shootON()) {
-            Vector2D spawn = bullets.getBulletSpawnPosition(position);
+            float angle = 0.0f;
+            switch (type) {
+                case enemyType::BEAM: {
+                    angle = atan2(player.position.y - position.y, player.position.x - position.x) * 180 / M_PI + 90;
+                    beams.shoot(position, direction, damage, beamSrcRect, angle, bulletFrom::ENEMY);
+                    break;
+                }
+                case enemyType::BULLET: {
+                    Vector2D spawn = bullets.getBulletSpawnPosition(position);
 
-            float angle = atan2(player.position.y - spawn.y - BULLET_SIZE / 2, player.position.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
+                    angle = atan2(player.position.y - spawn.y - BULLET_SIZE / 2, player.position.x - spawn.x - BULLET_SIZE / 2) * 180 / M_PI + 90;
 
-            int bulletSpeed = 40 + rand() % bullets.bulletSpeed;
-            bullets.shoot(spawn, direction, damage, bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
-            SFX->playSound("shoot");
+                    int bulletSpeed = 40 + rand() % bullets.bulletSpeed;
+                    bullets.shoot(spawn, direction, damage, bulletSpeed, bulletSrcRect, angle, bulletFrom::ENEMY);
+                    SFX->playSound("shoot");
+                    break;
+                }
+            }
 
             resetShootTimer();
             }
@@ -81,6 +106,7 @@ void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropMana
     thruster.update();
 
     bullets.update(deltaTime);
+    beams.update(deltaTime);
     drops.update(deltaTime);
 }
 
@@ -137,13 +163,20 @@ Vector2D EnemyManager::spawnEnemyOutsideCamera(Camera& camera, int margin) {
 }
 
 void EnemyManager::spawn(Camera& camera) {
-    if (spawnON()) {
+    if (spawnON() && count < 4) {
         Vector2D spawn = spawnEnemyOutsideCamera(camera, 200);
         SDL_Rect dest = { spawn.x, spawn.y, ENEMY_SIZE, ENEMY_SIZE };
 
-        enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX);
+        int r = rand() % 100;
+        if (r < 100) {
+            type = enemyType::BEAM;
+        }
+        else type = enemyType::BULLET;
+
+        enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX, type);
 
         resetSpawnTimer();
+        count++;
     }
 }
 
@@ -151,6 +184,7 @@ void EnemyManager::render(SDL_Renderer* renderer, Camera &camera) {
     for (auto& e : enemies) {
             e.render(renderer, camera);
             e.bullets.render(renderer, camera);
+            e.beams.render(renderer, camera);
     }
 }
 
