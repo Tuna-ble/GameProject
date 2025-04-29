@@ -9,6 +9,7 @@
 #include "health.h"
 #include "def.h"
 #include "score.h"
+#include "gameMode.h"
 
 enum class buttonType {
     MUSIC,
@@ -108,6 +109,30 @@ struct SettingsMenu {
     Audio* audioPtr;
 
     SettingsMenu(gameState& s);
+    void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
+    void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
+    void render(SDL_Renderer* renderer);
+    void cleanUp();
+};
+
+struct ModeMenu {
+    gameState& state;
+    gameMode& mode;
+    SDL_Texture* backgroundTexture;
+    SDL_Texture* windowTexture;
+    SDL_Texture* modeText;
+
+    UIButton normalButton;
+    UIButton hardButton;
+    UIButton backButton;
+
+    TTF_Font* font;
+    SDL_Color textColor = {255, 255, 255};
+    SDL_Rect modeRect;
+    SDL_Rect windowRect;
+    Audio* audioPtr;
+
+    ModeMenu(gameState& s, gameMode& m);
     void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(SDL_Renderer* renderer);

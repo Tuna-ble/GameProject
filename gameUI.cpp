@@ -97,7 +97,7 @@ void MainMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY) {
     quitButton.updateHover(mouseX, mouseY);
 
     if (playButton.isClicked(e)) {
-        state = gameState::PLAY;
+        state = gameState::MODES;
     }
     else if (settingsButton.isClicked(e)) {
         state = gameState::SETTINGS;
@@ -265,6 +265,61 @@ void SettingsMenu::cleanUp() {
     SDL_DestroyTexture(settingsText);
     SDL_DestroyTexture(musicButton.text);
     SDL_DestroyTexture(soundButton.text);
+    SDL_DestroyTexture(backButton.text);
+}
+
+// ==== Mode Menu =====
+
+ModeMenu::ModeMenu(gameState& s, gameMode& m) : state(s), mode(m) {}
+
+void ModeMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
+    font = textFont;
+    audioPtr = &audio;
+
+    normalButton.setType(buttonType::MUSIC);
+    hardButton.setType(buttonType::SOUND);
+
+    modeText = graphics.renderText("Modes", font, textColor);
+    normalButton.init(graphics, "Normal", font, textColor, { 340, 250, 220, 60 });
+    hardButton.init(graphics, "Hard", font, textColor, { 340, 315, 220, 60 });
+    backButton.init(graphics, "Back", font, textColor, { 340, 380, 220, 60 });
+
+    backgroundTexture = graphics.getTexture("background");
+    //windowTexture = graphics.getTexture("settingWindow");
+
+    //windowRect = { 285, 220, 330, 260 };
+    modeRect = { 300, 150, 300, 75 };
+}
+void ModeMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
+    normalButton.updateHover(mouseX, mouseY);
+    hardButton.updateHover(mouseX, mouseY);
+    backButton.updateHover(mouseX, mouseY);
+
+    if (normalButton.isClicked(e)) {
+        state = gameState::PLAY;
+        mode = gameMode::NORMAL;
+    }
+    else if (hardButton.isClicked(e)) {
+        state = gameState::PLAY;
+        mode = gameMode::HARD;
+    }
+    else if (backButton.isClicked(e)) {
+        state = gameState::MAIN_MENU;
+    }
+}
+void ModeMenu::render(SDL_Renderer* renderer) {
+    SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+    //SDL_RenderCopy(renderer, windowTexture, NULL, &windowRect);
+
+    SDL_RenderCopy(renderer, modeText, NULL, &modeRect);
+    normalButton.render(renderer);
+    hardButton.render(renderer);
+    backButton.render(renderer);
+}
+void ModeMenu::cleanUp() {
+    SDL_DestroyTexture(modeText);
+    SDL_DestroyTexture(normalButton.text);
+    SDL_DestroyTexture(hardButton.text);
     SDL_DestroyTexture(backButton.text);
 }
 

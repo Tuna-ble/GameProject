@@ -17,8 +17,9 @@
 #include "asteroid.h"
 #include "score.h"
 #include "explosion.h"
+#include "gameMode.h"
 
-struct Game{
+struct Game {
     Graphics graphics;
     Player player;
     Camera camera;
@@ -29,6 +30,7 @@ struct Game{
     MainMenu mainMenu;
     PauseMenu pauseMenu;
     SettingsMenu settingsMenu;
+    ModeMenu modeMenu;
     GameOver gameOver;
     HUD hud;
     DropManager drops;
@@ -41,6 +43,7 @@ struct Game{
     SDL_Texture* text;
 
     gameState currentState;
+    gameMode mode;
 
     bool isRunning = true;
     int score;

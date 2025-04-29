@@ -1,6 +1,7 @@
 #include "game.h"
 
-Game::Game() : mainMenu(currentState), pauseMenu(currentState), settingsMenu(currentState), gameOver(currentState), hud(currentState) {}
+Game::Game() : mainMenu(currentState), pauseMenu(currentState), settingsMenu(currentState),
+            modeMenu(currentState, mode), gameOver(currentState), hud(currentState), enemies(mode) {}
 
 void Game::init()
 {
@@ -66,6 +67,7 @@ void Game::init()
     mainMenu.init(graphics, font);
     pauseMenu.init(graphics, font, musicAndSFX);
     settingsMenu.init(graphics, font, musicAndSFX);
+    modeMenu.init(graphics, font, musicAndSFX);
     hud.init(graphics, font, musicAndSFX);
 
     tile.init(graphics);
@@ -161,6 +163,9 @@ void Game::run() {
                 case gameState::SETTINGS:
                     settingsMenu.handleEvent(event, mouseX, mouseY, musicAndSFX);
                     break;
+                case gameState::MODES:
+                    modeMenu.handleEvent(event, mouseX, mouseY, musicAndSFX);
+                    break;
                 case gameState::PAUSED:
                     pauseMenu.handleEvent(event, mouseX, mouseY, musicAndSFX);
                     break;
@@ -195,6 +200,10 @@ void Game::run() {
 
             case gameState::SETTINGS:
                 settingsMenu.render(graphics.renderer);
+                break;
+
+            case gameState::MODES:
+                modeMenu.render(graphics.renderer);
                 break;
 
             case gameState::PLAY:

@@ -13,6 +13,7 @@
 #include "graphics.h"
 #include "drop.h"
 #include "explosion.h"
+#include "gameMode.h"
 
 enum class enemyType {
     BULLET,
@@ -29,6 +30,7 @@ struct Enemy {
     SDL_Rect dest;
     SDL_Rect healthBarDest;
     int damage = 2;
+    int beamDamage = 1;
     int explosionDamage = 4;
     bool alive;
 
@@ -71,14 +73,16 @@ struct EnemyManager {
     SDL_Texture* bulletTexture;
     Audio* SFX;
     enemyType type;
+    gameMode& mode;
 
-    int count = 0;
+    int scorePerEnemy = 10;
     int deadCount = 0;
     int getScore = 0;
 
     float spawnTimer = 0.0f;
     float spawnCooldown;
 
+    EnemyManager(gameMode& m);
     void init(Graphics& graphics, Audio& sound);
 
     void resetSpawnTimer();

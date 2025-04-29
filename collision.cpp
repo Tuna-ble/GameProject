@@ -9,74 +9,65 @@ bool Collision::checkCollision(const Vector2D& posA, const Vector2D& sizeA, cons
     );
 }
 
-bool Collision::obbCollision(const Vector2D& posA, int widthA, int heightA, float angleA,
-                              const Vector2D& posB, int widthB, int heightB, float angleB) const
-{
-    auto getCorners = [](const Vector2D& pos, int w, int h, float angle, Vector2D corners[4]) {
-        float rad = angle * M_PI / 180.0f;
-        float cosA = cos(rad);
-        float sinA = sin(rad);
+void Collision::getCorners(Vector2D corners[4], Vector2D position, int width, int height, float angle) const {
+    float rad = angle * M_PI / 180.0f;
+    float cosA = cos(rad);
+    float sinA = sin(rad);
 
-        Vector2D center = { pos.x + w / 2.0f, pos.y + h / 2.0f };
+    Vector2D center = { position.x, position.y };
 
-        Vector2D points[4] = {
-            { -w / 2.0f, -h / 2.0f },
-            {  w / 2.0f, -h / 2.0f },
-            {  w / 2.0f,  h / 2.0f },
-            { -w / 2.0f,  h / 2.0f }
-        };
-
-        for (int i = 0; i < 4; ++i) {
-            float rotatedX = points[i].x * cosA - points[i].y * sinA;
-            float rotatedY = points[i].x * sinA + points[i].y * cosA;
-            corners[i] = { center.x + rotatedX, center.y + rotatedY };
-        }
-    };
-
-    auto project = [](const Vector2D corners[4], const Vector2D& axis, float& min, float& max) {
-        min = max = (corners[0].x * axis.x + corners[0].y * axis.y);
-        for (int i = 1; i < 4; ++i) {
-            float proj = (corners[i].x * axis.x + corners[i].y * axis.y);
-            if (proj < min) min = proj;
-            if (proj > max) max = proj;
-        }
-    };
-
-    auto overlap = [](float minA, float maxA, float minB, float maxB) {
-        return !(maxA < minB || maxB < minA);
-    };
-
-    Vector2D cornersA[4], cornersB[4];
-    getCorners(posA, widthA, heightA, angleA, cornersA);
-    getCorners(posB, widthB, heightB, angleB, cornersB);
-
-    Vector2D axes[4] = {
-        { cornersA[1].x - cornersA[0].x, cornersA[1].y - cornersA[0].y },
-        { cornersA[3].x - cornersA[0].x, cornersA[3].y - cornersA[0].y },
-        { cornersB[1].x - cornersB[0].x, cornersB[1].y - cornersB[0].y },
-        { cornersB[3].x - cornersB[0].x, cornersB[3].y - cornersB[0].y }
+    Vector2D localCorners[4] = {
+        { -width / 2.0f, 0.0f },
+        {  width / 2.0f, 0.0f },
+        {  width / 2.0f, -height },
+        { -width / 2.0f, -height }
     };
 
     for (int i = 0; i < 4; ++i) {
-        float length = sqrt(axes[i].x * axes[i].x + axes[i].y * axes[i].y);
-        if (length != 0.0f) {
-            axes[i].x /= length;
-            axes[i].y /= length;
-        }
+        float rotatedX = localCorners[i].x * cosA - localCorners[i].y * sinA;
+        float rotatedY = localCorners[i].x * sinA + localCorners[i].y * cosA;
+        corners[i] = { center.x + rotatedX, center.y + rotatedY };
+    }
+}
+
+
+bool OBBCollision(const Vector2D cornersA[4], const Vector2D cornersB[4]) {
+    Vector2D axes[4];
+
+    for (int i = 0; i < 2; ++i) {
+        axes[i] = Vector2D{
+            cornersA[(i + 1) % 4].x - cornersA[i].x,
+            cornersA[(i + 1) % 4].y - cornersA[i].y
+        }.normalize();
+    }
+    for (int i = 0; i < 2; ++i) {
+        axes[i + 2] = Vector2D{
+            cornersB[(i + 1) % 4].x - cornersB[i].x,
+            cornersB[(i + 1) % 4].y - cornersB[i].y
+        }.normalize();
     }
 
     for (int i = 0; i < 4; ++i) {
-        float minA, maxA, minB, maxB;
-        project(cornersA, axes[i], minA, maxA);
-        project(cornersB, axes[i], minB, maxB);
-        if (!overlap(minA, maxA, minB, maxB)) {
+        float minA = INFINITY, maxA = -INFINITY;
+        float minB = INFINITY, maxB = -INFINITY;
+
+        for (int j = 0; j < 4; ++j) {
+            float projectionA = cornersA[j].x * axes[i].x + cornersA[j].y * axes[i].y;
+            minA = std::min(minA, projectionA);
+            maxA = std::max(maxA, projectionA);
+
+            float projectionB = cornersB[j].x * axes[i].x + cornersB[j].y * axes[i].y;
+            minB = std::min(minB, projectionB);
+            maxB = std::max(maxB, projectionB);
+        }
+
+        if (maxA < minB || maxB < minA) {
             return false;
         }
     }
 
     return true;
 }
-
 
 bool Collision::bulletXEnemy(Enemy& enemy, Bullet& bullet) {
     if (bullet.shooter == bulletFrom::PLAYER) {
@@ -96,9 +87,15 @@ bool Collision::bulletXPlayer(Player& player, Bullet& bullet) {
 
 bool Collision::beamXPlayer(Player& player, Beam& beam) {
     if (beam.shooter == bulletFrom::ENEMY) {
-        if (obbCollision(player.position, SHIP_SIZE, SHIP_SIZE, 0.0f,
-                            beam.position, beam.width, beam.height, beam.angle) )
-                            return true;
+        Vector2D beamCorners[4];
+        getCorners(beamCorners, beam.position, beam.width, beam.height, beam.angle);
+
+        Vector2D playerCorners[4];
+        getCorners(playerCorners, player.position, SHIP_SIZE, SHIP_SIZE, player.angle);
+
+        if (OBBCollision(beamCorners, playerCorners)) {
+            return true;
+        }
     }
     return false;
 }
@@ -145,7 +142,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             if (!b.active) continue;
             if (beamXPlayer(player, b)) {
                 if (player.beamDamageTimer <= 0.0f) {
-                player.health.takeDamage(e.damage);
+                player.health.takeDamage(e.beamDamage);
                 player.SFX->playSound("hit");
                 player.hurtTimer = player.hurtDuration;
                 player.beamDamageTimer = player.beamDamageInterval;

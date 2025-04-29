@@ -32,7 +32,7 @@ struct Player {
     float hurtTimer = 0.0f;
     float hurtDuration = 0.15f;
 
-    float beamDamageInterval = 1.0f;
+    float beamDamageInterval = 0.15f;
     float beamDamageTimer = 0.0f;
 
     float angle;

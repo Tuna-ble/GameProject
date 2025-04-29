@@ -22,11 +22,12 @@ struct Beam {
     SDL_Rect beamRect;
 
     float activeTimer = 0.0f;
-    float activeDuration = 2.0f;
+    float activeDuration = 3.0f;
 
     Beam(Vector2D position, Vector2D direction, int damage, SDL_Texture* tex, SDL_Rect src, float angle, bulletFrom shooter);
     void update(float deltaTime);
     void render(SDL_Renderer* renderer, Camera& camera);
+    void drawOBB(SDL_Renderer* renderer, const Camera& camera, SDL_Color color) const;
 };
 
 struct BeamManager {

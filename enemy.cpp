@@ -13,6 +13,7 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
                 auto [x, y] = beamShipTypes[rand() % 2];
                 srcRect = { x * 128, y * 128, 128, 128 };
                 beamSrcRect = { 2 * 500, 0 * 500, 500, 500 };
+                shootCooldown = 5.0f;
                 break;
             }
             case enemyType::BULLET: {
@@ -21,13 +22,13 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
                 auto [x, y] = bulletShipTypes[rand() % 4];
                 srcRect = { x * 128, y * 128, 128, 128 };
                 bulletSrcRect = { (enemyBulletID % 3) * 500, (enemyBulletID / 2) * 500, 500, 500 };
+                shootCooldown = (float)(1 + rand() % 3);
                 break;
             }
         }
 
         SFX = sound;
         speed = rand() % 150;
-        shootCooldown = (float)(1 + rand() % 3);
         shootTimer = (float)(rand() % 1000) / 1000.0f;
     }
 
@@ -58,6 +59,10 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
     healthBar.render(renderer, health, position - camera.position, 75, 20);
+
+    for (const auto& beam : beams.beams) {
+        beam.drawOBB(renderer, camera, { 0, 255, 0, 255 }); // Màu xanh lá cây
+    }
 }
 
 void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops) {
@@ -120,6 +125,8 @@ void Enemy::resetShootTimer() {
 
 // ==== Enemy Manager ====
 
+EnemyManager::EnemyManager(gameMode& m) : mode(m) {}
+
 void EnemyManager::init(Graphics& graphics, Audio& sound) {
     enemyTexture = graphics.getTexture("spaceShip");
     thrusterTexture = graphics.getTexture("thruster");
@@ -163,20 +170,27 @@ Vector2D EnemyManager::spawnEnemyOutsideCamera(Camera& camera, int margin) {
 }
 
 void EnemyManager::spawn(Camera& camera) {
-    if (spawnON() && count < 4) {
+    if (spawnON()) {
         Vector2D spawn = spawnEnemyOutsideCamera(camera, 200);
         SDL_Rect dest = { spawn.x, spawn.y, ENEMY_SIZE, ENEMY_SIZE };
 
-        int r = rand() % 100;
-        if (r < 100) {
-            type = enemyType::BEAM;
+        if (mode == gameMode::NORMAL) {
+            scorePerEnemy = 10;
+            enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX, enemyType::BULLET);
         }
-        else type = enemyType::BULLET;
+        else if (mode == gameMode::HARD) {
+            scorePerEnemy = 30;
+            int r = rand() % 100;
+            if (r < 20) {
+                type = enemyType::BEAM;
+            }
+            else {
+                type = enemyType::BULLET;
+            }
 
-        enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX, type);
-
+            enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX, type);
+        }
         resetSpawnTimer();
-        count++;
     }
 }
 
@@ -193,7 +207,7 @@ void EnemyManager::update(float deltaTime, Graphics& graphics, Player &player, D
         e.update(deltaTime, graphics, player, drops);
         if (!e.alive) {
             deadCount++;
-            getScore+=10;
+            getScore+=scorePerEnemy;
             if (!e.exploded) {
                 explosionManager.spawn(e.position, explodeType::SHIP);
                 e.exploded = true;

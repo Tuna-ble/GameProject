@@ -6,6 +6,7 @@ enum class gameState {
     PLAY,
     PAUSED,
     SETTINGS,
+    MODES,
     QUIT,
     GAME_OVER_WIN,
     GAME_OVER_LOSE

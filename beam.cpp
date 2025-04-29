@@ -20,7 +20,7 @@ void Beam::render(SDL_Renderer* renderer, Camera& camera) {
 
     SDL_Rect dst = {
         static_cast<int>(position.x - camera.position.x),
-        static_cast<int>(position.y - camera.position.y - height),
+        static_cast<int>(position.y - camera.position.y - height ),
         width,
         height
     };
@@ -28,6 +28,36 @@ void Beam::render(SDL_Renderer* renderer, Camera& camera) {
     SDL_RenderCopyEx(renderer, beamTexture, &beamRect, &dst, angle, &center, SDL_FLIP_NONE);
 }
 
+void Beam::drawOBB(SDL_Renderer* renderer, const Camera& camera, SDL_Color color) const {
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+    Vector2D corners[4];
+    float rad = angle * M_PI / 180.0f;
+    float cosA = cos(rad);
+    float sinA = sin(rad);
+
+    Vector2D center = { position.x + width / 2, position.y };
+
+    Vector2D localCorners[4] = {
+        { -width / 2.0f, 0.0f },
+        {  width / 2.0f, 0.0f },
+        {  width / 2.0f, -height },
+        { -width / 2.0f, -height }
+    };
+
+    for (int i = 0; i < 4; ++i) {
+        float rotatedX = localCorners[i].x * cosA - localCorners[i].y * sinA;
+        float rotatedY = localCorners[i].x * sinA + localCorners[i].y * cosA;
+        corners[i] = { center.x + rotatedX, center.y + rotatedY };
+    }
+
+    for (int i = 0; i < 4; ++i) {
+        SDL_RenderDrawLineF(renderer,
+            corners[i].x - camera.position.x, corners[i].y - camera.position.y,
+            corners[(i + 1) % 4].x - camera.position.x, corners[(i + 1) % 4].y - camera.position.y
+        );
+    }
+}
 
 // ==== Beam Manager ====
 
