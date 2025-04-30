@@ -5,7 +5,7 @@ void Player::init(Graphics& graphics, Audio& sound) {
     bullets.init(graphics.getTexture("bullet"));
     //beams.init(graphics.getTexture("bullet"));
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
-    shield.init(graphics.getTexture("shield"), 8.0f, 15.0f);
+    shield.init(graphics.getTexture("shield"));
 
     health = Health(PLAYER_HEALTH);
     SFX = &sound;

@@ -6,15 +6,13 @@
 
 struct Shield {
     SDL_Texture* shieldTexture;
-    float duration;
-    float cooldown;
+    float duration = 3.0f;
+    float cooldown = 15.0f;
     float activeTime;
     float cooldownTime;
     bool active;
 
-    //Shield(float duration, float cooldown);
-
-    void init(SDL_Texture* texture, float duration, float cooldown);
+    void init(SDL_Texture* texture);
     void activate();
     void update(float deltaTime);
     bool isShielding() const;

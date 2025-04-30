@@ -1,9 +1,7 @@
 #include "skill.h"
 
-void Shield::init(SDL_Texture* texture, float _duration, float _cooldown) {
+void Shield::init(SDL_Texture* texture) {
     shieldTexture = texture;
-    duration = _duration;
-    cooldown = _cooldown;
     activeTime = 0.0f;
     cooldownTime = cooldown;
     active = false;

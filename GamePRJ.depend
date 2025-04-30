@@ -42,7 +42,7 @@
 1746017792 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
 
-1745972286 source:c:\users\admin\gamepr\player.cpp
+1746026918 source:c:\users\admin\gamepr\player.cpp
 	"player.h"
 
 1746019090 c:\users\admin\gamepr\player.h
@@ -222,11 +222,11 @@
 
 1745884980 c:\users\admin\gamepr\gamemode.h
 
-1745971570 c:\users\admin\gamepr\skill.h
+1746026958 c:\users\admin\gamepr\skill.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 
-1746017929 source:c:\users\admin\gamepr\skill.cpp
+1746026918 source:c:\users\admin\gamepr\skill.cpp
 	"skill.h"
 
