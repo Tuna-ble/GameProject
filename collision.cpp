@@ -138,7 +138,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             b.active = false;
 
             if (!player.shield.isShielding()) {
-                player.health.takeDamage(e.explosionDamage);
+                player.health.takeDamage(e.damage);
                 player.hurtTimer = player.hurtDuration;
             }
             player.SFX->playSound("hit");
@@ -151,7 +151,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
                 if (player.beamDamageTimer <= 0.0f) {
 
                 if (!player.shield.isShielding()) {
-                    player.health.takeDamage(e.explosionDamage);
+                    player.health.takeDamage(e.beamDamage);
                     player.hurtTimer = player.hurtDuration;
                 }
                 player.SFX->playSound("hit");

@@ -61,7 +61,7 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     healthBar.render(renderer, health, position - camera.position, 75, 20);
 
     for (const auto& beam : beams.beams) {
-        beam.drawOBB(renderer, camera, { 0, 255, 0, 255 }); // Màu xanh lá cây
+        beam.drawOBB(renderer, camera, { 0, 255, 0, 255 });
     }
 }
 
