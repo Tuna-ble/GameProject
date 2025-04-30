@@ -124,7 +124,11 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
         if (enemyXPlayer(player, e)) {
             e.alive = false;
             e.SFX->playSound("explosion");
-            player.health.takeDamage(e.explosionDamage);
+
+            if (!player.shield.isShielding()) {
+                player.health.takeDamage(e.explosionDamage);
+                player.hurtTimer = player.hurtDuration;
+            }
             player.SFX->playSound("hit");
         }
 
@@ -132,9 +136,12 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             if (!b.active) continue;
             if (bulletXPlayer(player, b)) {
             b.active = false;
-            player.health.takeDamage(e.damage);
+
+            if (!player.shield.isShielding()) {
+                player.health.takeDamage(e.explosionDamage);
+                player.hurtTimer = player.hurtDuration;
+            }
             player.SFX->playSound("hit");
-            player.hurtTimer = player.hurtDuration;
             }
         }
 
@@ -142,9 +149,12 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             if (!b.active) continue;
             if (beamXPlayer(player, b)) {
                 if (player.beamDamageTimer <= 0.0f) {
-                player.health.takeDamage(e.beamDamage);
+
+                if (!player.shield.isShielding()) {
+                    player.health.takeDamage(e.explosionDamage);
+                    player.hurtTimer = player.hurtDuration;
+                }
                 player.SFX->playSound("hit");
-                player.hurtTimer = player.hurtDuration;
                 player.beamDamageTimer = player.beamDamageInterval;
                 }
             }
@@ -175,9 +185,11 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
 
         if (asteroidXPlayer(player, a)) {
             a.active = false;
-            player.health.takeDamage(a.damage);
+            if (!player.shield.isShielding()) {
+                player.health.takeDamage(a.damage);
+                player.hurtTimer = player.hurtDuration;
+            }
             player.SFX->playSound("hit");
-            player.hurtTimer = player.hurtDuration;
             a.SFX->playSound("explosion");
         }
     }

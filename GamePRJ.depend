@@ -39,13 +39,13 @@
 	"explosion.h"
 	"gameMode.h"
 
-1745886126 source:c:\users\admin\gamepr\game.cpp
+1746017792 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
 
-1745875858 source:c:\users\admin\gamepr\player.cpp
+1745972286 source:c:\users\admin\gamepr\player.cpp
 	"player.h"
 
-1745888103 c:\users\admin\gamepr\player.h
+1745971055 c:\users\admin\gamepr\player.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -57,6 +57,7 @@
 	"audio.h"
 	"gameUI.h"
 	"dropType.h"
+	"skill.h"
 
 1745237032 c:\users\admin\gamepr\background.h
 	<SDL.h>
@@ -99,7 +100,7 @@
 1745889175 source:c:\users\admin\gamepr\enemy.cpp
 	"enemy.h"
 
-1745889847 source:c:\users\admin\gamepr\collision.cpp
+1745971080 source:c:\users\admin\gamepr\collision.cpp
 	"collision.h"
 
 1744537513 c:\users\admin\gamepr\vector2d.h
@@ -220,4 +221,12 @@
 	"beam.h"
 
 1745884980 c:\users\admin\gamepr\gamemode.h
+
+1745971570 c:\users\admin\gamepr\skill.h
+	<SDL.h>
+	<SDL_image.h>
+	"def.h"
+
+1746017872 source:c:\users\admin\gamepr\skill.cpp
+	"skill.h"
 

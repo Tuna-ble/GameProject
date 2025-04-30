@@ -69,6 +69,8 @@
 		<Unit filename="player.h" />
 		<Unit filename="score.cpp" />
 		<Unit filename="score.h" />
+		<Unit filename="skill.cpp" />
+		<Unit filename="skill.h" />
 		<Unit filename="sprite.cpp" />
 		<Unit filename="sprite.h" />
 		<Unit filename="vector2D.cpp" />

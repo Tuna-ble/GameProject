@@ -61,6 +61,8 @@ void Game::init()
 
     graphics.loadTexture("pauseHUD", "assets/pause.png");
 
+    graphics.loadTexture("shield", "assets/shield.png");
+
     HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
 
     currentState = gameState::MAIN_MENU;

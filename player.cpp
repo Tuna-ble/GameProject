@@ -5,6 +5,8 @@ void Player::init(Graphics& graphics, Audio& sound) {
     bullets.init(graphics.getTexture("bullet"));
     //beams.init(graphics.getTexture("bullet"));
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
+    shield.init(graphics.getTexture("shield"), 8.0f, 15.0f);
+
     health = Health(PLAYER_HEALTH);
     SFX = &sound;
 
@@ -53,6 +55,9 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
 //        float angle = atan2(worldMouse.y - position.y, worldMouse.x - position.x) * 180 / M_PI + 90;
 //        beams.shoot(position, direction, damage, beamSrcRect, angle, bulletFrom::PLAYER);
 //    }
+    if (currentKeyStates[SDL_SCANCODE_Q]) {
+        shield.activate();
+    }
 }
 
 void Player::update(float deltaTime, Camera &camera) {
@@ -84,6 +89,8 @@ void Player::update(float deltaTime, Camera &camera) {
     thruster.update();
 
     bullets.update(deltaTime);
+
+    shield.update(deltaTime);
     //beams.update(deltaTime);
 }
 
@@ -110,6 +117,8 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
     //beams.render(renderer, camera);
 
     healthBar.render(renderer, health, {250 , 20}, 400, 30);
+
+    shield.render(renderer, dest);
 }
 
 void Player::getBuff(int value, dropType type) {
@@ -135,6 +144,7 @@ void Player::reset() {
     velocity = Vector2D(0, 0);
     health = Health(PLAYER_HEALTH);
     bullets.bullets.clear();
+    shield.reset();
     speed = BASE_SPEED;
     gameRunning = true;
 }

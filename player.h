@@ -12,6 +12,7 @@
 #include "audio.h"
 #include "gameUI.h"
 #include "dropType.h"
+#include "skill.h"
 
 struct Camera;
 
@@ -25,6 +26,7 @@ struct Player {
     SDL_Texture* playerTexture;
     Audio* SFX;
     HealthBar healthBar;
+    Shield shield;
 
     float healTimer = 0.0f;
     float healCooldown = 1.5f;
