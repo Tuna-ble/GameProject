@@ -168,7 +168,7 @@ void PauseMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) 
         musicButton.setToggle(true, audio.musicEnabled);
     }
     else if (soundButton.isClicked(e)) {
-        audio.sfxEnabled = soundButton.isOn;
+        audio.sfxEnabled = !audio.sfxEnabled;
 
         soundButton.setToggle(true, audio.sfxEnabled);
     }
@@ -241,7 +241,7 @@ void SettingsMenu::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audi
         musicButton.setToggle(true, audio.musicEnabled);
     }
     else if (soundButton.isClicked(e)) {
-        audio.sfxEnabled = soundButton.isOn;
+        audio.sfxEnabled = !audio.sfxEnabled;
 
         soundButton.setToggle(true, audio.sfxEnabled);
     }

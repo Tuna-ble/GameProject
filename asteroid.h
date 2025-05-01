@@ -24,7 +24,7 @@ struct Asteroid {
     Audio* SFX;
     Sprite explosion;
 
-    Asteroid(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect dest, Audio& sound);
+    Asteroid(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect dest, Audio* sound);
     void render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera);
     void update(float deltaTime);
 };
@@ -33,7 +33,7 @@ struct Asteroid {
 struct AsteroidManager {
     std::vector <Asteroid> asteroids;
     SDL_Texture* asteroidTexture;
-    Audio SFX;
+    Audio* SFX;
 
     int speed;
     float spawnTimer = 0.0f;

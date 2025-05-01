@@ -2,9 +2,9 @@
 
 // ==== Asteroid ====
 
-Asteroid::Asteroid(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect dest, Audio& sound) :
+Asteroid::Asteroid(Vector2D position, Vector2D velocity, SDL_Texture* texture, SDL_Rect dest, Audio* sound) :
     position(position), velocity(velocity), texture(texture), dest(dest), active(true) {
-        SFX = &sound;
+        SFX = sound;
     }
 
 void Asteroid::render(SDL_Renderer* renderer, SDL_Texture* texture, Camera &camera) {
@@ -29,7 +29,7 @@ void Asteroid::update(float deltaTime) {
 
 void AsteroidManager::init(Graphics& graphics, Audio& sound) {
     asteroidTexture = graphics.getTexture("asteroid");
-    SFX = sound;
+    SFX = &sound;
     spawnCooldown = float(3 + rand() % 7);
     speed = 50 + rand() % 50;
 }
