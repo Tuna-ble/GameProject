@@ -32,6 +32,8 @@ https://www.1001fonts.com
 
 https://free-game-assets.itch.io/free-space-shooter-game-user-interface
 
+https://cassala.itch.io/bubble-sprites
+
 Audio:
 https://pixabay.com
 
@@ -81,3 +83,7 @@ Các điểm nổi bật khác:
 - Button hovering
 
 - Bộ sinh số ngẫu nhiên
+
+- OBB Collision
+
+- Laser beam
