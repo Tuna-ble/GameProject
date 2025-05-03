@@ -1,22 +1,39 @@
 #include "beam.h"
+#include "background.h"
 
 // ==== Beam ====
 
-Beam::Beam(Vector2D position, Vector2D direction, int damage, SDL_Texture* tex, SDL_Rect src, float angle, bulletFrom shooter)
-    : position(position), direction(direction), damage(damage),
-    beamTexture(tex), beamRect(src), angle(angle), shooter(shooter), active(true) {}
+Beam::Beam(Vector2D position, int damage, SDL_Texture* tex, SDL_Rect src, float angle, Audio* sound, bool fired, bulletFrom shooter)
+    : position(position), damage(damage),
+    beamTexture(tex), beamRect(src), angle(angle), shooter(shooter), active(true), fired(fired), SFX(sound) {}
 
 void Beam::update(float deltaTime) {
-    activeTimer += deltaTime;
-    if (activeTimer >= activeDuration) {
-        active = false;
+    if (!fired) {
+        warningTimer += deltaTime;
+        if (warningTimer >= warningDuration) {
+            fired = true;
+        }
+    }
+    else {
+        if (fired && channel == -1) {
+            channel = SFX->playSound("beam-shoot");
+        }
+        activeTimer += deltaTime;
+        if (activeTimer >= activeDuration) {
+            active = false;
+        }
     }
 }
 
 void Beam::render(SDL_Renderer* renderer, Camera& camera) {
     if (!active) return;
 
-    SDL_Point center = { width / 2, height };
+    if (!fired) {
+        drawOBB(renderer, camera);
+    }
+    else {
+
+    SDL_Point center = { width / 2, height + width / 2 };
 
     SDL_Rect dst = {
         static_cast<int>(position.x - camera.position.x),
@@ -26,17 +43,19 @@ void Beam::render(SDL_Renderer* renderer, Camera& camera) {
     };
 
     SDL_RenderCopyEx(renderer, beamTexture, &beamRect, &dst, angle, &center, SDL_FLIP_NONE);
+    }
 }
 
-void Beam::drawOBB(SDL_Renderer* renderer, const Camera& camera, SDL_Color color) const {
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+void Beam::drawOBB(SDL_Renderer* renderer, const Camera& camera) const {
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
 
     Vector2D corners[4];
     float rad = angle * M_PI / 180.0f;
     float cosA = cos(rad);
     float sinA = sin(rad);
 
-    Vector2D center = { position.x + width / 2, position.y };
+    Vector2D center = { position.x + width / 2, position.y + width / 2 };
 
     Vector2D localCorners[4] = {
         { -width / 2.0f, 0.0f },
@@ -45,35 +64,60 @@ void Beam::drawOBB(SDL_Renderer* renderer, const Camera& camera, SDL_Color color
         { -width / 2.0f, -height }
     };
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; i++) {
         float rotatedX = localCorners[i].x * cosA - localCorners[i].y * sinA;
         float rotatedY = localCorners[i].x * sinA + localCorners[i].y * cosA;
         corners[i] = { center.x + rotatedX, center.y + rotatedY };
     }
 
-    for (int i = 0; i < 4; ++i) {
-        SDL_RenderDrawLineF(renderer,
-            corners[i].x - camera.position.x, corners[i].y - camera.position.y,
-            corners[(i + 1) % 4].x - camera.position.x, corners[(i + 1) % 4].y - camera.position.y
-        );
+    SDL_Vertex verts[6];
+
+    for (int i = 0; i < 4; i++) {
+        corners[i].x -= camera.position.x;
+        corners[i].y -= camera.position.y;
     }
+    verts[0].position = { corners[0].x, corners[0].y };
+    verts[1].position = { corners[1].x, corners[1].y };
+    verts[2].position = { corners[2].x, corners[2].y };
+    verts[3].position = { corners[0].x, corners[0].y };
+    verts[4].position = { corners[2].x, corners[2].y };
+    verts[5].position = { corners[3].x, corners[3].y };
+
+    for (int i = 0; i < 6; i++)
+        verts[i].color = {255, 0, 0, 100};
+
+    SDL_RenderGeometry(renderer, nullptr, verts, 6, nullptr, 0);
 }
 
 // ==== Beam Manager ====
 
-void BeamManager::init(SDL_Texture* texture) {
+void BeamManager::init(SDL_Texture* texture, Audio& sound) {
     beamTexture = texture;
+    SFX = &sound;
 }
 
-void BeamManager::shoot(Vector2D position, Vector2D direction, int damage, const SDL_Rect& srcRect, float angle, bulletFrom shooter) {
-    beams.emplace_back(position, direction, damage, beamTexture, srcRect, angle, shooter);
+void BeamManager::shoot(Vector2D position, int damage, const SDL_Rect& srcRect, float angle, bool fired, bulletFrom shooter) {
+    beams.emplace_back(position, damage, beamTexture, srcRect, angle, SFX, fired, shooter);
 }
 
-void BeamManager::update(float deltaTime) {
-    for (auto& b : beams) b.update(deltaTime);
+void BeamManager::update(float deltaTime, Vector2D position, float angle) {
+    for (auto& b : beams) {
+        b.update(deltaTime);
+        b.position = position;
+        b.angle = angle;
+    }
     beams.erase(std::remove_if(beams.begin(), beams.end(),
                                  [](const Beam& b) { return !b.active; }), beams.end());
 }
+
+void BeamManager::update(float deltaTime) {
+    for (auto& b : beams) {
+        b.update(deltaTime);
+    }
+    beams.erase(std::remove_if(beams.begin(), beams.end(),
+                                 [](const Beam& b) { return !b.active; }), beams.end());
+}
+
 
 void BeamManager::render(SDL_Renderer* renderer, Camera& camera) {
     for (auto& b : beams) b.render(renderer, camera);
@@ -81,4 +125,13 @@ void BeamManager::render(SDL_Renderer* renderer, Camera& camera) {
 
 Vector2D BeamManager::getBeamSpawnPosition(Vector2D& position) const {
     return position + Vector2D(SHIP_SIZE / 2.0f - SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
+}
+
+void BeamManager::stopAllBeamSounds() {
+    for (auto& beam : beams) {
+        if (beam.channel != -1) {
+            Mix_HaltChannel(beam.channel);
+            beam.channel = -1;
+        }
+    }
 }

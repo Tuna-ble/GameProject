@@ -33,6 +33,7 @@ struct Enemy {
     int beamDamage = 1;
     int explosionDamage = 4;
     bool alive;
+    float angle;
 
     BulletManager bullets;
     BeamManager beams;
@@ -81,6 +82,8 @@ struct EnemyManager {
 
     float spawnTimer = 0.0f;
     float spawnCooldown;
+
+    int count;
 
     EnemyManager(gameMode& m);
     void init(Graphics& graphics, Audio& sound);

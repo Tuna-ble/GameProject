@@ -5,11 +5,7 @@
 #include "def.h"
 #include "background.h"
 #include "vector2D.h"
-
-enum class bulletFrom {
-    PLAYER,
-    ENEMY
-};
+#include "bulletFrom.h"
 
 struct Player;
 struct Camera;

@@ -8,7 +8,7 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
 
         switch (type) {
             case enemyType::BEAM: {
-                beams.init(bullet);
+                beams.init(bullet, *sound);
 
                 auto [x, y] = beamShipTypes[rand() % 2];
                 srcRect = { x * 128, y * 128, 128, 128 };
@@ -59,10 +59,6 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
     healthBar.render(renderer, health, position - camera.position, 75, 20);
-
-    for (const auto& beam : beams.beams) {
-        beam.drawOBB(renderer, camera, { 0, 255, 0, 255 });
-    }
 }
 
 void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops) {
@@ -81,7 +77,8 @@ void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropMana
             switch (type) {
                 case enemyType::BEAM: {
                     angle = atan2(player.position.y - position.y, player.position.x - position.x) * 180 / M_PI + 90;
-                    beams.shoot(position, direction, damage, beamSrcRect, angle, bulletFrom::ENEMY);
+                    beams.shoot(position, damage, beamSrcRect, angle, false, bulletFrom::ENEMY);
+                    SFX->playSound("charge-up");
                     break;
                 }
                 case enemyType::BULLET: {
@@ -212,6 +209,7 @@ void EnemyManager::update(float deltaTime, Graphics& graphics, Player &player, D
                 explosionManager.spawn(e.position, explodeType::SHIP);
                 e.exploded = true;
             }
+            e.beams.stopAllBeamSounds();
         }
     }
     spawnTimer += deltaTime;

@@ -86,7 +86,7 @@ bool Collision::bulletXPlayer(Player& player, Bullet& bullet) {
 }
 
 bool Collision::beamXPlayer(Player& player, Beam& beam) {
-    if (beam.shooter == bulletFrom::ENEMY) {
+    if (beam.fired && beam.shooter == bulletFrom::ENEMY) {
         Vector2D beamCorners[4];
         getCorners(beamCorners, beam.position, beam.width, beam.height, beam.angle);
 
@@ -94,6 +94,21 @@ bool Collision::beamXPlayer(Player& player, Beam& beam) {
         getCorners(playerCorners, player.position, SHIP_SIZE, SHIP_SIZE, player.angle);
 
         if (OBBCollision(beamCorners, playerCorners)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Collision::beamXEnemy(Enemy& enemy, Beam& beam) {
+    if (beam.fired && beam.shooter == bulletFrom::PLAYER) {
+        Vector2D beamCorners[4];
+        getCorners(beamCorners, beam.position, beam.width, beam.height, beam.angle);
+
+        Vector2D enemyCorners[4];
+        getCorners(enemyCorners, enemy.position, ENEMY_SIZE, ENEMY_SIZE, enemy.angle);
+
+        if (OBBCollision(beamCorners, enemyCorners)) {
             return true;
         }
     }
@@ -170,7 +185,7 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             if (bulletXEnemy(e, b)) {
                 b.active = false;
                 e.health.takeDamage(player.damage);
-                player.SFX->playSound("hit");
+                e.SFX->playSound("hit");
                 e.hurtTimer = e.hurtDuration;
                 if (e.health.isDead()) {
                     e.alive = false;
@@ -179,6 +194,23 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
             }
         }
     }
+
+    for (auto& b : player.beams.beams) {
+            if (!b.active) continue;
+            for (auto& e : enemies) {
+                if (!e.alive) continue;
+
+                if (beamXEnemy(e, b)) {
+                    e.health.takeDamage(player.damage);
+                    e.SFX->playSound("hit");
+                    e.hurtTimer = e.hurtDuration;
+                    if (e.health.isDead()) {
+                        e.alive = false;
+                        e.SFX->playSound("explosion");
+                    }
+                }
+            }
+        }
 
     for (auto& a : asteroids) {
         if (!a.active) continue;

@@ -17,7 +17,7 @@ struct Audio {
     void loadMusic(const char* path);
     void playMusic();
     void loadSound(const char* name, const char* path);
-    void playSound(const char* name);
+    int playSound(const char* name);
     void stopMusic();
     void cleanUp();
 };

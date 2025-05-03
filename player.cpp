@@ -1,9 +1,10 @@
 #include "player.h"
+#include "beam.h"
 
 void Player::init(Graphics& graphics, Audio& sound) {
     playerTexture = graphics.getTexture("spaceShip");
     bullets.init(graphics.getTexture("bullet"));
-    //beams.init(graphics.getTexture("bullet"));
+    beams.init(graphics.getTexture("bullet"), sound);
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
     shield.init(graphics.getTexture("shield"));
 
@@ -47,14 +48,18 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
     if (currentKeyStates[SDL_SCANCODE_A]) velocity.x = -speed;
     if (currentKeyStates[SDL_SCANCODE_D]) velocity.x = speed;
 
-//    if (currentKeyStates[SDL_SCANCODE_Q]) {
-//        Vector2D worldMouse = mouse + camera.position;
-//        Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
-//        Vector2D direction = worldMouse - playerCenter;
-//        direction = direction.normalize();
-//        float angle = atan2(worldMouse.y - position.y, worldMouse.x - position.x) * 180 / M_PI + 90;
-//        beams.shoot(position, direction, damage, beamSrcRect, angle, bulletFrom::PLAYER);
-//    }
+    if (currentKeyStates[SDL_SCANCODE_E]) {
+        if (beamTimer <= 0.0f) {
+        Vector2D worldMouse = mouse + camera.position;
+        Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
+        Vector2D direction = worldMouse - playerCenter;
+        direction = direction.normalize();
+        float angle = atan2(worldMouse.y - position.y, worldMouse.x - position.x) * 180 / M_PI + 90;
+        beams.shoot(position, damage, beamRect, angle, true, bulletFrom::PLAYER);
+
+        beamTimer = beamCooldown;
+        }
+    }
     if (currentKeyStates[SDL_SCANCODE_Q]) {
         shield.activate();
     }
@@ -83,7 +88,11 @@ void Player::update(float deltaTime, Camera &camera) {
     }
 
     if (beamDamageTimer > 0.0f) {
-    beamDamageTimer -= deltaTime;
+        beamDamageTimer -= deltaTime;
+    }
+
+    if (beamTimer > 0.0f) {
+        beamTimer -= deltaTime;
     }
 
     thruster.update();
@@ -91,7 +100,7 @@ void Player::update(float deltaTime, Camera &camera) {
     bullets.update(deltaTime);
 
     shield.update(deltaTime);
-    //beams.update(deltaTime);
+    beams.update(deltaTime, position, angle);
 }
 
 void Player::render(SDL_Renderer* renderer, Camera &camera) {
@@ -114,7 +123,7 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
     SDL_RenderCopyEx(renderer, playerTexture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
     bullets.render(renderer, camera);
-    //beams.render(renderer, camera);
+    beams.render(renderer, camera);
 
     healthBar.render(renderer, health, {250 , 20}, 400, 30);
 
@@ -142,9 +151,11 @@ void Player::reset() {
     startY = rand() % MAP_HEIGHT;
     position = {(float)startX, (float)startY};
     velocity = Vector2D(0, 0);
+    beamTimer = 0.0f;
     health = Health(PLAYER_HEALTH);
     bullets.bullets.clear();
     shield.reset();
     speed = BASE_SPEED;
+
     gameRunning = true;
 }

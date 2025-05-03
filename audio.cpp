@@ -44,16 +44,15 @@ void Audio::loadSound(const char* name, const char* path) {
     }
 }
 
-void Audio::playSound(const char* name) {
-    if (!sfxEnabled) {
-        return;
-    }
+int Audio::playSound(const char* name) {
+    if (!sfxEnabled) return -1;
+
     auto it = SFX.find(name);
     if (it != SFX.end()) {
-        Mix_PlayChannel(-1, it->second, 0);
-    }
-    else {
+        return Mix_PlayChannel(-1, it->second, 0); // ✅ Trả về channel
+    } else {
         std::cerr << "Sound not found: " << name << std::endl;
+        return -1;
     }
 }
 

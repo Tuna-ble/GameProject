@@ -20,6 +20,8 @@ void Game::init()
     musicAndSFX.loadSound("time", "audio/timeRunning.mp3");
     musicAndSFX.loadSound("victory", "audio/victory.mp3");
     musicAndSFX.loadSound("failure", "audio/failed.mp3");
+    musicAndSFX.loadSound("charge-up", "audio/charge-up.mp3");
+    musicAndSFX.loadSound("beam-shoot", "audio/beam-shoot.mp3");
 
     graphics.loadTexture("background", "assets/background0.png");
     graphics.loadTexture("background1", "assets/background1.png");
@@ -110,6 +112,9 @@ void Game::update(float deltaTime)
         highScore.saveHighScore(score);
         }
         gameOver.init(graphics, font, score);
+        for (auto& e : enemies.enemies)
+            e.beams.stopAllBeamSounds();
+        player.beams.stopAllBeamSounds();
         musicAndSFX.playSound("victory");
         hud.cleanUp();
         return;
@@ -118,6 +123,9 @@ void Game::update(float deltaTime)
     else if (player.health.isDead()) {
         currentState = gameState::GAME_OVER_LOSE;
         gameOver.init(graphics, font, score);
+        for (auto& e : enemies.enemies)
+            e.beams.stopAllBeamSounds();
+        player.beams.stopAllBeamSounds();
         musicAndSFX.playSound("failure");
         hud.cleanUp();
         return;
@@ -182,6 +190,9 @@ void Game::run() {
                     }
                     hud.handleEvent(event, mouseX, mouseY, musicAndSFX);
                     player.handleInput(event, camera);
+                    break;
+                case gameState::QUIT:
+                    isRunning = false;
                     break;
             }
         }
