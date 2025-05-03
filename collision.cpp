@@ -115,6 +115,21 @@ bool Collision::beamXEnemy(Enemy& enemy, Beam& beam) {
     return false;
 }
 
+bool Collision::beamXAsteroid(Asteroid& asteroid, Beam& beam) {
+    if (beam.fired && beam.shooter == bulletFrom::PLAYER) {
+        Vector2D beamCorners[4];
+        getCorners(beamCorners, beam.position, beam.width, beam.height, beam.angle);
+
+        Vector2D asteroidCorners[4];
+        getCorners(asteroidCorners, asteroid.position, ASTEROID_SIZE, ASTEROID_SIZE, 0.0f);
+
+        if (OBBCollision(beamCorners, asteroidCorners)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool Collision::enemyXPlayer(Player& player, Enemy& enemy) {
     if (checkCollision(enemy.position, {ENEMY_SIZE, ENEMY_SIZE}, player.position, {SHIP_SIZE, SHIP_SIZE}))
             return true;
@@ -196,21 +211,31 @@ void Collision::checkAll(std::vector<Enemy>& enemies, std::vector<Asteroid>& ast
     }
 
     for (auto& b : player.beams.beams) {
-            if (!b.active) continue;
-            for (auto& e : enemies) {
-                if (!e.alive) continue;
+        if (!b.active) continue;
 
-                if (beamXEnemy(e, b)) {
-                    e.health.takeDamage(player.damage);
-                    e.SFX->playSound("hit");
-                    e.hurtTimer = e.hurtDuration;
-                    if (e.health.isDead()) {
-                        e.alive = false;
-                        e.SFX->playSound("explosion");
-                    }
+        for (auto& e : enemies) {
+            if (!e.alive) continue;
+
+            if (beamXEnemy(e, b)) {
+                e.health.takeDamage(player.damage);
+                e.SFX->playSound("hit");
+                e.hurtTimer = e.hurtDuration;
+                if (e.health.isDead()) {
+                    e.alive = false;
+                    e.SFX->playSound("explosion");
                 }
             }
         }
+
+        for (auto& a : asteroids) {
+            if (!a.active) continue;
+
+            if (beamXAsteroid(a, b)) {
+                a.active = false;
+                a.SFX->playSound("explosion");
+            }
+        }
+    }
 
     for (auto& a : asteroids) {
         if (!a.active) continue;

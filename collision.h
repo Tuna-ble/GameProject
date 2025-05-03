@@ -19,6 +19,7 @@ struct Collision {
     bool bulletXPlayer(Player& player, Bullet& bullet);
     bool beamXPlayer(Player& player, Beam& beam);
     bool beamXEnemy(Enemy& enemy, Beam& beam);
+    bool beamXAsteroid(Asteroid& asteroid, Beam& beam);
     bool enemyXPlayer(Player& player, Enemy& enemy);
     bool asteroidXPlayer(Player& player, Asteroid& asteroid);
     bool dropXPlayer(Player& player, Drop& drop);
