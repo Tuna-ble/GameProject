@@ -34,6 +34,8 @@ https://free-game-assets.itch.io/free-space-shooter-game-user-interface
 
 https://cassala.itch.io/bubble-sprites
 
+https://retsnail-assets.itch.io/laserbeamfx
+
 Audio:
 https://pixabay.com
 
