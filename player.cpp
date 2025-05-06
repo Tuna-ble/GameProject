@@ -120,10 +120,10 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
 
     thruster.render(renderer, position, camera, dest, angle, NULL);
 
-    SDL_RenderCopyEx(renderer, playerTexture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
-
     bullets.render(renderer, camera);
     beams.render(renderer, camera);
+
+    SDL_RenderCopyEx(renderer, playerTexture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
     healthBar.render(renderer, health, {250 , 20}, 400, 30);
 

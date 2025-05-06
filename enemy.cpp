@@ -35,12 +35,13 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
 void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     if (!alive && !dropped) return;
 
-    float angle = atan2(velocity.y, velocity.x) * 180 / M_PI + 90;
+    float angle = atan2(direction.y, direction.x) * 180 / M_PI + 90;
+
     Vector2D draw = position - camera.position;
 
     if (hurtTimer > 0.0f) {
-    draw.x += rand() % 5 - 2;
-    draw.y += rand() % 5 - 2;
+        draw.x += rand() % 5 - 2;
+        draw.y += rand() % 5 - 2;
     }
 
     SDL_Rect drawRect = {
@@ -56,17 +57,25 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
 
     thruster.render(renderer, position, camera, drawRect, angle, NULL);
 
+    bullets.render(renderer, camera);
+    beams.render(renderer, camera);
+
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
     healthBar.render(renderer, health, position - camera.position, 75, 20);
 }
 
 void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops) {
-    Vector2D direction = player.position - position;
+    direction = player.position - position;
 
     direction = direction.normalize();
 
-    velocity = direction * speed;
+    if (!isBeamFiring()) {
+        velocity = direction * speed;
+    }
+    else {
+        velocity = Vector2D(0, 0);
+    }
 
     position += velocity * deltaTime;
 
@@ -118,6 +127,10 @@ bool Enemy::shootON() {
 
 void Enemy::resetShootTimer() {
     shootTimer = 0.0f;
+}
+
+bool Enemy::isBeamFiring() const {
+    return type == enemyType::BEAM && beams.isFiring();
 }
 
 // ==== Enemy Manager ====
@@ -194,8 +207,6 @@ void EnemyManager::spawn(Camera& camera) {
 void EnemyManager::render(SDL_Renderer* renderer, Camera &camera) {
     for (auto& e : enemies) {
             e.render(renderer, camera);
-            e.bullets.render(renderer, camera);
-            e.beams.render(renderer, camera);
     }
 }
 

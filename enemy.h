@@ -26,6 +26,7 @@ struct Enemy {
     enemyType type;
     Vector2D position;
     Vector2D velocity;
+    Vector2D direction;
     SDL_Texture* texture;
     SDL_Rect dest;
     SDL_Rect healthBarDest;
@@ -64,6 +65,7 @@ struct Enemy {
 
     void resetShootTimer();
     bool shootON();
+    bool isBeamFiring() const;
 };
 
 

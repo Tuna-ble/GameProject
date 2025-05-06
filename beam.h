@@ -57,6 +57,8 @@ struct BeamManager {
     Vector2D getBeamSpawnPosition(Vector2D& position) const;
 
     void stopAllBeamSounds();
+
+    bool isFiring() const;
 };
 
 #endif // BEAM_H_INCLUDED

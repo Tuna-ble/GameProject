@@ -45,7 +45,7 @@ void Beam::render(SDL_Renderer* renderer, Camera& camera) {
     SDL_Point center = { width / 2, height + width / 2 };
 
     SDL_Rect dst = {
-        static_cast<int>(position.x - camera.position.x),
+        static_cast<int>(position.x - camera.position.x ),
         static_cast<int>(position.y - camera.position.y - height ),
         width,
         height
@@ -64,7 +64,7 @@ void Beam::drawOBB(SDL_Renderer* renderer, const Camera& camera) const {
     float cosA = cos(rad);
     float sinA = sin(rad);
 
-    Vector2D center = { position.x + width / 2, position.y + width / 2 };
+    Vector2D center = { position.x + width / 2, position.y + width / 2};
 
     Vector2D localCorners[4] = {
         { -width / 2.0f, 0.0f },
@@ -148,4 +148,11 @@ void BeamManager::stopAllBeamSounds() {
         }
     }
     beams.clear();
+}
+
+bool BeamManager::isFiring() const {
+    for (const auto& b : beams) {
+        return b.active;
+    }
+    return false;
 }
