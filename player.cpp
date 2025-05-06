@@ -4,7 +4,7 @@
 void Player::init(Graphics& graphics, Audio& sound) {
     playerTexture = graphics.getTexture("spaceShip");
     bullets.init(graphics.getTexture("bullet"));
-    beams.init(graphics.getTexture("bullet"), sound);
+    beams.init(graphics.getTexture("beam-active0"), sound);
     thruster.init(graphics.getTexture("thruster"), SHIP_FRAMES, SHIP_CLIPS);
     shield.init(graphics.getTexture("shield"));
 
@@ -55,7 +55,7 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
         Vector2D direction = worldMouse - playerCenter;
         direction = direction.normalize();
         float angle = atan2(worldMouse.y - position.y, worldMouse.x - position.x) * 180 / M_PI + 90;
-        beams.shoot(position, damage, beamRect, angle, true, bulletFrom::PLAYER);
+        beams.shoot(position, damage, angle, true, bulletFrom::PLAYER);
 
         beamTimer = beamCooldown;
         }
@@ -118,7 +118,7 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
     else
     SDL_SetTextureColorMod(playerTexture, 255, 255, 255);
 
-    thruster.render(renderer, position, camera, SHIP_SIZE, angle);
+    thruster.render(renderer, position, camera, dest, angle, NULL);
 
     SDL_RenderCopyEx(renderer, playerTexture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 

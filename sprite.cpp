@@ -21,12 +21,10 @@ const SDL_Rect* Sprite::getCurrentClip() const {
     return &(clips[currentFrame]);
 }
 
-void Sprite::render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, int size, float angle) {
+void Sprite::render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, SDL_Rect& dest, float angle, SDL_Point* center) {
     const SDL_Rect* clip = getCurrentClip();
 
-    Vector2D drawPos = position - camera.position;
-    SDL_Rect dest = { (int)drawPos.x, (int)drawPos.y, size, size };
-    SDL_RenderCopyEx(renderer, texture, clip, &dest, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture, clip, &dest, angle, center, SDL_FLIP_NONE);
 }
 
 void Sprite::animate(float deltaTime) {

@@ -21,7 +21,7 @@ struct Sprite {
     void update();
     const SDL_Rect* getCurrentClip() const;
 
-    void render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, int size, float angle);
+    void render(SDL_Renderer* renderer, Vector2D& position, Camera& camera, SDL_Rect& dest, float angle, SDL_Point* center);
     void animate(float deltaTime);
     bool isFinished() const;
 };

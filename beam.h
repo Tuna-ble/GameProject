@@ -29,14 +29,15 @@ struct Beam {
     float activeTimer = 0.0f;
     float activeDuration = 3.0f;
 
-    float warningDuration = 2.0f;
+    float warningDuration = 1.0f;
     float warningTimer = 0.0f;
     bool fired = false;
 
-    Beam(Vector2D position, int damage, SDL_Texture* tex, SDL_Rect src, float angle, Audio* sound, bool fired, bulletFrom shooter);
+    Beam(Vector2D position, int damage, SDL_Texture* tex, float angle, Audio* sound, bool fired, bulletFrom shooter);
     void update(float deltaTime);
     void render(SDL_Renderer* renderer, Camera& camera);
     void drawOBB(SDL_Renderer* renderer, const Camera& camera) const;
+    bool isFinished() const;
 };
 
 struct BeamManager {
@@ -46,7 +47,7 @@ struct BeamManager {
 
     void init(SDL_Texture* texture, Audio& sound);
 
-    void shoot(Vector2D position, int damage, const SDL_Rect& srcRect, float angle, bool fired, bulletFrom shooter);
+    void shoot(Vector2D position, int damage, float angle, bool fired, bulletFrom shooter);
 
     void update(float deltaTime, Vector2D position, float angle);
     void update(float deltaTime);

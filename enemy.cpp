@@ -54,7 +54,7 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     else
     SDL_SetTextureColorMod(texture, 255, 255, 255);
 
-    thruster.render(renderer, position, camera, ENEMY_SIZE, angle);
+    thruster.render(renderer, position, camera, drawRect, angle, NULL);
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
@@ -77,7 +77,7 @@ void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropMana
             switch (type) {
                 case enemyType::BEAM: {
                     angle = atan2(player.position.y - position.y, player.position.x - position.x) * 180 / M_PI + 90;
-                    beams.shoot(position, damage, beamSrcRect, angle, false, bulletFrom::ENEMY);
+                    beams.shoot(position, damage, angle, false, bulletFrom::ENEMY);
                     SFX->playSound("charge-up");
                     break;
                 }
@@ -128,6 +128,7 @@ void EnemyManager::init(Graphics& graphics, Audio& sound) {
     enemyTexture = graphics.getTexture("spaceShip");
     thrusterTexture = graphics.getTexture("thruster");
     bulletTexture = graphics.getTexture("bullet");
+    beamTexture = graphics.getTexture("beam-active");
     SFX = &sound;
     spawnCooldown = (float)(1 + rand() % 2);
 }
@@ -179,13 +180,12 @@ void EnemyManager::spawn(Camera& camera) {
             scorePerEnemy = 30;
             int r = rand() % 100;
             if (r < 20) {
-                type = enemyType::BEAM;
+                enemies.emplace_back(spawn, enemyTexture, dest, beamTexture, thrusterTexture, SFX, enemyType::BEAM);
             }
             else {
-                type = enemyType::BULLET;
+                enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX, enemyType::BULLET);
             }
 
-            enemies.emplace_back(spawn, enemyTexture, dest, bulletTexture, thrusterTexture, SFX, type);
         }
         resetSpawnTimer();
     }

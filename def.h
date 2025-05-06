@@ -47,6 +47,14 @@ const int SHIP_CLIPS[][4] = {
     };
 const int SHIP_FRAMES = sizeof(SHIP_CLIPS)/sizeof(SHIP_CLIPS[0]);
 
+const int BEAM_CLIPS[][4] = {
+    { 0, 0, 180, 380}, { 180, 0, 180, 380},
+    { 360, 0, 180, 380}, { 540, 0, 180, 380},
+    { 0, 380, 180, 380}, { 180, 380, 180, 380},
+    { 360, 380, 180, 380}, { 540, 380, 180, 380}
+    };
+const int BEAM_FRAMES = sizeof(BEAM_CLIPS)/sizeof(BEAM_CLIPS[0]);
+
 #define WINDOW_TITLE "Space War"
 
 #endif

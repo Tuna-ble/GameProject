@@ -6,7 +6,7 @@
 	<ctime>
 	"game.h"
 
-1745888907 c:\users\admin\gamepr\def.h
+1746543034 c:\users\admin\gamepr\def.h
 	<bits/stdc++.h>
 
 1745210648 c:\users\admin\gamepr\graphics.h
@@ -19,7 +19,7 @@
 1745211437 source:c:\users\admin\gamepr\graphics.cpp
 	"graphics.h"
 
-1745885247 c:\users\admin\gamepr\game.h
+1746537567 c:\users\admin\gamepr\game.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -39,10 +39,10 @@
 	"explosion.h"
 	"gameMode.h"
 
-1746278301 source:c:\users\admin\gamepr\game.cpp
+1746544558 source:c:\users\admin\gamepr\game.cpp
 	"game.h"
 
-1746279044 source:c:\users\admin\gamepr\player.cpp
+1746544438 source:c:\users\admin\gamepr\player.cpp
 	"player.h"
 	"beam.h"
 
@@ -84,7 +84,7 @@
 	"vector2D.h"
 	"bulletFrom.h"
 
-1746278226 c:\users\admin\gamepr\enemy.h
+1746543034 c:\users\admin\gamepr\enemy.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
@@ -100,10 +100,10 @@
 	"explosion.h"
 	"gameMode.h"
 
-1746278728 source:c:\users\admin\gamepr\enemy.cpp
+1746543333 source:c:\users\admin\gamepr\enemy.cpp
 	"enemy.h"
 
-1746280030 source:c:\users\admin\gamepr\collision.cpp
+1746281412 source:c:\users\admin\gamepr\collision.cpp
 	"collision.h"
 
 1744537513 c:\users\admin\gamepr\vector2d.h
@@ -131,13 +131,13 @@
 1745378727 source:c:\users\admin\gamepr\health.cpp
 	"health.h"
 
-1745378727 c:\users\admin\gamepr\sprite.h
+1746543565 c:\users\admin\gamepr\sprite.h
 	<SDL.h>
 	<SDL_image.h>
 	"def.h"
 	"vector2D.h"
 
-1745228560 source:c:\users\admin\gamepr\sprite.cpp
+1746543565 source:c:\users\admin\gamepr\sprite.cpp
 	"sprite.h"
 	"background.h"
 
@@ -209,10 +209,11 @@
 	"vector2D.h"
 	"graphics.h"
 
-1745464455 source:c:\users\admin\gamepr\explosion.cpp
+1746543333 source:c:\users\admin\gamepr\explosion.cpp
 	"explosion.h"
+	"background.h"
 
-1746278749 c:\users\admin\gamepr\beam.h
+1746543034 c:\users\admin\gamepr\beam.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -222,7 +223,7 @@
 	"audio.h"
 	"bulletFrom.h"
 
-1746278912 source:c:\users\admin\gamepr\beam.cpp
+1746543565 source:c:\users\admin\gamepr\beam.cpp
 	"beam.h"
 	"background.h"
 

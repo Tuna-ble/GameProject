@@ -40,7 +40,6 @@ struct Game {
     Audio musicAndSFX;
 
     TTF_Font* font;
-    SDL_Texture* text;
 
     gameState currentState;
     gameMode mode;

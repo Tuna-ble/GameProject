@@ -1,4 +1,5 @@
 #include "explosion.h"
+#include "background.h"
 
 // ==== Explosion ====
 
@@ -22,7 +23,14 @@ void Explosion::update(float deltaTime) {
 }
 
 void Explosion::render(SDL_Renderer* renderer, Camera& camera) {
-    explode.render(renderer, position, camera, explodeSize, 0);
+    Vector2D draw = position - camera.position;
+    SDL_Rect drawRect = {
+        static_cast<int>(draw.x),
+        static_cast<int>(draw.y),
+        explodeSize, explodeSize
+    };
+
+    explode.render(renderer, position, camera, drawRect, 0, NULL);
 }
 
 bool Explosion::isFinished() const {

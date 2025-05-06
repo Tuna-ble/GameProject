@@ -65,6 +65,9 @@ void Game::init()
 
     graphics.loadTexture("shield", "assets/shield.png");
 
+    graphics.loadTexture("beam-active", "assets/beam-active.png");
+    graphics.loadTexture("beam-active0", "assets/beam-active0.png");
+
     HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
 
     currentState = gameState::MAIN_MENU;
@@ -266,7 +269,6 @@ void Game::quit()
     pauseMenu.cleanUp();
     settingsMenu.cleanUp();
     musicAndSFX.cleanUp();
-    SDL_DestroyTexture( text );
     TTF_CloseFont( font );
     graphics.quit();
 }

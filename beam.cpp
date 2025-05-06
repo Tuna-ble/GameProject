@@ -3,9 +3,16 @@
 
 // ==== Beam ====
 
-Beam::Beam(Vector2D position, int damage, SDL_Texture* tex, SDL_Rect src, float angle, Audio* sound, bool fired, bulletFrom shooter)
+Beam::Beam(Vector2D position, int damage, SDL_Texture* tex, float angle, Audio* sound, bool fired, bulletFrom shooter)
     : position(position), damage(damage),
-    beamTexture(tex), beamRect(src), angle(angle), shooter(shooter), active(true), fired(fired), SFX(sound) {}
+    beamTexture(tex), angle(angle), shooter(shooter), active(true), fired(fired), SFX(sound) {
+        beamShooting.init(beamTexture, BEAM_FRAMES, BEAM_CLIPS);
+
+        beamShooting.loop = true;
+        beamShooting.currentFrame = 0;
+        beamShooting.elapsedTime = 0.0f;
+        beamShooting.finished = false;
+    }
 
 void Beam::update(float deltaTime) {
     if (!fired) {
@@ -15,12 +22,14 @@ void Beam::update(float deltaTime) {
         }
     }
     else {
+        beamShooting.update();
         if (fired && channel == -1) {
             channel = SFX->playSound("beam-shoot");
         }
         activeTimer += deltaTime;
         if (activeTimer >= activeDuration) {
             active = false;
+            beamShooting.loop = false;
         }
     }
 }
@@ -42,7 +51,7 @@ void Beam::render(SDL_Renderer* renderer, Camera& camera) {
         height
     };
 
-    SDL_RenderCopyEx(renderer, beamTexture, &beamRect, &dst, angle, &center, SDL_FLIP_NONE);
+    beamShooting.render(renderer, position, camera, dst, angle, &center);
     }
 }
 
@@ -89,6 +98,10 @@ void Beam::drawOBB(SDL_Renderer* renderer, const Camera& camera) const {
     SDL_RenderGeometry(renderer, nullptr, verts, 6, nullptr, 0);
 }
 
+bool Beam::isFinished() const {
+    return beamShooting.isFinished();
+}
+
 // ==== Beam Manager ====
 
 void BeamManager::init(SDL_Texture* texture, Audio& sound) {
@@ -96,8 +109,8 @@ void BeamManager::init(SDL_Texture* texture, Audio& sound) {
     SFX = &sound;
 }
 
-void BeamManager::shoot(Vector2D position, int damage, const SDL_Rect& srcRect, float angle, bool fired, bulletFrom shooter) {
-    beams.emplace_back(position, damage, beamTexture, srcRect, angle, SFX, fired, shooter);
+void BeamManager::shoot(Vector2D position, int damage, float angle, bool fired, bulletFrom shooter) {
+    beams.emplace_back(position, damage, beamTexture, angle, SFX, fired, shooter);
 }
 
 void BeamManager::update(float deltaTime, Vector2D position, float angle) {
@@ -134,4 +147,5 @@ void BeamManager::stopAllBeamSounds() {
             beam.channel = -1;
         }
     }
+    beams.clear();
 }

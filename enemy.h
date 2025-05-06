@@ -72,6 +72,7 @@ struct EnemyManager {
     SDL_Texture* enemyTexture;
     SDL_Texture* thrusterTexture;
     SDL_Texture* bulletTexture;
+    SDL_Texture* beamTexture;
     Audio* SFX;
     enemyType type;
     gameMode& mode;
