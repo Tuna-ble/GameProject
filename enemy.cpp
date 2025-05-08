@@ -28,7 +28,7 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
         }
 
         SFX = sound;
-        speed = rand() % 150;
+        speed = rand() % 150 + 50;
         shootTimer = (float)(rand() % 1000) / 1000.0f;
     }
 

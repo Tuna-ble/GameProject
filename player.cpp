@@ -68,8 +68,8 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
 void Player::update(float deltaTime, Camera &camera) {
     position += velocity * deltaTime;
 
-    position.x = std::max(0.f, std::min(position.x, (float)MAP_WIDTH - (float)SHIP_SIZE));
-    position.y = std::max(0.f, std::min(position.y, (float)MAP_HEIGHT - (float)SHIP_SIZE));
+    position.x = std::max(0, std::min((int)position.x, MAP_WIDTH - SHIP_SIZE));
+    position.y = std::max(0, std::min((int)position.y, MAP_HEIGHT - SHIP_SIZE));
 
     int mousex, mousey;
     SDL_GetMouseState(&mousex, &mousey);
@@ -111,7 +111,11 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
     draw.y += rand() % 5 - 2;
     }
 
-    SDL_Rect dest = { static_cast<int>(draw.x), static_cast<int>(draw.y), SHIP_SIZE, SHIP_SIZE };
+    SDL_Rect dest = {
+        static_cast<int>(draw.x),
+        static_cast<int>(draw.y),
+        SHIP_SIZE, SHIP_SIZE
+    };
 
     if (hurtTimer > 0.0f)
     SDL_SetTextureColorMod(playerTexture, 255, 100, 100);

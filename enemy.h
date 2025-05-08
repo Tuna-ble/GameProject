@@ -86,7 +86,7 @@ struct EnemyManager {
     float spawnTimer = 0.0f;
     float spawnCooldown;
 
-    int count;
+    int count = 0;
 
     EnemyManager(gameMode& m);
     void init(Graphics& graphics, Audio& sound);

@@ -4,8 +4,8 @@
 // ==== Beam ====
 
 Beam::Beam(Vector2D position, int damage, SDL_Texture* tex, float angle, Audio* sound, bool fired, bulletFrom shooter)
-    : position(position), damage(damage),
-    beamTexture(tex), angle(angle), shooter(shooter), active(true), fired(fired), SFX(sound) {
+    : position(position), damage(damage), beamTexture(tex),
+    angle(angle), shooter(shooter), active(true), fired(fired), SFX(sound) {
         beamShooting.init(beamTexture, BEAM_FRAMES, BEAM_CLIPS);
 
         beamShooting.loop = true;
@@ -47,8 +47,7 @@ void Beam::render(SDL_Renderer* renderer, Camera& camera) {
     SDL_Rect dst = {
         static_cast<int>(position.x - camera.position.x ),
         static_cast<int>(position.y - camera.position.y - height ),
-        width,
-        height
+        width, height
     };
 
     beamShooting.render(renderer, position, camera, dst, angle, &center);

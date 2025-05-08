@@ -38,7 +38,8 @@ void Sprite::animate(float deltaTime) {
         if (currentFrame >= clips.size()) {
             if (loop) {
                 currentFrame = 0;
-            } else {
+            }
+            else {
                 currentFrame = clips.size() - 1;
                 finished = true;
             }

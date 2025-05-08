@@ -14,7 +14,7 @@ void Collision::getCorners(Vector2D corners[4], Vector2D position, int width, in
     float cosA = cos(rad);
     float sinA = sin(rad);
 
-    Vector2D center = { position.x, position.y };
+    Vector2D center = { position.x , position.y };
 
     Vector2D localCorners[4] = {
         { -width / 2.0f, 0.0f },
@@ -23,31 +23,30 @@ void Collision::getCorners(Vector2D corners[4], Vector2D position, int width, in
         { -width / 2.0f, -height }
     };
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; i++) {
         float rotatedX = localCorners[i].x * cosA - localCorners[i].y * sinA;
         float rotatedY = localCorners[i].x * sinA + localCorners[i].y * cosA;
         corners[i] = { center.x + rotatedX, center.y + rotatedY };
     }
 }
 
-
 bool OBBCollision(const Vector2D cornersA[4], const Vector2D cornersB[4]) {
     Vector2D axes[4];
 
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 2; i++) {
         axes[i] = Vector2D{
             cornersA[(i + 1) % 4].x - cornersA[i].x,
             cornersA[(i + 1) % 4].y - cornersA[i].y
         }.normalize();
     }
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 2; i++) {
         axes[i + 2] = Vector2D{
             cornersB[(i + 1) % 4].x - cornersB[i].x,
             cornersB[(i + 1) % 4].y - cornersB[i].y
         }.normalize();
     }
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; i++) {
         float minA = INFINITY, maxA = -INFINITY;
         float minB = INFINITY, maxB = -INFINITY;
 

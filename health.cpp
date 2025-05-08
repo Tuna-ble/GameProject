@@ -30,8 +30,17 @@ float Health::getPercent() const {
 // ==== Health Bar ====
 
 void HealthBar::render(SDL_Renderer* renderer, Health& health, Vector2D position, int width, int height) {
-    healthBarRect = { static_cast<int>(position.x), static_cast<int>(position.y), width, height };
-    healthFillRect = { static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(width * health.getPercent()), height };
+    healthBarRect = {
+        static_cast<int>(position.x),
+        static_cast<int>(position.y),
+        width, height
+    };
+    healthFillRect = {
+        static_cast<int>(position.x),
+        static_cast<int>(position.y),
+        static_cast<int>(width * health.getPercent()),
+        height
+    };
 
     SDL_RenderCopy(renderer, barTexture, nullptr, &healthBarRect);
 

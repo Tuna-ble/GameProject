@@ -2,8 +2,8 @@
 
 // ==== Drop ====
 
-Drop::Drop(Vector2D position, SDL_Texture* texture, SDL_Rect dest, int ID) :
-    position(position), texture(texture), dest(dest), active(true) {
+Drop::Drop(Vector2D position, SDL_Texture* texture, SDL_Rect dest, int ID)
+    : position(position), texture(texture), dest(dest), active(true) {
         srcRect = {(ID % 2) * 16, (ID / 2) * 16, 16, 16};
         type = static_cast<dropType>(ID);
 
