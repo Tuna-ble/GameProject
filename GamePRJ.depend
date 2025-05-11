@@ -247,3 +247,69 @@
 
 1746266553 c:\users\admin\gamepr\bulletfrom.h
 
+1746674205 source:c:\users\admin\gamepr\src\asteroid.cpp
+	"asteroid.h"
+
+1746270519 source:c:\users\admin\gamepr\src\audio.cpp
+	"audio.h"
+
+1745461591 source:c:\users\admin\gamepr\src\background.cpp
+	"background.h"
+
+1746672063 source:c:\users\admin\gamepr\src\beam.cpp
+	"beam.h"
+	"background.h"
+
+1745867775 source:c:\users\admin\gamepr\src\bullet.cpp
+	"player.h"
+	"bullet.h"
+
+1746669482 source:c:\users\admin\gamepr\src\collision.cpp
+	"collision.h"
+
+1746663212 source:c:\users\admin\gamepr\src\drop.cpp
+	"drop.h"
+
+1746672442 source:c:\users\admin\gamepr\src\enemy.cpp
+	"enemy.h"
+
+1746544821 source:c:\users\admin\gamepr\src\explosion.cpp
+	"explosion.h"
+	"background.h"
+
+1746996633 source:c:\users\admin\gamepr\src\gameui.cpp
+	"gameUI.h"
+
+1745211437 source:c:\users\admin\gamepr\src\graphics.cpp
+	"graphics.h"
+
+1746674033 source:c:\users\admin\gamepr\src\health.cpp
+	"health.h"
+
+1745378727 source:c:\users\admin\gamepr\src\main.cpp
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<ctime>
+	"game.h"
+
+1746674632 source:c:\users\admin\gamepr\src\player.cpp
+	"player.h"
+	"beam.h"
+
+1745226744 source:c:\users\admin\gamepr\src\score.cpp
+	"score.h"
+
+1746026918 source:c:\users\admin\gamepr\src\skill.cpp
+	"skill.h"
+
+1746663212 source:c:\users\admin\gamepr\src\sprite.cpp
+	"sprite.h"
+	"background.h"
+
+1745471832 source:c:\users\admin\gamepr\src\vector2d.cpp
+	"vector2D.h"
+
+1746996524 source:c:\users\admin\gamepr\src\game.cpp
+	"game.h"
+

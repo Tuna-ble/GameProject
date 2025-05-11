@@ -21,8 +21,8 @@ void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont
         textH
     };
 
-    SFX.loadSound("hover", "audio/hover.mp3");
-    SFX.loadSound("click", "audio/click.mp3");
+    SFX.loadSound("hover", "assets/audio/hover.mp3");
+    SFX.loadSound("click", "assets/audio/click.mp3");
 }
 
 void UIButton::setType(buttonType _type) {

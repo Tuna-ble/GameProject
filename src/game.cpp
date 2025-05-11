@@ -8,69 +8,69 @@ void Game::init()
     graphics.init();
     musicAndSFX.init();
 
-    font = graphics.loadFont("assets/font.ttf", 25);
+    font = graphics.loadFont("assets/font/font.ttf", 25);
 
-    musicAndSFX.loadMusic("audio/OST.mp3");
-    musicAndSFX.loadSound("shoot", "audio/shoot.flac");
-    musicAndSFX.loadSound("hit", "audio/hit.mp3");
-    musicAndSFX.loadSound("explosion", "audio/explosion.mp3");
-    musicAndSFX.loadSound("hover", "audio/hover.mp3");
-    musicAndSFX.loadSound("click", "audio/click.mp3");
-    musicAndSFX.loadSound("getBuff", "audio/getBuff.mp3");
-    musicAndSFX.loadSound("time", "audio/timeRunning.mp3");
-    musicAndSFX.loadSound("victory", "audio/victory.mp3");
-    musicAndSFX.loadSound("failure", "audio/failed.mp3");
-    musicAndSFX.loadSound("charge-up", "audio/charge-up.mp3");
-    musicAndSFX.loadSound("beam-shoot", "audio/beam-shoot.mp3");
+    musicAndSFX.loadMusic("assets/audio/OST.mp3");
+    musicAndSFX.loadSound("shoot", "assets/audio/shoot.flac");
+    musicAndSFX.loadSound("hit", "assets/audio/hit.mp3");
+    musicAndSFX.loadSound("explosion", "assets/audio/explosion.mp3");
+    musicAndSFX.loadSound("hover", "assets/audio/hover.mp3");
+    musicAndSFX.loadSound("click", "assets/audio/click.mp3");
+    musicAndSFX.loadSound("getBuff", "assets/audio/getBuff.mp3");
+    musicAndSFX.loadSound("time", "assets/audio/timeRunning.mp3");
+    musicAndSFX.loadSound("victory", "assets/audio/victory.mp3");
+    musicAndSFX.loadSound("failure", "assets/audio/failed.mp3");
+    musicAndSFX.loadSound("charge-up", "assets/audio/charge-up.mp3");
+    musicAndSFX.loadSound("beam-shoot", "assets/audio/beam-shoot.mp3");
 
-    graphics.loadTexture("background", "assets/background0.png");
-    graphics.loadTexture("background1", "assets/background1.png");
-    graphics.loadTexture("background2", "assets/background2.png");
-    graphics.loadTexture("background3", "assets/background3.png");
-    graphics.loadTexture("background4", "assets/background4.png");
-    graphics.loadTexture("background5", "assets/background5.png");
-    graphics.loadTexture("background6", "assets/background6.png");
+    graphics.loadTexture("background", "assets/images/background0.png");
+    graphics.loadTexture("background1", "assets/images/background1.png");
+    graphics.loadTexture("background2", "assets/images/background2.png");
+    graphics.loadTexture("background3", "assets/images/background3.png");
+    graphics.loadTexture("background4", "assets/images/background4.png");
+    graphics.loadTexture("background5", "assets/images/background5.png");
+    graphics.loadTexture("background6", "assets/images/background6.png");
 
-    graphics.loadTexture("spaceShip", "assets/spaceships.png");
+    graphics.loadTexture("spaceShip", "assets/images/spaceships.png");
 
-    graphics.loadTexture("bullet", "assets/projectiles.png");
+    graphics.loadTexture("bullet", "assets/images/projectiles.png");
 
-    graphics.loadTexture("enemy", "assets/spaceships.png");
+    graphics.loadTexture("enemy", "assets/images/spaceships.png");
 
-    graphics.loadTexture("asteroid", "assets/asteroid.png");
+    graphics.loadTexture("asteroid", "assets/images/asteroid.png");
 
-    graphics.loadTexture("thruster", "assets/thruster.png");
+    graphics.loadTexture("thruster", "assets/images/thruster.png");
 
-    graphics.loadTexture("healthBar", "assets/healthBar.png");
+    graphics.loadTexture("healthBar", "assets/images/healthBar.png");
 
-    graphics.loadTexture("health", "assets/health.png");
+    graphics.loadTexture("health", "assets/images/health.png");
 
-    graphics.loadTexture("power-up", "assets/power-up.png");
+    graphics.loadTexture("power-up", "assets/images/power-up.png");
 
-    graphics.loadTexture("explosion", "assets/explosion.png");
+    graphics.loadTexture("explosion", "assets/images/explosion.png");
 
-    graphics.loadTexture("asteroid_explode", "assets/asteroid_explode.png");
+    graphics.loadTexture("asteroid_explode", "assets/images/asteroid_explode.png");
 
-    graphics.loadTexture("button", "assets/button.png");
+    graphics.loadTexture("button", "assets/images/button.png");
 
-    graphics.loadTexture("musicButton", "assets/music.png");
+    graphics.loadTexture("musicButton", "assets/images/music.png");
 
-    graphics.loadTexture("soundButton", "assets/sound.png");
+    graphics.loadTexture("soundButton", "assets/images/sound.png");
 
-    graphics.loadTexture("pauseWindow", "assets/wdpopup.png");
+    graphics.loadTexture("pauseWindow", "assets/images/wdpopup.png");
 
-    graphics.loadTexture("settingWindow", "assets/table.png");
+    graphics.loadTexture("settingWindow", "assets/images/table.png");
 
-    graphics.loadTexture("pauseHUD", "assets/pause.png");
+    graphics.loadTexture("pauseHUD", "assets/images/pause.png");
 
-    graphics.loadTexture("shield", "assets/shield.png");
+    graphics.loadTexture("shield", "assets/images/shield.png");
 
-    graphics.loadTexture("beam-active", "assets/beam-active.png");
-    graphics.loadTexture("beam-active0", "assets/beam-active0.png");
+    graphics.loadTexture("beam-active", "assets/images/beam-active.png");
+    graphics.loadTexture("beam-active0", "assets/images/beam-active0.png");
 
-    graphics.loadTexture("speed", "assets/speed.png");
+    graphics.loadTexture("speed", "assets/images/speed.png");
 
-    graphics.loadTexture("damage", "assets/damage.png");
+    graphics.loadTexture("damage", "assets/images/damage.png");
 
     HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
 
