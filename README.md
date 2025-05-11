@@ -1,10 +1,11 @@
 # SPACE WAR
-Đây là dự án lập trình game đầu tiên của em, sử dụng ngôn ngữ C++ kết hợp thư viện đồ họa SDL2
+Đây là dự án lập trình game đầu tiên của mình, sử dụng ngôn ngữ C++ kết hợp thư viện đồ họa SDL2
 Game lấy chủ đề về chiến tranh giữa tàu không gian trong vũ trụ
 
 ## Thông tin tác giả
 Nguyễn Đình Thắng - K69I-CS2 - 24021622
 
+## Thông tin trờ chơi
 ### Luật chơi
 Người chơi cần sống sót trong một khoảng thời gian nhất định, trong khi bảo vệ bản thân trước các tàu không gian của địch. Khi người chơi hết máu, sẽ xem như là thua cuộc, và điểm không được lưu.
 Khi bị đánh bại địch có thể rơi ra đồ vật để người chơi có thể power-up
@@ -58,7 +59,7 @@ Xử lý va chạm
 
 Score (có tính điểm)
 
-Lưu bảng điểm
+Lưu điểm
 
 Sound
 
@@ -70,15 +71,21 @@ Font
 
 Menu
 
-Pause/Resume
+Pause / Resume
 
-Status bar / lives (mạng/máu...)
+Status bar / Lives (mạng/máu...)
 
 Các điểm nổi bật khác:
 
 - Quản lí các đối tượng bằng vector
 
-- Hiệu ứng trúng đạn
+- Đạn
+
+- Laser beam
+
+- Enemy
+
+- Drop / Power-up
 
 - Camera scrolling
 
@@ -86,6 +93,9 @@ Các điểm nổi bật khác:
 
 - Bộ sinh số ngẫu nhiên
 
+- AABB Collision
+
 - OBB Collision
 
-- Laser beam
+- Game Mode
+
