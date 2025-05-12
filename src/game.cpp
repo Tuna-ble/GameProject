@@ -1,7 +1,7 @@
 #include "game.h"
 
-Game::Game() : mainMenu(currentState), pauseMenu(currentState), settingsMenu(currentState),
-            modeMenu(currentState, mode), gameOver(currentState), hud(currentState), enemies(mode) {}
+Game::Game() : mainMenu(musicAndSFX, currentState), pauseMenu(musicAndSFX, currentState), settingsMenu(musicAndSFX, currentState),
+            modeMenu(musicAndSFX, currentState, mode), gameOver(musicAndSFX, currentState), hud(musicAndSFX, currentState), enemies(mode) {}
 
 void Game::init()
 {
@@ -41,9 +41,13 @@ void Game::init()
 
     graphics.loadTexture("thruster", "assets/images/thruster.png");
 
+    graphics.loadTexture("healthBar-line", "assets/images/healthBar-line.png");
+    graphics.loadTexture("healthBar-baseFill", "assets/images/healthBar-baseFill.png");
+
     graphics.loadTexture("healthBar", "assets/images/healthBar.png");
 
     graphics.loadTexture("health", "assets/images/health.png");
+    graphics.loadTexture("health1", "assets/images/health1.png");
 
     graphics.loadTexture("power-up", "assets/images/power-up.png");
 
@@ -68,18 +72,16 @@ void Game::init()
     graphics.loadTexture("beam-active", "assets/images/beam-active.png");
     graphics.loadTexture("beam-active0", "assets/images/beam-active0.png");
 
-    graphics.loadTexture("speed", "assets/images/speed.png");
+    graphics.loadTexture("statsBar", "assets/images/statsBar.png");
 
-    graphics.loadTexture("damage", "assets/images/damage.png");
+    graphics.loadTexture("shieldBar", "assets/images/shieldBar.png");
 
-    HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("health") );
+    graphics.loadTexture("beamBar", "assets/images/beamBar.png");
 
-    currentState = gameState::MAIN_MENU;
-    mainMenu.init(graphics, font);
-    pauseMenu.init(graphics, font, musicAndSFX);
-    settingsMenu.init(graphics, font, musicAndSFX);
-    modeMenu.init(graphics, font, musicAndSFX);
-    hud.init(graphics, font, musicAndSFX);
+    graphics.loadTexture("fill", "assets/images/fill.png");
+
+    HealthBar::setTextures( graphics.getTexture("healthBar"), graphics.getTexture("healthBar-line"),
+                           graphics.getTexture("healthBar-baseFill"), graphics.getTexture("health"), graphics.getTexture("health1") );
 
     tile.init(graphics);
 
@@ -92,6 +94,13 @@ void Game::init()
     drops.init(graphics);
 
     explosionManager.init(graphics);
+
+    currentState = gameState::MAIN_MENU;
+    mainMenu.init(graphics, font);
+    pauseMenu.init(graphics, font, musicAndSFX);
+    settingsMenu.init(graphics, font, musicAndSFX);
+    modeMenu.init(graphics, font, musicAndSFX);
+    hud.init(graphics, font, musicAndSFX, player);
 }
 
 void Game::update(float deltaTime)

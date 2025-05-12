@@ -30,7 +30,7 @@ Enemy::Enemy (Vector2D position, SDL_Texture* texture, SDL_Rect dest, SDL_Textur
         SFX = sound;
         speed = rand() % 150 + 50;
         shootTimer = (float)(rand() % 1000) / 1000.0f;
-    }
+}
 
 void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
     if (!alive && !dropped) return;
@@ -62,7 +62,7 @@ void Enemy::render(SDL_Renderer* renderer, Camera &camera) {
 
     SDL_RenderCopyEx(renderer, texture, &srcRect, &drawRect, angle, NULL, SDL_FLIP_NONE);
 
-    healthBar.render(renderer, health, position - camera.position, 75, 20);
+    healthBar.render(renderer, health, position - camera.position, 75, 15, healthOwner::ENEMY);
 }
 
 void Enemy::update(float deltaTime, Graphics& graphics, Player &player, DropManager& drops) {

@@ -10,6 +10,7 @@
 #include "def.h"
 #include "score.h"
 #include "gameMode.h"
+#include "player.h"
 
 enum class buttonType {
     MUSIC,
@@ -35,14 +36,16 @@ struct UIButton {
     bool isToggle = false;
     bool isOn = true;
 
-    Audio SFX;
+    Audio* SFX;
 
+    UIButton(Audio& audio);
     void init(Graphics& graphics, const char* textname, TTF_Font* textFont, SDL_Color color, SDL_Rect _rect);
     void setType(buttonType _type);
     void setToggle(bool toggle, bool startOn);
     void render(SDL_Renderer* renderer);
     void updateHover(int mouseX, int mouseY);
     bool isClicked(SDL_Event& e);
+    bool sfxOn() const;
 };
 
 struct MainMenu {
@@ -58,7 +61,7 @@ struct MainMenu {
     SDL_Color textColor = {255, 255, 255};
     SDL_Rect titleRect;
 
-    MainMenu(gameState& s);
+    MainMenu(Audio& audio, gameState& s);
     void init(Graphics& graphics, TTF_Font* textFont);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY);
     void render(SDL_Renderer* renderer);
@@ -75,7 +78,6 @@ struct PauseMenu {
     UIButton resumeButton;
     UIButton musicButton;
     UIButton soundButton;
-    UIButton settingsButton;
     UIButton mainMenuButton;
     UIButton quitButton;
 
@@ -85,7 +87,7 @@ struct PauseMenu {
     SDL_Rect windowRect;
     Audio* audioPtr;
 
-    PauseMenu(gameState& s);
+    PauseMenu(Audio& audio, gameState& s);
     void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(SDL_Renderer* renderer);
@@ -108,7 +110,7 @@ struct SettingsMenu {
     SDL_Rect windowRect;
     Audio* audioPtr;
 
-    SettingsMenu(gameState& s);
+    SettingsMenu(Audio& audio, gameState& s);
     void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(SDL_Renderer* renderer);
@@ -132,7 +134,7 @@ struct ModeMenu {
     SDL_Rect windowRect;
     Audio* audioPtr;
 
-    ModeMenu(gameState& s, gameMode& m);
+    ModeMenu(Audio& audio, gameState& s, gameMode& m);
     void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(SDL_Renderer* renderer);
@@ -159,7 +161,7 @@ struct GameOver {
     Score highestScore;
     int highScore;
 
-    GameOver(gameState& s);
+    GameOver(Audio& audio, gameState& s);
     void init(Graphics& graphics, TTF_Font* textFont, int score);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(SDL_Renderer* renderer);
@@ -170,7 +172,15 @@ struct HUD {
     gameState& state;
     SDL_Texture* scoreText = nullptr;
     SDL_Texture* countDownText = nullptr;
+    SDL_Texture* damageText = nullptr;
+    SDL_Texture* speedText = nullptr;
     Audio* SFX;
+    Player* player;
+
+    SDL_Texture* statsBar;
+    SDL_Texture* shieldCD;
+    SDL_Texture* beamCD;
+    SDL_Texture* CDFill;
 
     UIButton pauseButton;
 
@@ -180,12 +190,18 @@ struct HUD {
 
     SDL_Rect scoreRect = {20, 20, 150, 30};
     SDL_Rect countDownRect = {20, 55, 150, 30};
+    SDL_Rect damageRect = {275, 45, 150, 30};
+    SDL_Rect speedRect = {475, 45, 150, 30};
+
+    SDL_Rect statsRect = {250, 45, 400, 30};
+    SDL_Rect shieldCDRect = {20, SCREEN_HEIGHT - 65, 150, 20};
+    SDL_Rect beamCDRect = {20, SCREEN_HEIGHT - 40, 150, 20};
 
     TTF_Font* font;
     SDL_Color textColor = {255, 255, 255, 255};
 
-    HUD(gameState& s);
-    void init(Graphics& graphics, TTF_Font* textFont, Audio& audio);
+    HUD(Audio& audio, gameState& s);
+    void init(Graphics& graphics, TTF_Font* textFont, Audio& audio, Player& player);
     void handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio);
     void render(Graphics& graphics, SDL_Renderer* renderer, int score);
     bool update(float deltaTime);

@@ -29,7 +29,7 @@ struct Player {
     Shield shield;
 
     float healTimer = 0.0f;
-    float healCooldown = 1.5f;
+    float healCooldown = 0.075f;
 
     float hurtTimer = 0.0f;
     float hurtDuration = 0.15f;
@@ -37,7 +37,7 @@ struct Player {
     float beamDamageInterval = 0.15f;
     float beamDamageTimer = 0.0f;
 
-    float beamTimer = 0.0f;
+    float beamTimer = 15.0f;
     float beamCooldown = 15.0f;
 
     float angle;
@@ -62,6 +62,7 @@ struct Player {
     void update(float deltaTime, Camera &camera);
     void getBuff(int value, dropType type);
     void reset();
+    float getBeamCDPercent() const;
 };
 
 #endif // PLAYER_H_INCLUDED

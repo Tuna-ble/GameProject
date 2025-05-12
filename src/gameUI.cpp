@@ -2,6 +2,8 @@
 
 // ==== UI Button ====
 
+UIButton::UIButton(Audio& audio) : SFX(&audio) {}
+
 void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont, SDL_Color color, SDL_Rect _rect) {
     font = textFont;
     text = graphics.renderText(textname, font, color);
@@ -20,9 +22,6 @@ void UIButton::init(Graphics& graphics, const char* textname, TTF_Font* textFont
         textW,
         textH
     };
-
-    SFX.loadSound("hover", "assets/audio/hover.mp3");
-    SFX.loadSound("click", "assets/audio/click.mp3");
 }
 
 void UIButton::setType(buttonType _type) {
@@ -37,7 +36,7 @@ void UIButton::setToggle(bool toggle, bool startOn) {
 void UIButton::updateHover(int mouseX, int mouseY) {
     SDL_Point p = {mouseX, mouseY};
     bool currentlyHovering = SDL_PointInRect( &p, &rect );
-    if (currentlyHovering && !wasHovering) SFX.playSound("hover");
+    if (currentlyHovering && !wasHovering && sfxOn()) SFX->playSound("hover");
 
     wasHovering = currentlyHovering;
     mouseHover = currentlyHovering;
@@ -45,7 +44,7 @@ void UIButton::updateHover(int mouseX, int mouseY) {
 
 bool UIButton::isClicked(SDL_Event& e) {
     if (mouseHover && e.type == SDL_MOUSEBUTTONDOWN) {
-        SFX.playSound("click");
+        if (sfxOn()) SFX->playSound("click");
         if (isToggle) isOn = !isOn;
         return true;
     }
@@ -74,9 +73,14 @@ void UIButton::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, text, nullptr, &textRect);
 }
 
+bool UIButton::sfxOn() const {
+    return SFX && SFX->sfxEnabled;
+}
+
 // ==== Main Menu ====
 
-MainMenu::MainMenu(gameState& s) : state(s) {}
+MainMenu::MainMenu(Audio& audio, gameState& s) : state(s), playButton(audio),
+                                                settingsButton(audio), quitButton(audio) {}
 
 void MainMenu::init(Graphics& graphics, TTF_Font* textFont) {
     font = textFont;
@@ -125,7 +129,8 @@ void MainMenu::cleanUp() {
 
 // ==== Pause Menu ====
 
-PauseMenu::PauseMenu(gameState& s) : state(s) {}
+PauseMenu::PauseMenu(Audio& audio, gameState& s) : state(s), resumeButton(audio), musicButton(audio),
+                                                soundButton(audio), mainMenuButton(audio), quitButton(audio) {}
 
 void PauseMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
@@ -206,7 +211,8 @@ void PauseMenu::cleanUp() {
 
 // ==== Settings Menu =====
 
-SettingsMenu::SettingsMenu(gameState& s) : state(s) {}
+SettingsMenu::SettingsMenu(Audio& audio, gameState& s) : state(s), musicButton(audio),
+                                                        soundButton(audio), backButton(audio) {}
 
 void SettingsMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
@@ -270,7 +276,8 @@ void SettingsMenu::cleanUp() {
 
 // ==== Mode Menu =====
 
-ModeMenu::ModeMenu(gameState& s, gameMode& m) : state(s), mode(m) {}
+ModeMenu::ModeMenu(Audio& audio, gameState& s, gameMode& m) : state(s), mode(m), normalButton(audio),
+                                                            hardButton(audio), backButton(audio) {}
 
 void ModeMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
@@ -325,7 +332,8 @@ void ModeMenu::cleanUp() {
 
 // ==== Game Over ====
 
-GameOver::GameOver(gameState& s) : state(s) {}
+GameOver::GameOver(Audio& audio, gameState& s) : state(s), retryButton(audio),
+                                                mainMenuButton(audio), quitButton(audio) {}
 
 void GameOver::init(Graphics& graphics, TTF_Font* textFont, int score) {
     font = textFont;
@@ -383,6 +391,9 @@ void GameOver::render(SDL_Renderer* renderer) {
 
 void GameOver::cleanUp() {
     SDL_DestroyTexture(resultText);
+    SDL_DestroyTexture(scoreText);
+    SDL_DestroyTexture(highScoreText);
+    SDL_DestroyTexture(resultText);
     SDL_DestroyTexture(retryButton.text);
     SDL_DestroyTexture(mainMenuButton.text);
     SDL_DestroyTexture(quitButton.text);
@@ -390,15 +401,21 @@ void GameOver::cleanUp() {
 
 // ==== HUD =====
 
-HUD::HUD(gameState& s) : state(s) {}
+HUD::HUD(Audio& audio, gameState& s) : state(s), pauseButton(audio) {}
 
-void HUD::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
+void HUD::init(Graphics& graphics, TTF_Font* textFont, Audio& audio, Player& _player) {
     font = textFont;
     SFX = &audio;
+    player = &_player;
     countdownActive = true;
 
     pauseButton.setType(buttonType::PAUSE);
     pauseButton.init(graphics, "", font, textColor, { SCREEN_WIDTH - 60, 20, 40, 40 });
+
+    statsBar = graphics.getTexture("statsBar");
+    beamCD = graphics.getTexture("beamBar");
+    shieldCD = graphics.getTexture("shieldBar");
+    CDFill = graphics.getTexture("fill");
 }
 
 void HUD::handleEvent(SDL_Event& e, int mouseX, int mouseY, Audio& audio) {
@@ -433,17 +450,36 @@ bool HUD::update(float deltaTime) {
 }
 
 void HUD::render(Graphics& graphics, SDL_Renderer* renderer, int score) {
+    SDL_Rect beamFillRect = {20, SCREEN_HEIGHT - 40, 150 * player->getBeamCDPercent(), 20};
+    SDL_Rect shieldFillRect = {20, SCREEN_HEIGHT - 65, 150 * player->shield.getCDPercent(), 20};
+
+    SDL_RenderCopy(renderer, statsBar, nullptr, &statsRect);
+    SDL_RenderCopy(renderer, beamCD, nullptr, &beamCDRect);
+    SDL_RenderCopy(renderer, CDFill, nullptr, &beamFillRect);
+
+    SDL_RenderCopy(renderer, shieldCD, nullptr, &shieldCDRect);
+    SDL_RenderCopy(renderer, CDFill, nullptr, &shieldFillRect);
+
     std::string scoreStr = "Score: " + std::to_string(score);
     std::string countStr = "Time: " + std::to_string(timer);
 
+    std::string damage = "Damage: " + std::to_string(player->damage);
+    std::string speed = "Speed: " + std::to_string(player->speed);
+
     if (scoreText) SDL_DestroyTexture(scoreText);
     if (countDownText) SDL_DestroyTexture(countDownText);
+    if (damageText) SDL_DestroyTexture(damageText);
+    if (speedText) SDL_DestroyTexture(speedText);
 
     scoreText = graphics.renderText(scoreStr.c_str(), font, textColor);
     countDownText = graphics.renderText(countStr.c_str(), font, textColor);
+    damageText = graphics.renderText(damage.c_str(), font, textColor);
+    speedText = graphics.renderText(speed.c_str(), font, textColor);
 
     SDL_RenderCopy(renderer, scoreText, nullptr, &scoreRect);
     SDL_RenderCopy(renderer, countDownText, nullptr, &countDownRect);
+    SDL_RenderCopy(renderer, damageText, nullptr, &damageRect);
+    SDL_RenderCopy(renderer, speedText, nullptr, &speedRect);
 
     pauseButton.render(renderer);
 }

@@ -4,15 +4,16 @@
 #include<SDL_image.h>
 #include "vector2D.h"
 #include "audio.h"
+#include "healthOwner.h"
 
 struct Health {
-    int cap, current;
+    float cap, current;
 
     Health();
-    Health(int maxHealth);
+    Health(float maxHealth);
     void takeDamage(int damage);
 
-    void heal(int amount);
+    void heal(float amount);
 
     bool isDead() const;
 
@@ -22,14 +23,18 @@ struct Health {
 };
 
 struct HealthBar {
-    static SDL_Texture* barTexture;
+    static SDL_Texture* barLineTexture;
+    static SDL_Texture* barFillTexture;
     static SDL_Texture* fillTexture;
+
+    static SDL_Texture* barTexture;
+    static SDL_Texture* eFillTexture;
 
     SDL_Rect healthBarRect;
     SDL_Rect healthFillRect;
 
-    static void setTextures(SDL_Texture* bar, SDL_Texture* fill);
-    void render(SDL_Renderer* renderer, Health& health, Vector2D position, int width, int height);
+    static void setTextures(SDL_Texture* bar, SDL_Texture* line, SDL_Texture* barFill, SDL_Texture* fill, SDL_Texture* fill1);
+    void render(SDL_Renderer* renderer, Health& health, Vector2D position, int width, int height, healthOwner owner);
     void cleanUp();
 };
 

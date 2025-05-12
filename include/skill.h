@@ -17,6 +17,7 @@ struct Shield {
     void update(float deltaTime);
     bool isShielding() const;
     bool canActivate() const;
+    float getCDPercent() const;
     void reset();
     void render(SDL_Renderer* renderer, const SDL_Rect& playerRect);
 };

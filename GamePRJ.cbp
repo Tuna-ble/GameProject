@@ -50,6 +50,7 @@
 		<Unit filename="include/gameUI.h" />
 		<Unit filename="include/graphics.h" />
 		<Unit filename="include/health.h" />
+		<Unit filename="include/healthOwner.h" />
 		<Unit filename="include/player.h" />
 		<Unit filename="include/score.h" />
 		<Unit filename="include/skill.h" />

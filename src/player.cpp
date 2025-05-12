@@ -53,7 +53,7 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
     if (currentKeyStates[SDL_SCANCODE_D]) velocity.x = speed;
 
     if (currentKeyStates[SDL_SCANCODE_E]) {
-        if (beamTimer <= 0.0f) {
+        if (beamTimer >= beamCooldown) {
         Vector2D worldMouse = mouse + camera.position;
         Vector2D playerCenter = position + Vector2D(SHIP_SIZE / 2.0f, SHIP_SIZE / 2.0f);
         Vector2D direction = worldMouse - playerCenter;
@@ -61,7 +61,7 @@ void Player::handleInput(SDL_Event& event, Camera &camera) {
         float angle = atan2(worldMouse.y - position.y, worldMouse.x - position.x) * 180 / M_PI + 90;
         beams.shoot(position, damage, angle, true, bulletFrom::PLAYER);
 
-        beamTimer = beamCooldown;
+        beamTimer = 0.0f;
         }
     }
     if (currentKeyStates[SDL_SCANCODE_Q]) {
@@ -83,7 +83,7 @@ void Player::update(float deltaTime, Camera &camera) {
 
     if (health.getPercent() < 1.0f) healTimer += deltaTime;
     if (healTimer >= healCooldown) {
-        health.heal(2);
+        health.heal(0.1);
         healTimer = 0.0f;
     }
 
@@ -95,8 +95,8 @@ void Player::update(float deltaTime, Camera &camera) {
         beamDamageTimer -= deltaTime;
     }
 
-    if (beamTimer > 0.0f) {
-        beamTimer -= deltaTime;
+    if (beamTimer < beamCooldown) {
+        beamTimer += deltaTime;
     }
 
     thruster.update();
@@ -133,7 +133,7 @@ void Player::render(SDL_Renderer* renderer, Camera &camera) {
 
     SDL_RenderCopyEx(renderer, playerTexture, &srcRect, &dest, angle, NULL, SDL_FLIP_NONE);
 
-    healthBar.render(renderer, health, {250 , 20}, 400, 30);
+    healthBar.render(renderer, health, {225 , 20}, 450, 20, healthOwner::PLAYER);
 
     shield.render(renderer, dest);
 }
@@ -159,11 +159,15 @@ void Player::reset() {
     startY = rand() % MAP_HEIGHT;
     position = {(float)startX, (float)startY};
     velocity = Vector2D(0, 0);
-    beamTimer = 0.0f;
+    beamTimer = 15.0f;
     health = Health(PLAYER_HEALTH);
     bullets.bullets.clear();
     shield.reset();
     speed = BASE_SPEED;
 
     gameRunning = true;
+}
+
+float Player::getBeamCDPercent() const {
+    return beamTimer <= beamCooldown ? beamTimer / beamCooldown : 1.0f;
 }

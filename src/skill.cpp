@@ -35,6 +35,10 @@ bool Shield::canActivate() const {
     return !active && cooldownTime >= cooldown;
 }
 
+float Shield::getCDPercent() const {
+    return cooldownTime <= cooldown ? cooldownTime / cooldown : 1.0f;
+}
+
 void Shield::reset() {
     active = false;
     activeTime = 0;
