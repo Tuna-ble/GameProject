@@ -283,9 +283,6 @@ void ModeMenu::init(Graphics& graphics, TTF_Font* textFont, Audio& audio) {
     font = textFont;
     audioPtr = &audio;
 
-    normalButton.setType(buttonType::MUSIC);
-    hardButton.setType(buttonType::SOUND);
-
     modeText = graphics.renderText("Modes", font, textColor);
     normalButton.init(graphics, "Normal", font, textColor, { 340, 250, 220, 60 });
     hardButton.init(graphics, "Hard", font, textColor, { 340, 315, 220, 60 });

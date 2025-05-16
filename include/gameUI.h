@@ -13,6 +13,7 @@
 #include "player.h"
 
 enum class buttonType {
+    DEFAULT,
     MUSIC,
     SOUND,
     PAUSE
@@ -28,7 +29,7 @@ struct UIButton {
     SDL_Texture* pauseButtonTexture;
     TTF_Font* font;
     Mix_Chunk* chunk;
-    buttonType type;
+    buttonType type = buttonType::DEFAULT;
 
     bool mouseHover = false;
     bool wasHovering = false;
