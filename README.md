@@ -5,7 +5,7 @@ Game lấy chủ đề về chiến tranh giữa tàu không gian trong vũ tr�
 ## Thông tin tác giả
 Nguyễn Đình Thắng - K69I-CS2 - 24021622
 
-## Thông tin trờ chơi
+## Thông tin trò chơi
 ### Luật chơi
 Người chơi cần sống sót trong một khoảng thời gian nhất định, trong khi bảo vệ bản thân trước các tàu không gian của địch. Khi người chơi hết máu, sẽ xem như là thua cuộc, và điểm không được lưu.
 Khi bị đánh bại địch có thể rơi ra đồ vật để người chơi có thể power-up
