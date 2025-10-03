@@ -5,13 +5,13 @@ Game lấy chủ đề về chiến tranh giữa tàu không gian trong vũ tr�
 ## Thông tin tác giả
 Nguyễn Đình Thắng - K69I-CS2 - 24021622
 
-## Thông tin trờ chơi
+## Thông tin trò chơi
 ### Luật chơi
 Người chơi cần sống sót trong một khoảng thời gian nhất định, trong khi bảo vệ bản thân trước các tàu không gian của địch. Khi người chơi hết máu, sẽ xem như là thua cuộc, và điểm không được lưu.
 Khi bị đánh bại địch có thể rơi ra đồ vật để người chơi có thể power-up
 
 ### Ngưỡng điểm tự đánh giá
-Hopefully nằm trong khoảng 9 - 10
+9 - 10
 
 ### Nguồn tham khảo
 Code, ý tưởng:
@@ -19,7 +19,7 @@ Code, ý tưởng:
 https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh 
 (code mẫu graphics, sprite và audio, có chỉnh sửa thêm)
 
-https://www.youtube.com/watch?v=XOs2qynEmNE&list=LL&index=2
+https://www.youtube.com/watch?v=XOs2qynEmNE
 
 https://www.youtube.com/@CarlBirch
 
@@ -97,5 +97,5 @@ Các điểm nổi bật khác:
 
 - OBB Collision
 
-- Game Mode
+- Game Modes
 
